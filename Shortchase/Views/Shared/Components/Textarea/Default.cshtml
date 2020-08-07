@@ -1,0 +1,11 @@
+﻿
+<div class="form-group">
+    <p class="pl-1 m-0 text-smaller font-weight-bold">@ViewData["Label"]</p>
+    <textarea class="form-control resize-only-vertical max-height-medium @ViewData["Class"]" id="@ViewData["Id"]" placeholder="@ViewData["Placeholder"]"
+              @if (ViewData["Required"].ToString() == true.ToString()) { <text> required</text>
+           }
+              @if (ViewData["Disabled"].ToString() == true.ToString()) { <text> disabled </text> }>
+            @if (!string.IsNullOrWhiteSpace(ViewData["Value"].ToString())) { 
+                <text>@ViewData["Value"]</text>
+              }</textarea>
+</div>

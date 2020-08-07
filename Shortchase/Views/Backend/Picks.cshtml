@@ -1,0 +1,128 @@
+﻿@model PickListDto
+@{ Layout = "_DashboardLayout";
+
+    }
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-thumbtack"></i>*@
+                        <img src="@Url.Content("~/img/newicons/picks.png")" class="img-fluid" width="40px" />&nbsp;
+                        Picks
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage AddPickModalBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>@{ }
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model.Picks == null || Model.Picks.Count() <= 0)
+                {
+                <p class="mb-0 text-small font-weight-900">
+                  No picks found on database.
+                 </p> }
+                else
+                {
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+            <button class="btn btn-dark-as-homepage btn-sm" id="SelectAllRowsBtn" data-power="select" data-totalselected="0" data-totalelements="@Model.Picks.Count">Select All</button>
+            <button class="btn btn-danger btn-sm batchaction" data-actiontype="delete" data-action="@Url.Action("DeletePicksBatch", "Backend")"><i class="fas fa-trash"></i> Delete All</button>
+        </div>
+    </div>
+
+                    <table id="PicksList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase"></th>
+                                <th class="text-uppercase">Category</th>
+                                <th class="text-uppercase">Team 1</th>
+                                <th class="text-uppercase">Team 2</th>
+                                <th class="text-uppercase">Start Time</th>
+                                <th class="text-uppercase">Finish Time</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Picks)
+                            {
+
+                                string bg1ImagePath = ViewData["root"].ToString() + item.Team1PhotoPath;
+                                string bg2ImagePath = ViewData["root"].ToString() +item.Team2PhotoPath;
+                                string image1Url = "";
+                                string image2Url = "";
+
+                                image1Url = ImageHelper.ConvertImageToBase64(bg1ImagePath);
+                                image2Url = ImageHelper.ConvertImageToBase64(bg2ImagePath);
+
+                                string dateStart = DateHelper.ToISOString(item.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                string dateFinish = DateHelper.ToISOString(item.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+
+            <tr>
+                <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
+                <td id="CategoryId-@item.Id" data-value="@item.CategoryId">@item.Category.Name</td>
+                <td id="Team1-@item.Id" data-value="@item.Team1">
+                    @if (@item.Team1PhotoPath != null)
+                    {
+                <img class="rounded  p-1 mr-2" width="50" height="50" src="@image1Url" />
+            }
+            else
+            {
+
+            }
+                    @item.Team1
+
+                </td>
+                <td id="Team2-@item.Id" data-value="@item.Team2">
+
+                    @if (@item.Team2PhotoPath != null)
+                    {
+                <img class="rounded  p-1 mr-2" width="50" height="50" src="@image2Url" />}
+                                    else
+                                    {
+
+                                    }
+                    @item.Team2
+                </td>
+                <td id="StartTime-@item.Id" data-value="@dateStart">@DateHelper.DateFormat(item.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                <td id="FinishTime-@item.Id" data-value="@dateFinish">@DateHelper.DateFormat(item.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                <td>
+                    <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button>
+                    @if (!item.IsEnabled)
+                    {
+<button class="btn btn-sm btn-success ActivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Activate"><i class="fas fa-power-off"></i></button> }
+                    else
+                    {
+<button class="btn btn-sm btn-warning DeactivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>}
+                </td>
+            </tr>}
+                        </tbody>
+                    </table>}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/Pick_AddModal" model="@Model" />
+<partial name="Partials/Pick_EditModal" model="@Model" />
+
+
+<input id="SwitchStatusPickURL" hidden value="@Url.Action("SwitchStatusPick", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/Picks.js")" asp-append-version="true"></script>
+}

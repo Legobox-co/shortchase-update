@@ -1,0 +1,8 @@
+﻿<!-- Add Modal -->
+@{Func<dynamic, object> ViewInteractionsModalContent = @<div>
+        <h5>Interaction Type: <span id="InteractionTypeWrapper"></span></h5>
+        <div id="InteractionTableWrapper">
+
+        </div>
+    </div>;}
+<vc:modal content="ViewInteractionsModalContent" id="ViewInteractionsModal" locked="false" title="View User Interactions"></vc:modal>

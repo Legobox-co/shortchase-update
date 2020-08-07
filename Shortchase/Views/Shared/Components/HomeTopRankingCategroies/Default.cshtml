@@ -1,0 +1,39 @@
+﻿@model HomeCategoriesDisplayData
+
+@if (Model == null || Model.Categories == null || Model.Categories.Count <= 0)
+{
+<p>No categories added.</p> }
+else
+{
+<div class="row d-none d-sm-none d-md-flex d-lg-flex d-xl-flex">
+    @{
+        int countItems = 0;
+        bool showAllItems = ViewData["ShowAllItems"].ToString() == false.ToString();
+    }
+    @foreach (var item in Model.Categories)
+    {
+        countItems++;
+        if (!showAllItems && countItems > 12)
+        {
+            break;
+        }
+        string bgImagePath = ViewData["root"].ToString() + item.DisplayImage;
+        string imageUrl = "";
+        imageUrl = ImageHelper.ConvertImageToBase64(bgImagePath);
+
+        <div class="col-sm-12 col-md-6 col-lg-4 text-center image-category-wrapper py-3">
+            <a data-keyword="@item.Name" data-id="@item.Id" href="#" class="marketplace-item-link d-block no-text-transform-on-hover">
+
+                <div class="transition shadow-sm img-with-scaling-effect  div-image-wrapper" style="background: url(@imageUrl);">
+                    <div class="d-flex justify-content-center align-items-center inner-div-image-wrapper">
+                        <p class="m-0 py-2 MontserratBold text-dark" style="background: url(@Url.Content("~/img/bg-paragraph.png"));">@item.Name</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+
+</div>
+
+
+}

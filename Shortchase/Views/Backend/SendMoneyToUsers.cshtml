@@ -1,0 +1,102 @@
+﻿@model UserListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-hand-holding-usd"></i>*@
+                        <img src="@Url.Content("~/img/newicons/send-money.png")" class="img-fluid" width="40px" />&nbsp;
+                        Single Payout
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model.Users == null || Model.Users.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No users found on database.
+                    </p>
+                }
+                else
+                {
+                    <table id="UsersList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">First Name</th>
+                                <th class="text-uppercase">Last Name</th>
+                                <th class="text-uppercase">Email</th>
+                                <th class="text-uppercase">Paypal Account </th>
+                                <th class="text-uppercase">Paypal Account Status</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Users)
+                            {
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td><a href="mailto:@item.Email">@item.Email</a></td>
+                                <td>@item.PaypalAccountEmail</td>
+                                <td>
+                                    @if (string.IsNullOrWhiteSpace(item.PaypalAccountEmail))
+                                    {
+                                        <text>Disconnected</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Connected</text>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.PaypalAccountEmail))
+                                    {
+                                        <button class="btn btn-sm btn-success SendIndividualBtn" data-id="@item.Id" data-email="@item.PaypalAccountEmail" data-toggle="tooltip" data-placement="top" title="Send Individual Payment">Send</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-sm btn-success SendIndividualBtn" data-id="@item.Id" data-email="@item.Email" data-toggle="tooltip" data-placement="top" title="Send Individual Payment">Send</button>
+                                    }
+                                    @if (item.Payouts.Count() > 0)
+                                    {
+                                        <a class="btn btn-sm btn-primary timezoneoffset" asp-action="SendMoneyToUsersPayoutHistory" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="See Payout history">See Payout history</a>
+                                    }
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Send Individual Modal -->
+<partial name="Partials/SendMoneyToUsers_IndividualModal" model="@Model" />
+
+<input id="MakeIndividualPaypalPayoutURL" hidden value="@Url.Action("MakeIndividualPaypalPayout", "Backend")" />
+
+@{
+    string BatchStamp = DateTime.UtcNow.Year.ToString() + DateTime.UtcNow.Month.ToString() + DateTime.UtcNow.Day.ToString() + DateTime.UtcNow.Hour.ToString() + DateTime.UtcNow.Minute.ToString() + DateTime.UtcNow.Second.ToString() + DateTime.UtcNow.Millisecond.ToString();
+}
+<input id="BatchStamp" hidden value="@BatchStamp" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/SendMoneyToUsers.js")" asp-append-version="true"></script>
+}

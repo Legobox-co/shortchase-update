@@ -1,0 +1,91 @@
+﻿@model MediaFile
+@{
+    Layout = "_DashboardLayout";
+    string folderId = "";
+    if (Model.FolderId.HasValue) {
+        folderId = Model.FolderId.Value.ToString();
+    }
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-images"></i>*@
+                        <img src="@Url.Content("~/img/newicons/crop-image.png")" class="img-fluid" width="40px" />&nbsp;
+                        Media Manager: Crop Media
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
+                    <a class="btn btn-dark-as-homepage timezoneoffset" asp-action="MediaManager" asp-controller="Backend" asp-route-Folder="@folderId">
+                        @*<i class="fas fa-chevron-left"></i> Go Back*@
+                        <img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" />&nbsp;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model == null)
+                {
+                    <p class="m-0">No media to crop.</p>
+                }
+                else
+                {
+                    string mediaFile = "";
+                    if (!string.IsNullOrWhiteSpace(Model.PhysicalPath))
+                    {
+                        mediaFile = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + Model.PhysicalPath);
+                    }
+                    decimal size = Model.Size / 1000.00m;
+                    string sizeStr = size.ToString("0.00");
+
+                    <div class="row">
+                        <div class="col-sm-12 col-md-8 col-lg-8">
+                            <p class="m-0 pb-2 ">
+                                <span class="MontserratBold">Media: </span> @Model.Title
+                            </p>
+                            <div>
+                                <img src="@mediaFile" class="img-fluid cropper-setup-img" id="imageCropper" />
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4">
+                            <span class="MontserratBold">Crop Width: </span><span id="CropWidth"></span> pixels<br />
+                            <span class="MontserratBold">Crop Height: </span><span id="CropHeight"></span> pixels<br />
+                            @*<span class="MontserratBold">Size: </span><span id="">@sizeStr</span> Kb<br />*@
+                            <span class="MontserratBold">Last Updated: </span><span id="">@DateHelper.DateSimpleFormat(Model.LastUpdated.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</span><br />
+                            <br />
+                            <button type="button" class="btn btn-success FinishAndSaveCropBtn" data-id="@Model.Id">
+                                Finish and Save
+                            </button>
+                            <br />
+                            <br />
+                            <a class="btn btn-default timezoneoffset btn-sm" asp-action="MediaManager" asp-controller="Backend" asp-route-Folder="@folderId">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+<input id="FolderLocation" hidden value="@folderId" />
+<input id="CropMediaURL" hidden value="@Url.Action("CropMedia", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/MediaManagerCropMedia.js")" asp-append-version="true"></script>
+}

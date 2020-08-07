@@ -1,0 +1,890 @@
+﻿@model AccountManagerDto;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container extended-container">
+        <h2 class="section-title text-center py-3 pt-5">
+            Account Manager
+        </h2>
+        <div class="shadow bg-grey medium-rounded-corners">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <p class="grey-border-bottom m-0 px-3 py-2">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-3 col-lg-3">
+                    <div class="p-2">
+
+                        <button class="btn btn-block btn-link text-left py-3 light-border-bottom text-dark account-manager-nav-btn account-manager-navigation" data-navigate-to="PersonalInfoTab">Personal Info</button>
+                        <button class="btn btn-block btn-link text-left py-3 light-border-bottom text-dark account-manager-nav-btn account-manager-navigation" data-navigate-to="RewardsTab">Reward</button>
+                        @if (User.Identity.HasPermissions(Permission.Bettor))
+                        {
+                            <button class="btn btn-block btn-link text-left py-3 light-border-bottom text-dark account-manager-nav-btn account-manager-navigation" data-navigate-to="ReferralTab">Referral</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-block btn-link text-left py-3 light-border-bottom text-dark account-manager-nav-btn account-manager-navigation" data-navigate-to="PaymentTab">Payout</button>
+                        }
+                        <button class="btn btn-block btn-link text-left py-3  text-dark account-manager-nav-btn account-manager-navigation" data-navigate-to="SubscriptionsTab">Subscriptions</button>
+                    </div>
+
+                </div>
+                <div class="col-sm-12 col-md-9 col-lg-9 py-2">
+                    <div class="bg-white light-rounded-corners py-1 px-3 mx-1 min-height-300">
+                        <div class="account-manager-tab" id="PersonalInfoTab">
+                            <h4 class="my-2 px-2 py-2 bg-greyer mb-5">
+                                Personal Info
+                            </h4>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-8">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 col-lg-4">
+                                            <div class="text-left">
+                                                <div class="d-block">
+                                                    <div class="input-group min-height-img-crop">
+                                                        @{
+                                                            string imageUrl = Url.Content("~/img/newicons/change-photo.png");
+                                                            if (!string.IsNullOrWhiteSpace(Model.User.ProfilePicture))
+                                                            {
+                                                                imageUrl = ImageHelper.ConvertImageToBase64(Model.User.ProfilePicture);
+                                                            }
+                                                        }
+                                                        <div class="custom-file d-block">
+                                                            <input type="file" class="custom-file-input" hidden id="inputGroupFile01">
+                                                            <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block text-left" for="inputGroupFile01">
+                                                                <span class="img-crop-wrapper rounded-circle mb-3">
+                                                                    <img src="@imageUrl" class="img-fluid img-crop" />
+                                                                </span>
+                                                                <span id="pictureLabel" class="MontserratBold pl-2">Change Photo</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @if (User.Identity.HasPermissions(Permission.Capper))
+                                                {
+                                                    <div>
+                                                        <h3 class="MontserratBold text-dark m-0 pb-4 pl-3">Rating</h3>
+                                                        <p class="MontserratBold text-smaller  pl-3">
+                                                            <span class="MontserratRegular ">@Model.UserRatingPoints pts</span><br />
+                                                            @for (int i = 1; i <= 5; ++i)
+                                                            {
+                                                                if (Model.UserRating >= i)
+                                                                {
+                                                                    @*<i class="fas fa-star text-yellow-light"></i>*@
+                                                                    <img src="@Url.Content("~/img/newicons/fullstar.png")" width="13px" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    @*<i class="fas fa-star text-grey-light-2"></i>*@
+                                                                    <img src="@Url.Content("~/img/newicons/greystar.png")" width="13px" />
+                                                                }
+                                                            }
+                                                        </p>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-8 col-lg-8">
+                                            <div class="form-group">
+                                                <label for="AccountManager_FirstName" class="text-smaller text-grey-purple mb-0">First Name</label>
+                                                <input type="text" class="general-form-input border-bottom-grey-pruple" id="AccountManager_FirstName" placeholder="First Name" value="@Model.User.FirstName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="AccountManager_LastName" class="text-smaller text-grey-purple mb-0">Last Name</label>
+                                                <input type="text" class="general-form-input border-bottom-grey-pruple" id="AccountManager_LastName" placeholder="Last Name" value="@Model.User.LastName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="AccountManager_Email" class="text-smaller text-grey-purple mb-0">Email</label>
+                                                <input type="email" class="general-form-input-no-disabled border-bottom-grey-pruple disabled-bg" id="AccountManager_Email" placeholder="Email" value="@Model.User.Email" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="AccountManager_Company" class="text-smaller text-grey-purple mb-0">Company (optional)</label>
+                                                <input type="text" class="general-form-input border-bottom-grey-pruple" id="AccountManager_Company" placeholder="Company (optional)" value="@Model.User.Company">
+                                            </div>
+                                            <h5 class="MontserratBold mt-5">
+                                                Phone Number
+                                            </h5>
+                                            <div>
+
+                                                <select class="countryPhoneSelector general-form-select border-bottom-grey-pruple" data-display="countryCode" id="AccountManager_PhoneCountry" name="AccountManager_PhoneCountry">
+                                                    @{
+                                                        foreach (var item in Model.Countries)
+                                                        {
+                                                            if (Model.User.PhoneCountryId.HasValue)
+                                                            {
+                                                                if (item.Id == Model.User.PhoneCountryId.Value)
+                                                                {
+                                                                    <option value="@item.Id" name="@item.Code" selected>@item.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.Id" name="@item.Code">@item.Name</option>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if (item.IsDefault)
+                                                                {
+                                                                    <option value="@item.Id" name="@item.Code" selected>@item.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.Id" name="@item.Code">@item.Name</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                </select>
+                                            </div>
+                                            <div class="phoneInputWrapper">
+                                                <span class="codeWrapper border-bottom-grey-pruple">+ <span id="countryCode">1</span></span>
+                                                <input type="text" class="general-form-input phone-number border-bottom-grey-pruple" id="AccountManager_Phone" placeholder="Phone" value="@Model.User.PhoneNumber">
+                                            </div>
+                                            <h5 class="MontserratBold mt-5">
+                                                Date of Birth
+                                            </h5>
+                                            <div class="">
+                                                @{
+                                                    string dateOfBirth = "";
+                                                    if (Model.User.BirthDate.Month < 10)
+                                                    {
+                                                        dateOfBirth += "0" + Model.User.BirthDate.Month;
+                                                    }
+                                                    else
+                                                    {
+                                                        dateOfBirth += Model.User.BirthDate.Month;
+                                                    }
+                                                    dateOfBirth += "/";
+                                                    if (Model.User.BirthDate.Day < 10)
+                                                    {
+                                                        dateOfBirth += "0" + Model.User.BirthDate.Day;
+                                                    }
+                                                    else
+                                                    {
+                                                        dateOfBirth += Model.User.BirthDate.Day;
+                                                    }
+                                                    dateOfBirth += "/";
+                                                    if (Model.User.BirthDate.Year < 10)
+                                                    {
+                                                        dateOfBirth += "0" + Model.User.BirthDate.Year;
+                                                    }
+                                                    else
+                                                    {
+                                                        dateOfBirth += Model.User.BirthDate.Year;
+                                                    }
+                                                    
+                                                }
+                                                <input type="text" class="general-form-input border-bottom-grey-pruple date-masked-input-2" id="AccountManager_DateOfBirth" placeholder="Date of Birth" value="@dateOfBirth">
+                                            </div>
+                                            <h5 class="MontserratBold mt-5">
+                                                Short Bio
+                                            </h5>
+                                            <div class="">
+                                                <textarea class="general-form-textarea border-bottom-grey-pruple" placeholder="Tell a bit about yourself" rows="4" id="AccountManager_BioDescription">@Model.User.BioDescription</textarea>
+                                            </div>
+                                            <h5 class="MontserratBold mt-5">
+                                                Change Password
+                                            </h5>
+                                            <div class="">
+                                                <input type="password" class="general-form-input mb-3 border-bottom-grey-pruple" id="AccountManager_OldPassword" placeholder="Old Password">
+                                                <input type="password" class="general-form-input border-bottom-grey-pruple" id="AccountManager_NewPassword" placeholder="New Password">
+                                            </div>
+                                            <div class="py-5">
+                                                <button class="btn btn-lg btn-light bg-purple-light btn-block text-white MontserratBold" id="SavePersonalInfoBtn">Save Changes</button>
+                                                <a asp-action="Index" asp-controller="Home" class="btn btn-sm btn-link btn-block text-dark MontserratMedium timezoneoffset">Discard</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="account-manager-tab" id="RewardsTab" style="display:none;">
+
+                            <h4 class="my-2 px-2 py-2 bg-greyer">
+                                Reward Points for POTD's Prediction
+                            </h4>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                    <p class="text-left py-1 my-2 grey-border-bottom">
+                                        <big>
+                                            Total
+                                            <span class="float-right">
+                                                @{
+                                                    int total = Model.User.TotalPointsClaimed + Model.User.TotalPointsAvailable;
+                                                    <text>@total</text>
+                                                }
+                                            </span>
+                                        </big>
+                                    </p>
+                                    <p class="text-left py-1 my-2 grey-border-bottom">
+                                        <big>
+                                            Claimed
+                                            <span class="float-right">
+                                                @Model.User.TotalPointsClaimed
+                                            </span>
+                                        </big>
+                                    </p>
+                                    <p class="text-left py-1 my-2 grey-border-bottom">
+                                        <big>
+                                            Available
+                                            <span class="float-right">
+                                                @Model.User.TotalPointsAvailable
+                                            </span>
+                                        </big>
+                                    </p>
+                                    <div class="py-4">
+
+                                        <button class="btn btn-lg btn-light bg-purple-light btn-block text-white MontserratBold RedeemRewardPointsBtn">
+                                            Redeem
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+                                    <div class="card">
+                                        <div class="card-body p-0 m-0 py-2 text-center">
+
+                                            <p class="MontserratBold m-0">
+                                                $ @Model.User.WalletBalance.ToString("0.00")
+                                                <br />
+                                                <small class="text-muted text-smallest"><strong>WALLET BALANCE</strong></small>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <p class="d-none d-sm-none d-md-none d-lg-block py-3 m-0">
+                                Post accurate POTD's prediction and be rewarded with points which can be redeemed<br />
+                                by subscribing to ShortchasePro membership at discounted price.
+                            </p>
+                            <p class="d-block d-sm-block d-md-block d-lg-none py-3 m-0">
+                                Post accurate POTD's prediction and be rewarded with points which can be redeemed
+                                by subscribing to ShortchasePro membership at discounted price.
+                            </p>
+                            @if (Model.RewardsClaimed != null && Model.RewardsClaimed.Count() > 0)
+                            {
+                                <button class="btn btn-link MontserratBold text-smaller px-0 PreviousClaimsBtn">
+                                    Previous claims
+                                </button>
+                            }
+                        </div>
+
+                        <div class="account-manager-tab" id="ReferralTab" style="display:none;">
+
+                            <h4 class="my-2 px-2 py-2 bg-greyer">
+                                Refer a Friend
+                            </h4>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                    <p class="text-left py-1 my-2 grey-border-bottom">
+                                        <big>
+                                            Your Referral Code
+                                            <span class="float-right" id="UserReferralCodeValue">
+                                                @Model.User.ReferralCode
+                                            </span>
+                                        </big>
+                                    </p>
+                                    <div class="py-4">
+
+                                        <button class="btn btn-lg btn-light bg-purple-light btn-block text-white MontserratBold ReferAFriendOpenModal">
+                                            Share
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="d-none d-sm-none d-md-none d-lg-block py-3 m-0">
+                                Refer your friends to start buying picks today and get 25% discount off your next<br />order after which they complete their first purchase.
+                            </p>
+                            <p class="d-block d-sm-block d-md-block d-lg-none py-3 m-0">
+                                Refer your friends to start buying picks today and get 25% discount off your next order after which they complete their first purchase.
+                            </p>
+                        </div>
+
+                        <div class="account-manager-tab" id="PaymentTab" style="display:none;">
+
+                            @*<h4 class="my-2 px-2 py-2 bg-greyer">
+                                    Stripe Account
+                                </h4>
+
+
+                                <p class="py-3 px-2 m-0">
+                                    <span class="MontserratBold">Status:</span> Disconnected
+                                </p>
+
+                                <div class="my-3 mb-5">
+
+                                    <button class="btn btn-dark">
+                                        Connect Stripe Account
+                                    </button>
+                                </div>*@
+
+
+
+                            <h4 class="my-2 px-2 py-2 bg-greyer">
+                                Paypal Account
+                            </h4>
+
+
+                            <p class="py-3 px-2 m-0">
+                                <span class="MontserratBold">Status:</span>
+                                @if (string.IsNullOrWhiteSpace(Model.User.PaypalAccountEmail))
+                                {
+                                    <text>
+                                        Disconnected<br />
+                                    </text>
+                                }
+                                else
+                                {
+                                    <text>
+                                        <span class="text-success">Connected</span><br />
+                                        <span class="text-muted">Account Email: @Model.User.PaypalAccountEmail.ToLower() </span>
+                                    </text>
+                                }
+                            </p>
+                            <div class="my-3 ">
+                                <button class="btn btn-dark ChangePaypalAccountEmail" id="PaypalAccountEmailFormShow">
+                                    @if (string.IsNullOrWhiteSpace(Model.User.PaypalAccountEmail))
+                                    {
+
+                                        <text>Connect Paypal Account</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Edit Paypal Account</text>
+                                    }
+                                </button>
+                            </div>
+
+                            <div class="my-3 " id="PaypalAccountEmailFormWrapper" style="display:none;">
+                                <form class="row" id="PaypalAccountEmailForm">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+
+                                        <div class="form-group">
+                                            <label for="PaypalAccountEmailValue" class="text-smaller text-grey-purple mb-0">Paypal Account Email</label>
+                                            <input type="email" class="general-form-input border-bottom-grey-pruple " id="PaypalAccountEmailValue" placeholder="" value="@Model.User.PaypalAccountEmail">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <button type="submit" class="btn btn-dark">Save</button>
+                                        <button type="button" class="btn btn-default" id="PaypalAccountEmailFormHide">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
+                        <div class="account-manager-tab" id="SubscriptionsTab" style="display:none;">
+
+
+
+
+                            <h4 class="my-2 px-2 py-2 bg-greyer">
+                                Shortchase Pro
+                            </h4>
+
+
+                            <p class="pt-3 px-2 m-0">
+                                <span class="MontserratBold">Status:</span>
+                                @if (Model.ShortchaseProActiveSubscription == null)
+                                {
+                                    <text>No Shortchase Pro active subscription.</text>
+                                }
+                                else
+                                {
+                                    <text>Active</text>
+                                }
+                            </p>
+                            @if (Model.ShortchaseProActiveSubscription != null)
+                            {
+                                <p class="pt-1 px-2 m-0">
+                                    <span class="MontserratBold">Start Date:</span>
+                                    @DateHelper.DateSimpleFormat(Model.ShortchaseProActiveSubscription.SubscriptionStart.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                </p>
+                                <p class="pt-1 px-2 m-0">
+                                    <span class="MontserratBold">End Date:</span>
+                                    @DateHelper.DateSimpleFormat(Model.ShortchaseProActiveSubscription.SubscriptionEnd.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                </p>
+                                <p class="pt-1 px-2 m-0 mb-3 ">
+                                    @*@{
+                                            string cancelProButtonClass = "";
+                                            string cancelProMessage = "";
+                                            if (Model.ShortchaseProActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                            {
+                                                cancelProButtonClass = "CancelRenewSubscriptionBtn";
+                                                cancelProMessage = "";
+                                            }
+                                            else
+                                            {
+                                                cancelProButtonClass = "CancelSubscriptionBtn";
+                                                cancelProMessage = "";
+                                            }
+                                        }
+                                        @if (Model.ShortchaseProActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                        {
+                                            @if (Model.ShortchaseProActiveSubscription.AutoRenew)
+                                            {
+                                                <span class="text-muted text-smaller">Auto-renewal is active.</span>
+                                                <button class="btn btn-dark btn-sm @cancelProButtonClass" data-id="@Model.ShortchaseProActiveSubscription.Id" data-message="@cancelProMessage">Cancel</button>
+
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted text-smaller">Auto-renewal cancelled.</span>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-dark btn-sm @cancelProButtonClass" data-id="@Model.ShortchaseProActiveSubscription.Id" data-message="@cancelProMessage">Cancel</button>
+
+                                        }*@
+                                </p>
+                                @*<p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Total Price:</span>
+                                        $ @Model.ShortchaseProActiveSubscription.SubscriptionPrice.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Paid Value:</span>
+                                        $ @Model.ShortchaseProActiveSubscription.PaidValue.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Wallet Balance (before purchase):</span>
+                                        $ @Model.ShortchaseProActiveSubscription.WalletBalanceBeforePurchase.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Wallet Balance (after purchase):</span>
+                                        @if (Model.ShortchaseProActiveSubscription.WalletBalanceAfterPurchase >= 0.00m)
+                                        {
+                                            <text>$ @Model.ShortchaseProActiveSubscription.WalletBalanceAfterPurchase.ToString("0.00")</text>
+                                        }
+                                        else
+                                        {
+                                            <text>$ 0.00</text>
+                                        }
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Payment Status:</span>
+                                        @Model.ShortchaseProActiveSubscription.PaymentStatus
+                                    </p>
+                                    @if (Model.ShortchaseProActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                    {
+                                        <p class="pt-1 px-2 m-0">
+                                            <span class="MontserratBold">Payment Type:</span>
+                                            Wallet Funds + Paypal
+                                        </p>
+                                        <p class="pt-1 pb-3 px-2 m-0">
+                                            <span class="MontserratBold">Value Paid on Paypal:</span>
+                                            $ @Model.ShortchaseProActiveSubscription.TotalPaidOnPaypal.ToString("0.00")
+                                        </p>
+                                    }*@
+
+
+                            }
+
+
+                            <h4 class="my-2 px-2 py-2 bg-greyer">
+                                Boisterous
+                            </h4>
+
+                            <p class="pt-3 px-2 m-0">
+                                <span class="MontserratBold">Status:</span>
+                                @if (Model.BoisterousActiveSubscription == null)
+                                {
+                                    <text>No Boisterous active subscription.</text>
+                                }
+                                else
+                                {
+                                    <text>Active</text>
+                                }
+                            </p>
+                            @if (Model.BoisterousActiveSubscription != null)
+                            {
+                                <p class="pt-1 px-2 m-0">
+                                    <span class="MontserratBold">Start Date:</span>
+                                    @DateHelper.DateSimpleFormat(Model.BoisterousActiveSubscription.SubscriptionStart.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                </p>
+                                <p class="pt-1 px-2 m-0 ">
+                                    <span class="MontserratBold">End Date:</span>
+                                    @DateHelper.DateSimpleFormat(Model.BoisterousActiveSubscription.SubscriptionEnd.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                </p>
+
+                                <p class="pt-1 px-2 m-0 mb-3 ">
+                                    @*@{
+                                            string cancelBoisterousButtonClass = "";
+                                            string cancelBoisterousMessage = "";
+                                            if (Model.BoisterousActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                            {
+                                                cancelBoisterousButtonClass = "CancelRenewSubscriptionBtn";
+                                                cancelBoisterousMessage = "";
+                                            }
+                                            else
+                                            {
+                                                cancelBoisterousButtonClass = "CancelSubscriptionBtn";
+                                                cancelBoisterousMessage = "";
+                                            }
+                                        }
+
+                                        @if (Model.BoisterousActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                        {
+                                            @if (Model.BoisterousActiveSubscription.AutoRenew)
+                                            {
+                                                <span class="text-muted text-smaller">Auto-renewal is active.</span>
+                                                <button class="btn btn-dark btn-sm @cancelBoisterousButtonClass" data-id="@Model.BoisterousActiveSubscription.Id" data-message="@cancelBoisterousMessage">Cancel</button>
+
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted text-smaller">Auto-renewal cancelled.</span>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-dark btn-sm @cancelBoisterousButtonClass" data-id="@Model.BoisterousActiveSubscription.Id" data-message="@cancelBoisterousMessage">Cancel</button>
+
+                                        }*@
+
+                                </p>
+                                @*<p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Total Price:</span>
+                                        $ @Model.BoisterousActiveSubscription.SubscriptionPrice.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Paid Value:</span>
+                                        $ @Model.BoisterousActiveSubscription.PaidValue.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Wallet Balance (before purchase):</span>
+                                        $ @Model.BoisterousActiveSubscription.WalletBalanceBeforePurchase.ToString("0.00")
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Wallet Balance (after purchase):</span>
+                                        @if (Model.BoisterousActiveSubscription.WalletBalanceAfterPurchase >= 0.00m)
+                                        {
+                                            <text>$ @Model.BoisterousActiveSubscription.WalletBalanceAfterPurchase.ToString("0.00")</text>
+                                        }
+                                        else
+                                        {
+                                            <text>$ 0.00</text>
+                                        }
+                                    </p>
+                                    <p class="pt-1 px-2 m-0">
+                                        <span class="MontserratBold">Payment Status:</span>
+                                        @Model.BoisterousActiveSubscription.PaymentStatus
+                                    </p>
+                                    @if (Model.BoisterousActiveSubscription.PaymentStatus != UserSubscriptionPaymentStatus.Wallet)
+                                    {
+                                        <p class="pt-1 px-2 m-0">
+                                            <span class="MontserratBold">Payment Type:</span>
+                                            Wallet Funds + Paypal
+                                        </p>
+                                        <p class="pt-1 pb-3 px-2 m-0">
+                                            <span class="MontserratBold">Value Paid on Paypal:</span>
+                                            $ @Model.BoisterousActiveSubscription.TotalPaidOnPaypal.ToString("0.00")
+                                        </p>
+                                    }*@
+
+
+
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<input hidden id="AccountId" value="@Model.User.Id" />
+<input hidden id="AccountProfilePicture" value="@Model.User.ProfilePicture" />
+
+<input hidden id="AccountManagerUpdatePersonalInfoURL" value="@Url.Action("AccountManagerUpdatePersonalInfo", "Account")" />
+<input hidden id="AccountManagerClaimRewardURL" value="@Url.Action("AccountManagerClaimReward", "Account")" />
+<input hidden id="SendReferralURL" value="@Url.Action("SendReferral", "Home")" />
+<input hidden id="ConnectUserPaypalAccountURL" value="@Url.Action("ConnectUserPaypalAccount", "Home")" />
+<input hidden id="GetGmailContactsURL" value="@Url.Action("GetGmailContacts", "Home")" />
+<input hidden id="GetOutlookContactsURL" value="@Url.Action("GetOutlookContacts", "Home")" />
+<input hidden id="SendGmailReferralURL" value="@Url.Action("SendGmailReferral", "Home")" />
+<input hidden id="SendOutlookReferralURL" value="@Url.Action("SendOutlookReferral", "Home")" />
+<input hidden id="CancelUserSubscriptionFrontendURL" value="@Url.Action("CancelUserSubscriptionFrontend", "Home")" />
+<input hidden id="CancelUserRenewSubscriptionFrontendURL" value="@Url.Action("CancelUserRenewSubscriptionFrontend", "Home")" />
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="RedeemRewardPointsModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Get discounts off your order
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+
+                <form class="text-center" id="RedeemRewardPointsModal_Form">
+                    <div class="py-2">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                            <div class="col-sm-12 col-md-10 col-lg-8">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="AccountManager_RedeemPoints" class="MontserratBold d-block">Points to redeem</label>
+                                        <select class="general-form-select w-100 border-bold" id="AccountManager_RedeemPoints" name="AccountManager_RedeemPoints">
+                                            <option value="0">Select points</option>
+                                            @{
+                                                if (Model.RewardsOptions != null && Model.RewardsOptions.Count() > 0)
+                                                {
+                                                    foreach (var opt in Model.RewardsOptions)
+                                                    {
+                                                        if (Model.User.TotalPointsAvailable >= opt.Points)
+                                                        {
+                                                            <option value="@opt.Id" id="AccountManager_RedeemPoints_option_@opt.Id" data-points="@opt.Points" data-amount="@opt.EquivalentAmount">
+                                                                @opt.Points points
+                                                            </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@opt.Id" id="AccountManager_RedeemPoints_option_@opt.Id" data-points="@opt.Points" data-amount="@opt.EquivalentAmount" disabled>
+                                                                @opt.Points points
+                                                            </option>
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="AccountManager_EquivalentAmount" class="MontserratBold d-block">Equivalent Amount</label>
+                                        <select class="general-form-select w-100 border-bold" id="AccountManager_EquivalentAmount" name="AccountManager_EquivalentAmount">
+                                            <option value="0">Select Amount</option>
+                                            @{
+                                                if (Model.RewardsOptions != null && Model.RewardsOptions.Count() > 0)
+                                                {
+                                                    foreach (var opt in Model.RewardsOptions)
+                                                    {
+                                                        if (Model.User.TotalPointsAvailable >= opt.Points)
+                                                        {
+                                                            <option value="@opt.Id" id="AccountManager_EquivalentAmount_option_@opt.Id" data-points="@opt.Points" data-amount="@opt.EquivalentAmount">
+                                                                $ @opt.EquivalentAmount
+                                                            </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@opt.Id" id="AccountManager_EquivalentAmount_option_@opt.Id" data-points="@opt.Points" data-amount="@opt.EquivalentAmount" disabled>
+                                                                $ @opt.EquivalentAmount
+                                                            </option>
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12 col-md-1 col-lg-2"></div>
+
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning btn-lg MontserratBold text-small" id="RedeemRewardPointsModal_Submit" disabled>
+                        Submit
+                    </button>
+
+                </form>
+            </div>
+            <div class="modal-footer shortchase-modal-footer justify-content-end">
+                <span class="bg-warning px-2 py-1 text-smaller medium-rounded-corners MontserratBold">
+                    Last Updated: @DateHelper.DateSimpleFormat(Model.LastUpdatedRewards.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="PreviousClaimsModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg  " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Previous Claims
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+
+
+                <table class="table text-smaller w-100" id="ClaimedRewardsTable">
+                    <thead>
+                        <tr>
+
+                            <th>Date Claimed</th>
+                            <th>Points Claimed</th>
+                            <th>Equivalend Amount</th>
+                            <th>Coupon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model.RewardsClaimed != null && Model.RewardsClaimed.Count() > 0)
+                        {
+
+                            @foreach (var redemption in Model.RewardsClaimed)
+                            {
+                                <tr>
+                                    <td>
+                                        @DateHelper.DateFormat(redemption.RowDate.ToLocalTime())
+                                    </td>
+                                    <td>
+
+                                        @if (redemption.PointsClaimed == 0)
+                                        {
+                                            <text>Gift <small class="text-muted">(No points spent)</small></text>
+                                        }
+                                        else
+                                        {
+                                            <text>@redemption.PointsClaimed<br /></text>
+                                        }
+                                    </td>
+                                    <td>
+                                        $ @redemption.EquivalentAmount
+                                    </td>
+                                    <td>
+                                        @redemption.CouponCode
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="ReferAFriendModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Get 25% discount for every new friend you refer
+
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5 bg-grey-dark-3">
+
+                <form class="text-center" id="ReferAFriendModalForm">
+                    <div class="py-2">
+                        <label for="AccountManager_ReferAFriendEmail" class="MontserratBold d-block">
+                            Refer by email
+                        </label>
+                        <input type="text" class="px-2 w-75 text-small inset-input" id="AccountManager_ReferAFriendEmail" name="AccountManager_ReferAFriendEmail">
+                    </div>
+
+                    <button type="submit" class="btn btn-warning btn-lg MontserratBold text-small" id="ReferAFriendModalForm_Submit">
+                        Refer
+                    </button>
+
+
+                </form>
+                <form class="text-center" id="ReferAFriendModalByGmailForm" style="display:none;">
+                    <div class="py-2">
+                        <label for="" class="MontserratBold d-block">
+                            Refer your Gmail Contacts
+                        </label>
+                    </div>
+                    <div class="" id="GmailContactsDisplayWrapper">
+
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg MontserratBold text-small" id="ReferAFriendModalByGmailForm_Submit">
+                        Refer
+                    </button>
+                    <button type="button" class="btn btn-lg btn-default CancelGmailContactsToReferral MontserratBold text-small">Cancel</button>
+
+                </form>
+
+                <form class="text-center" id="ReferAFriendModalByOutlookForm" style="display:none;">
+                    <div class="py-2">
+                        <label for="" class="MontserratBold d-block">
+                            Refer your Outlook Contacts
+                        </label>
+                    </div>
+                    <div class="" id="OutlookContactsDisplayWrapper">
+
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-lg MontserratBold text-small" id="ReferAFriendModalByOutlookForm_Submit">
+                        Refer
+                    </button>
+                    <button type="button" class="btn btn-lg btn-default CancelOutlookContactsToReferral MontserratBold text-small">Cancel</button>
+                </form>
+                <p class="text-center m-0 pt-4 text-smaller">
+                    Import
+
+                    @if (string.IsNullOrWhiteSpace(Model.User.GmailToken))
+                    {
+                        <a asp-action="ImportContactsFromGoogle" asp-controller="Home" class="btn btn-sm btn-default">Gmail</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-sm btn-default ShowGmailContactsToReferral">Gmail</button>
+                    }
+
+                    @if (string.IsNullOrWhiteSpace(Model.User.OutlookToken))
+                    {
+                        <a asp-action="ImportContactsFromOutlook" asp-controller="Home" class="btn btn-sm btn-default">Outlook</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-sm btn-default ShowOutlookContactsToReferral">Outlook</button>
+                    }
+
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/AccountManager.js")" asp-append-version="true"></script>
+}

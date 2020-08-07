@@ -1,0 +1,26 @@
+﻿@model FAQListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditFAQModalForm">
+            <input type="hidden" id="EditFAQId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditQuestion" label="Question" type="text" class="" required="true" placeholder="e.g. Who is a capper?" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:textarea id="EditAnswer" label="Answer" class="" required="true" placeholder="e.g. Is the user who can post bet listings for other Shortchase.com users to buy." value="" disabled="false"></vc:textarea>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:select id="EditType" label="FAQ Type" class="" required="true" searchable="false" default="" options="@Model.FAQTypes" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditFAQModal" locked="false" title="Edit FAQ"></vc:modal>
+
+
+<input id="UpdateFAQItemModalURL" hidden value="@Url.Action("UpdateFAQItem", "Backend")" />

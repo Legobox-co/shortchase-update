@@ -1,0 +1,19 @@
+﻿@model POTDLiveReportingListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddPOTDListingLiveReportModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:bet-listing-date-input id="AddDateTimeReported" label="Date/Time Report" value=""></vc:bet-listing-date-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:textarea id="AddReport" label="Report" class="" required="true" placeholder="" value="" disabled="false"></vc:textarea>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+    </div>;}
+<vc:modal content="AddModalContent" id="AddPOTDListingLiveReportModal" locked="false" title="Add POTD Live Reporting"></vc:modal>
+
+<input id="AddPOTDListingLiveReportItemModalURL" hidden value="@Url.Action("AddPOTDListingLiveReportItem", "Backend")" />

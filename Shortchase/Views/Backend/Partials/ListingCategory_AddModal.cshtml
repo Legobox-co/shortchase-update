@@ -1,0 +1,30 @@
+﻿@model ListingCategoryListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddListingCategoryModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="AddName" label="Name" type="text" class="" required="true" placeholder="e.g. Football" value="" disabled="false"></vc:input>
+            </div>
+            @*<div class="col-sm-12 col-md-12 col-lg-12">
+                    <vc:input id="AddDescription" label="Description" type="text" class="" required="false" placeholder="e.g. Also called Soccer" value="" disabled="false"></vc:input>
+                </div>*@
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                @*<vc:file-input id="AddDisplayImage" label="Category Image" class=""></vc:file-input>*@
+                <vc:media-selector-button id="AddDisplayImage" width="350" height="220" field-label="Category Image"></vc:media-selector-button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                @*<vc:file-input id="AddMarketplaceImage" label="Marketplace Image" class=""></vc:file-input>*@
+                <vc:media-selector-button2 id="AddMarketplaceImage" field-label="Marketplace Image"></vc:media-selector-button2>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddModalContent" id="AddListingCategoryModal" locked="false" title="Add Listing Category"></vc:modal>
+
+
+<input id="AddListingCategoryModalURL" hidden value="@Url.Action("AddListingCategory", "Backend")" />

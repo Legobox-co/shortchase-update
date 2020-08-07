@@ -1,0 +1,99 @@
+﻿@model MassPaypalPayoutUserListDto
+<div class="card shadow-sm">
+    <div class="card-body py-3 px-3">
+        <h4>Review Mass Payout</h4>
+        @if (Model == null || ((Model.Users == null || Model.Users.Count <= 0) && (Model.NonUsers == null || Model.NonUsers.Count <= 0)))
+        {
+            <p class="m-0">No data retrieved from file. Trying upload a new file or fill the current file properly (according to the template).</p>
+        }
+        else
+        {
+            if (Model.Users != null && Model.Users.Count > 0)
+            {
+                <hr class="m-0" />
+                <h5 class="text-success mt-3">Confirmed user data</h5>
+                <ul>
+                    @foreach (var item in Model.Users)
+                    {
+
+                        <li>
+                            <input type="hidden" class="mass-payout-information" data-id="@item.Id.ToString()" data-value="@item.Value.ToString("0.00")" data-paypal-account="@item.PaypalEmail" />
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">User:</span> @item.Name <span class="text-muted">(@item.Email)</span>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Paypal Account Status:</span>
+                                        @if (item.PaypalConnected)
+                                        {
+                                            <i class="text-success fas fa-check-circle"></i><text> Connected</text>
+                                        }
+                                        else
+                                        {
+                                            <i class="text-warning fas fa-times-circle"></i><text> Not Connected</text>
+                                        }
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Paypal Account:</span> @item.PaypalEmail
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-3">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Payout Value:</span> $ @item.Value.ToString("0.00")
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <button class="btn btn-lg btn-success FinishMassPayoutBtn mb-3">Confirm & Send to Paypal</button>
+
+            }
+            if (Model.NonUsers != null && Model.NonUsers.Count > 0)
+            {
+                <hr class="m-0" />
+                <h5 class="text-danger mt-3">Unconfirmed user data</h5>
+                <p class="m-0 text-smaller MontserratBold"><span class="MontserratBlack">IMPORTANT: </span>The payouts below will not be sent to paypal. </p>
+                <ul>
+                    @foreach (var item in Model.NonUsers)
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-4">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Email:</span> @item.Email<br />
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-4">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Payout Value:</span> $ @item.Value.ToString("0.00")
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-4">
+
+                                    <p class="m-0 text-smaller">
+                                        <span class="MontserratBold">Reason:</span> @item.Reason
+                                    </p>
+                                </div>
+                            </div>
+
+                        </li>
+                    }
+                </ul>
+            }
+
+        }
+    </div>
+</div>
+<input type="hidden" id="JsonStringValue" value="@Model.PayoutJsonString" />

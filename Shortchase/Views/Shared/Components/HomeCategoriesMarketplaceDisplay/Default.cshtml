@@ -1,0 +1,41 @@
+@model HomeCategoriesDisplayData;
+
+@if (Model == null || Model.Categories == null || Model.Categories.Count <= 0)
+{
+    <p>No categories added.</p>
+}
+else
+{
+    <div class="row d-none d-sm-none d-md-flex d-lg-flex d-xl-flex">
+
+        @{
+            int countItems = 0;
+            bool showAllItems = ViewData["ShowAllItems"].ToString() == true.ToString();
+        }
+        @foreach (var item in Model.Categories)
+        {
+            countItems++;
+            if (!showAllItems && countItems > 24)
+            {
+                break;
+            }
+            string bgImagePath = ViewData["root"].ToString() + item.MarketplaceImage;
+            string imageUrl = "";
+            imageUrl = ImageHelper.ConvertImageToBase64(bgImagePath);
+
+            <div  class="col-sm-6 col-md-2 col-lg-2 text-center py-3 marketplace-image-wrapper marketplace-hr-hover d-flex flex-column" >
+                <a data-keyword="@item.Name" data-id="@item.Id"  href="#" class="marketplace-item-link ">
+                    <img src="@imageUrl" width="41"  height="48" class="img-fluid image-marketplace-link " />
+                </a>
+                <hr style="width: 38px;  background: #FFFFFF; border: 1px solid #31303852; border-radius: 175px; opacity: 1; " class="marketplace-hr-hover-change-color" />
+                <p style=" font-family:Metropolis;font-size: 14px ;letter-spacing: 0px;
+                 font-weight:900;color: #313038; opacity: 1;">@item.Name</p>
+            </div>
+        }
+
+    </div>
+
+   
+
+
+}

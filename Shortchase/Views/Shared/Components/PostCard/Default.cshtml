@@ -1,0 +1,58 @@
+﻿@{ 
+    string Controller = ViewData["Controller"].ToString();
+    string Action = ViewData["Action"].ToString();
+    string Slug = ViewData["Slug"].ToString();
+    string Title = ViewData["Title"].ToString();
+    string Content = ViewData["Content"].ToString();
+    string Image = ViewData["Image"].ToString();
+    string Date = ViewData["Date"].ToString();
+}
+<div class="pb-3">
+    <div class="card shadow bg-grey-dark-3">
+
+        <div class="card-body px-1 pt-1 pb-3">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 ">
+                    <img src="@Image" class="img-fluid" style="min-height: 500px; max-height: 600px; object-fit: cover !important; width: 100%;">
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="row d-flex d-sm-flex d-md-flex d-lg-none">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <div class="d-flex flex-column h-100 justify-content-center align-items-center ">
+                                <h2 class="card-title py-4 m-0 ">
+                                    <a asp-action="@Action" asp-controller="@Controller" asp-route-Slug="@Slug" class="text-dark MontserratBold timezoneoffset">@Title</a>
+                                </h2>
+                                <div class="m-0 pb-2">
+                                    @Content
+                                </div>
+                                <p class="m-0 pb-2 text-muted text-smaller text-center">
+                                    LAST UDPATED ON @Date
+                                </p>
+                                <a asp-action="@Action" asp-controller="@Controller" asp-route-Slug="@Slug" class="btn btn-outline-dark text-smaller timezoneoffset">READ MORE</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row d-none d-sm-none d-md-none d-lg-flex">
+                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-8">
+                            <div class="d-flex flex-column h-100 w-100 justify-content-center align-items-center ">
+                                <h2 class="card-title py-4 m-0">
+                                    <a asp-action="@Action" asp-controller="@Controller" asp-route-Slug="@Slug" class="text-dark MontserratBold timezoneoffset">@Title</a>
+                                </h2>
+                                <div class="m-0 pb-2">
+                                    @Content
+                                </div>
+                                <p class="m-0 pb-2 text-muted text-smaller text-center">
+                                    LAST UDPATED ON @Date
+                                </p>
+                                <a asp-action="@Action" asp-controller="@Controller" asp-route-Slug="@Slug" class="btn btn-outline-dark text-smaller timezoneoffset">READ MORE</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html class="">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <vc:app-title app-end="back"></vc:app-title>
+
+
+    <!-- Favicon -->
+    <link href="@Url.Content("~/img/mini-logo.png")" rel="icon" type="image/png" asp-append-version="true" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" asp-append-version="true" />
+    <!-- Icons -->
+    <link href="@Url.Content("~/dashboard/assets/js/plugins/nucleo/css/nucleo.css")" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" asp-append-version="true" />
+    <!-- CSS Files -->
+    <!-- Latest compiled and minified CSS -->
+    <link href="@Url.Content("~/lib/datatables/datatables.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/lib/selectpicker/css/bootstrap-select.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/lib/summernote/summernote.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/dashboard/assets/css/argon-dashboard.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/lib/tempusdominus/tempusdominus-bootstrap-4.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/lib/cropperjs/cropper.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/backend.css")" rel="stylesheet" asp-append-version="true" />
+
+</head>
+<body class="websiteBody">
+    <partial name="_FullPageLoader" />
+    <partial name="_BackendToast" />
+
+    <partial name="_DashboardSidebar" />
+
+    <div class="main-content">
+        <div class="main-content-wrapper">
+            @RenderBody()
+        </div>
+        <div class="container-fluid mt-4">
+            <partial name="_DashboardFooter" />
+        </div>
+    </div>
+    <vc:session-manager></vc:session-manager>
+    <!--   Core   -->
+    <script src="@Url.Content("~/dashboard/assets/js/plugins/jquery/dist/jquery.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/dashboard/assets/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/selectpicker/js/bootstrap-select.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/sweetalert/sweetalert.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/datatables/datatables.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/summernote/summernote.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/jquery.inputmask.bundle.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/maskmoney/jquery.maskMoney.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/momentjs/moment.js")" asp-append-version="true"></script>
+    <!--   Argon JS   -->
+    <script src="@Url.Content("~/dashboard/assets/js/argon-dashboard.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/tempusdominus/tempusdominus-bootstrap-4.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/axios/axios.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/router/router.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/cropperjs/cropper.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/backend.js")" asp-append-version="true"></script>
+
+
+    <partial name="Partials/MediaPickerModal" />
+    <partial name="Partials/MediaPickerModal2" />
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

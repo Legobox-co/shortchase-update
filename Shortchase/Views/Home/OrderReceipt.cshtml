@@ -1,0 +1,136 @@
+﻿@model OrderReceiptDto
+@{
+    Layout = "_PrintableLayout";
+}
+
+<section class="bg-grey-dark-3 text-smaller">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center py-2">
+                <img src="@Model.Logo" class="img-fluid" />
+                <h2 class="section-title m-0  py-2 MontserratBold">
+                    Order #@Model.Details.Order.OrderNumber Receipt
+                </h2>
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                    <tr>
+                        <th width="50%">Payment Type</th>
+                        <td>@Model.Details.Order.PaymentType</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status</th>
+                        <td>@Model.Details.Order.PaymentStatus</td>
+                    </tr>
+                    <tr>
+                        <th>Order Type</th>
+                        <td>@Model.Details.Order.OrderType</td>
+                    </tr>
+                    <tr>
+                        <th>Date Placed</th>
+                        <td>@DateHelper.DateFormat(Model.Details.Order.RowDate.FromUTCData(Model.TimezoneOffset))</td>
+                    </tr>
+                    @if (Model.Details.Order.PaymentStatus == OrderPaymentStatus.Paid && Model.Details.Order.DatePaid.HasValue)
+                    {
+                        <tr>
+                            <th>Date Paid</th>
+                            <td>@DateHelper.DateFormat(Model.Details.Order.DatePaid.Value.FromUTCData(Model.TimezoneOffset))</td>
+                        </tr>
+                    }
+                    @if (Model.Details.Order.PaymentStatus == OrderPaymentStatus.Cancelled && Model.Details.Order.DatePaid.HasValue)
+                    {
+                        <tr>
+                            <th>Date Cancelled</th>
+                            <td>@DateHelper.DateFormat(Model.Details.Order.DateCancelled.Value.FromUTCData(Model.TimezoneOffset))</td>
+                        </tr>
+                    }
+                    @if (Model.Details.Order.PaymentStatus == OrderPaymentStatus.Rejected && Model.Details.Order.DatePaid.HasValue)
+                    {
+                        <tr>
+                            <th>Date Rejected</th>
+                            <td>@DateHelper.DateFormat(Model.Details.Order.DateRejected.Value.FromUTCData(Model.TimezoneOffset))</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+
+                    <tr>
+                        <th width="50%">Total (Before Tax and Fee)</th>
+                        <td>$ @Model.Details.Order.TotalBeforeDiscount.ToString("0.00")</td>
+                    </tr>
+                    @if (Model.Details.Order.Discount > 0.00m)
+                    {
+
+                        <tr>
+                            <th>Referral Discount</th>
+                            <td>
+                                - $ @Model.Details.Order.Discount.ToString("0.00")<br />
+                                <span class="text-muted">(@Model.Details.Order.DiscountPercent.ToString("0.00")% of @Model.Details.Order.TotalBeforeDiscount.ToString("0.00"))</span>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <th>Service Fee</th>
+                        <td>
+                            $ @Model.Details.Order.ServiceFee.ToString("0.00")<br />
+                            <span class="text-muted">(@Model.Details.Order.ServiceFeePercent.ToString("0.00")% of @Model.Details.Order.TotalBeforeTaxAndFees.ToString("0.00"))</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>EstimatedTax</th>
+                        <td>
+                            $ @Model.Details.Order.EstimatedTax.ToString("0.00")<br />
+                            <span class="text-muted">(@Model.Details.Order.EstimatedTaxPercent.ToString("0.00")% of @Model.Details.Order.TotalBeforeTaxAndFees.ToString("0.00"))</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total (After Tax and Fee)</th>
+                        <td>$ @Model.Details.Order.TotalAfterTax.ToString("0.00")</td>
+                    </tr>
+                    <tr>
+                        <th>Wallet Balance (Before Purchase)</th>
+                        <td>$ @Model.Details.Order.WalletBalanceBeforePurchase.ToString("0.00")</td>
+                    </tr>
+                    <tr>
+                        <th>Wallet Balance (After Purchase)</th>
+                        <td>$ @Model.Details.Order.WalletBalanceAfterPurchase.ToString("0.00")</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 py-2">
+                <h3 class="text-center m-0 pb-2 MontserratBold">Order Items</h3>
+                @if (Model.Details.OrderItems.Count > 0)
+                {
+                    <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Listing Title</th>
+                                <th class="text-uppercase">Sold By</th>
+                                <th class="text-uppercase">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Details.OrderItems)
+                            {
+                                <tr>
+                                    <td>@item.ListingTitle</td>
+                                    <td>@item.SoldBy</td>
+                                    <td>@item.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+
+        </div>
+        <p class="text-center">Receipt generated at: @DateHelper.DateFormat(DateTime.UtcNow.FromUTCData(Model.TimezoneOffset))</p>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+﻿@model ICollection<NewsListWebsiteItemDto>
+
+@if (Model != null && Model.Count > 0)
+{
+    <input type="hidden" id="ShouldIterateOverTrendingItems" value="1" />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <div class="trendingWrapper">
+                    <p class="text-center trendingLabel">
+                        Trending
+                    </p>
+                    @{
+                        int countIterations = 0;
+                    }
+                    <input type="hidden" id="TrendingItemIterator" value="@countIterations" />
+                    <input type="hidden" id="TrendingItemIteratorTotal" value="@Model.Count" />
+                    @foreach (var item in Model)
+                    {
+                        string style = "display: none;";
+                        string id = "trendingItem_" + countIterations;
+                        if (countIterations == 0)
+                        {
+                            style = "";
+                        }
+                        <a asp-action="News" asp-controller="Home" asp-route-Slug="@item.Slug" class="trendingLink timezoneoffset" id="@id" style="@style">
+                            <small class="text-muted">
+                                <i class="far fa-clock"></i> @DateHelper.TrendingDateFormat(item.DatePublished.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                            </small>
+                            &nbsp;
+                            @item.Title
+                        </a>
+
+                        countIterations++;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <input type="hidden" id="ShouldIterateOverTrendingItems" value="0" />
+}
+

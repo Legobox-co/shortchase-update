@@ -1,0 +1,238 @@
+﻿@model BetListingListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-list-ul"></i>*@
+                        <img src="@Url.Content("~/img/newicons/bet-listings.png")" class="img-fluid" width="40px" />&nbsp;
+                        Bet Listings
+                    </h1>
+                </div>
+                @*<div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                        <button class="btn btn-info AddBetListingModalBtn">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model.BetListings == null || Model.BetListings.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No listings found on database.
+                    </p>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                            <button class="btn btn-dark-as-homepage btn-sm" id="SelectAllRowsBtn" data-power="select" data-totalselected="0" data-totalelements="@Model.BetListings.Count">Select All</button>
+                            <button class="btn btn-danger btn-sm batchaction" data-actiontype="delete" data-action="@Url.Action("DeleteBetListingBatch", "Backend")"><i class="fas fa-trash"></i> Delete All</button>
+                        </div>
+                    </div>
+                    <table id="BetListingList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase"></th>
+                                <th class="text-uppercase"></th>
+                                <th class="text-uppercase">Title</th>
+                                <th class="text-uppercase">Category</th>
+                                <th class="text-uppercase">Subcategory</th>
+                                <th class="text-uppercase">Start Time</th>
+                                <th class="text-uppercase">Finish Time</th>
+                                <th class="text-uppercase">Pick Type</th>
+                                <th class="text-uppercase">Price</th>
+                                <th class="text-uppercase">Posted By</th>
+                                <th class="text-uppercase">Status</th>
+
+
+                                <th class="text-uppercase">Preview</th>
+                                <th class="text-uppercase">Odds</th>
+                                <th class="text-uppercase">Stake</th>
+                                <th class="text-uppercase">Profit</th>
+                                <th class="text-uppercase">Pick</th>
+                                <th class="text-uppercase">Market</th>
+                                <th class="text-uppercase">Tip</th>
+                                <th class="text-uppercase">Where To Play</th>
+                                <th class="text-uppercase">Validated By API</th>
+                                <th class="text-uppercase">Verified</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.BetListings)
+                            {
+                                string status = "Active";
+                                if (item.IsReported)
+                                {
+                                    status = "Reported (removed)";
+                                }
+                                else
+                                {
+                                    if (item.Pick.FinishTime < DateTime.UtcNow)
+                                    {
+                                        status = "Inactive";
+                                    }
+                                }
+                                string verifiedByApi = "Pending";
+                                string subcategory = "No subcategory";
+                                int? subcategoryId = null;
+                                bool? verifiedByApiValue = null;
+                                if (item.ResultVerificationByApi.HasValue)
+                                {
+                                    if (item.ResultVerificationByApi.Value)
+                                    {
+                                        verifiedByApi = "Yes";
+                                        verifiedByApiValue = true;
+                                    }
+                                    else
+                                    {
+                                        verifiedByApi = "No";
+                                        verifiedByApiValue = false;
+                                    }
+                                }
+                                if (item.SubCategoryId.HasValue)
+                                {
+                                    subcategory = item.SubCategory.Name;
+                                    subcategoryId = item.SubCategory.Id;
+                                }
+                                string result = "fas fa-minus";
+                                string resultWrapper = "bg-light";
+                                bool? resultValue = null;
+                                if (item.IsCorrect.HasValue)
+                                {
+                                    if (item.IsCorrect.Value)
+                                    {
+                                        resultWrapper = "bg-success";
+                                        result = "fas fa-check";
+                                        resultValue = true;
+                                    }
+                                    else
+                                    {
+                                        resultWrapper = "bg-danger";
+                                        result = "fas fa-times";
+                                        resultValue = false;
+                                    }
+                                }
+
+
+
+                                string dateStart = DateHelper.ToISOString(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                string dateFinish = DateHelper.ToISOString(item.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+
+                                int totalValidReports = item.Reports.Where(r => r.IsCorrect).Count();
+                                int totalInvalidReports = item.Reports.Count() - totalValidReports;
+                                <tr>
+                                    <td class="text-center"></td>
+                                    <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
+                                    <td id="Title-@item.Id" data-value="@item.Title">@item.Title</td>
+                                    <td id="CategoryId-@item.Id" data-value="@item.CategoryId" class="catclasstd">@item.Category.Name</td>
+                                    <td id="SubCategoryId-@item.Id" data-value="@subcategoryId" data-name="@subcategory">@subcategory</td>
+                                    <td id="StartTime-@item.Id" data-value="@dateStart" data-order="@item.Pick.StartTime">@DateHelper.DateFormat(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    <td id="FinishTime-@item.Id" data-value="@dateFinish" data-order="@item.Pick.FinishTime">@DateHelper.DateFormat(item.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+
+                                    <td id="PickType-@item.Id" data-value="@item.PickType">@item.PickType</td>
+                                    <td id="Price-@item.Id" data-value="@item.Price">@item.Price</td>
+                                    <td id="PostedbyId-@item.Id" data-value="@item.PostedbyId">
+                                        @item.Postedby.FirstName @item.Postedby.LastName
+                                        @*<br /> <span class="text-muted text-lowercase">@item.Postedby.Email</span>*@
+                                    </td>
+
+                                    <td id="IsReported-@item.Id" data-value="@item.IsReported">
+                                        @status
+                                    </td>
+
+
+
+
+
+
+                                    <td id="Description-@item.Id" data-value="@item.Description">@item.Description</td>
+                                    <td id="Odds-@item.Id" data-value="@item.Odds" data-format="@item.OddsFormat">
+                                        @item.Odds
+                                    </td>
+                                    <td id="StakeProfit-@item.Id" data-stake="@item.Stake" data-profit="@item.Profit">
+                                        @item.Stake
+                                    </td>
+                                    <td>
+                                        @item.Profit
+                                    </td>
+
+                                    <td id="PickId-@item.Id" data-value="@item.PickId">@item.Pick.Team1 vs @item.Pick.Team2</td>
+
+                                    <td id="Market-@item.Id" data-value="@item.MarketId">@item.Market.Name</td>
+                                    <td id="TipId-@item.Id" data-value="@item.TipId">@item.Tip.Description</td>
+                                    <td id="BookmakerId-@item.Id" data-value="@item.BookmakerId">@item.Bookmaker.Description</td>
+                                    <td id="ResultVerificationByApi-@item.Id" data-value="@verifiedByApiValue">
+                                        @verifiedByApi
+                                        @*@if (item.DateVerifiedByApi.HasValue)
+                                            {
+                                                <text><br />@DateHelper.DateFormat(item.DateVerifiedByApi.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</text>
+                                            }*@
+                                    </td>
+                                    <td id="IsCorrect-@item.Id" data-value="@resultValue"><span class="@resultWrapper text-white py-1 px-2 border-radius-low"><i class="@result"></i></span></td>
+
+
+                                    <td>
+                                        @*<button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i> Edit</button>*@
+                                        <a class="btn btn-sm btn-warning ReportsItemBtn timezoneoffset" asp-action="BetListingReports" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Live Report">Reports</a>
+
+                                        <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete">Delete</button>
+
+                                        @if (!item.IsCorrect.HasValue)
+                                        {
+                                            if (!item.DateVerifiedByApi.HasValue && !string.IsNullOrWhiteSpace(item.Category.APIURL))
+                                            {
+                                                <button class="btn btn-sm btn-info ValidateThroughAPIBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Validate via API">Validate via API</button>
+                                            }
+                                            <button class="btn btn-sm btn-info ValidateManuallyBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Validate Manually">Validate Manually</button>
+
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-orange CancelValidationBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Cancel Validation">Cancel Validation</button>
+                                        }
+
+
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/BetListing_AddModal" model="@Model" />
+<partial name="Partials/BetListing_EditModal" model="@Model" />
+<partial name="Partials/BetListing_ValidateManuallyModal" model="@Model" />
+
+
+<input id="DeleteBetListingURL" hidden value="@Url.Action("DeleteBetListing", "Backend")" />
+<input id="GetDependentDataFromCategoryURL" hidden value="@Url.Action("GetDependentDataFromCategory", "Home")" />
+<input id="GetDependentDataFromMarketURL" hidden value="@Url.Action("GetDependentDataFromMarket", "Home")" />
+<input id="LoggedInUserID" hidden value="@User.Identity.Id()" />
+<input id="ValidateThroughAPIURL" hidden value="@Url.Action("ValidateThroughAPI", "Backend")" />
+<input id="CancelBetListingValidationURL" hidden value="@Url.Action("CancelBetListingValidation", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/BetListings.js")" asp-append-version="true"></script>
+}

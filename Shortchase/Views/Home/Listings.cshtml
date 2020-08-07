@@ -1,0 +1,60 @@
+﻿@model ICollection<BetListing>;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3 py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-center">
+                <h2 class="section-title">
+                    Listings
+                </h2>
+
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+            <div class="col-sm-12 col-md-8 col-lg-8">
+
+
+
+
+
+                @if (Model == null || Model.Count <= 0)
+                {
+                    <p class="text-center MontserratMedium py-5">
+                        Empty.
+                    </p>
+                }
+                else
+                {
+                    int iterationCount = 0;
+                    foreach (var item in Model)
+                    {
+                        iterationCount++;
+                        string profilePicture = Url.Content("~/img/avatar.png");
+                        if (!string.IsNullOrWhiteSpace(item.Postedby.ProfilePicture))
+                        {
+                            profilePicture = ImageHelper.ConvertImageToBase64(item.Postedby.ProfilePicture);
+                        }
+                        string name = item.Postedby.FirstName + " " + item.Postedby.LastName;
+                        <vc:bet-listing-toggle-card item="@item" name="@name" picture="@profilePicture" iteration="@iterationCount"></vc:bet-listing-toggle-card>
+
+
+                    }
+
+                    <div>
+                        <vc:pagination action="@Url.Action("Listings", "Home")" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:pagination>
+                    </div>
+
+                }
+
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+        </div>
+
+    </div>
+</section>
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/Listings.js")" asp-append-version="true"></script>
+}

@@ -1,0 +1,32 @@
+﻿@model PickListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditPickModalForm">
+            <input type="hidden" id="EditPickId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:select id="EditCategory" label="Category" class="" required="true" searchable="true" default="" options="@Model.CategoriesOptions" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="EditTeam1" label="Home Team" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="EditTeam2" label="Away Team" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-input id="EditDateTimeStart" label="Start Time" value=""></vc:bet-listing-date-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-input id="EditDateTimeFinish" label="Finish Time" value=""></vc:bet-listing-date-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditPickModal" locked="false" title="Edit Pick"></vc:modal>
+
+
+<input id="EditPickModalURL" hidden value="@Url.Action("EditPick", "Backend")" />

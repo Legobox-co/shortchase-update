@@ -1,0 +1,58 @@
+﻿@model AppLogoDto
+
+<header class="websiteHeader bg-transparent">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow transparent-navigator fixed-top" id="websiteNavigator">
+        <div class="container navContainer">
+            @{ var auth = User.Identity.IsAuthenticated;
+                if (auth == false)
+                {
+    <a class="navbar-brand " asp-area="" asp-controller="Home" asp-action="Index">
+                    
+                        <img src="@Model.Value" width="150px" heigth="31px" />
+                       </a> }
+
+                else
+                {
+    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+        <div class="circle">
+            <img src="@Url.Content("~/img/shortchase-logo.png")" width="50px" heigth="23px" />
+        </div>
+    </a>
+
+
+                    <span class="fa fa-search search-icon" style=" position:relative; left:15px ;color:#B7B7B7"></span>
+                                    <input id="homeSearchBar" class="search-nav" type="text" placeholder=" Find predictions, tips and odds." /> 
+                                    if (User.Identity.IsAuthenticated && User.Identity.HasAnyPermissions(Permission.Capper))
+                                         {
+                                            <a asp-action="ListYourPick" asp-controller="Home" class="btn btn-lg search-button timezoneoffset">Search</a>
+                                          }
+                                            else if (User.Identity.IsAuthenticated && User.Identity.HasAnyPermissions(Permission.Admin))
+                                           {
+                                            <a href="#" class="btn btn-lg OpenAdminNotAllowedModal btn-nofocus-nooutline search-button timezoneoffset">Search</a>
+                                           }
+                                            else
+                                            {
+                                             //<a href="#" class="btn btn-lg SwitchProfileAndGoToPage btn-nofocus-nooutline search-button" data-url="@Url.Action("ListYourPick", "Home")" data-profile="@Shortchase.Authorization.Permission.Capper">Search</a>
+                                            }
+                                                } 
+                }
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row justify-content-end">
+                @if (User.Identity.IsAuthenticated)
+                {
+                  <vc:authenticated-menu></vc:authenticated-menu> }
+             else
+                    {
+                     <partial name="Partials/Navigation/_Anonymous" />
+                    }
+            </div>
+        </div>
+    </nav>
+</header>
+
+<input type="hidden" id="SearchResultsPageURL" value="@Url.Action("SearchResults", "Home")" />
+<input type="hidden" id="HomeSearchBarDropdownResultsURL" value="@Url.Action("HomeSearchBarDropdownResults", "Home")" />

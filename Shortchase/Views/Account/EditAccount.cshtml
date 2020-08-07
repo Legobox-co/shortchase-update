@@ -1,0 +1,58 @@
+﻿@model Shortchase.Dtos.EditUserDto
+@{
+    ViewBag.Title = "Edit Account";
+}
+<div class="page login-page">
+    <div class="container">
+        <div class="form-inner">
+            <h4>Edit Account</h4>
+            <form id="account" method="post">
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Phone Number</label>
+                    <input asp-for="PhoneNumber" id="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <hr />
+                <h4>Change Password</h4>
+                <div class="form-group">
+                    <label asp-for="OldPassword">Old Password</label>
+                    <input asp-for="OldPassword" type="password" class="form-control" />
+                    <span asp-validation-for="OldPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewPassword">New Password</label>
+                    <div class="input-group">
+                        <input asp-for="NewPassword" type="password" class="form-control Password" />
+                        <span class="input-group-append">
+                            <span class="btn btn-outline-primary PasswordVisibility"><i class="far fa-eye"></i></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="@Url.Content("~/app/Account/EditAccount.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Account/Shared/Password.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Account/PhoneInputMask.js")" asp-append-version="true"></script>
+}

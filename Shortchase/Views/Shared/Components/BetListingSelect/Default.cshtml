@@ -1,0 +1,27 @@
+﻿@model ICollection<SelectListItem>;
+<div class="list-a-pick-form-input-wrapper">
+    <select class="" required="" id="@ViewData["Id"]" name="@ViewData["Id"]">
+        <option value="0" disabled="" selected="">@ViewData["Placeholder"]</option>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                if (item.Selected)
+                {
+                    <option value="@item.Value" selected>@item.Text</option>
+                }
+                else
+                {
+                    if (item.Disabled)
+                    {
+                        <option value="@item.Value" disabled>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value" >@item.Text</option>
+                    }
+                }
+            }
+        }
+    </select>
+</div>

@@ -1,0 +1,9 @@
+﻿@model POTDListingListDto
+<!-- ViewPrediction Modal -->
+@{Func<dynamic, object> ViewPredictionModalContent = @<div>
+       <div id="loadDynamicPredictionsTable">
+
+       </div>
+    </div>;}
+<vc:modal content="ViewPredictionModalContent" id="ViewPredictionPOTDListingModal" locked="false" title="View Predictions"></vc:modal>
+

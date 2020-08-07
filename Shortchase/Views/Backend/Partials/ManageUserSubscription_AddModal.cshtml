@@ -1,0 +1,36 @@
+﻿@model ManageUserSubscriptionDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+    @{ 
+        string startDate = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day;
+    }
+        <form class="row" id="AddUserSubscriptionModalForm">
+            <input type="hidden" id="AddUserId" value="@Model.User.Id" />
+            <input type="hidden" id="AddGiftById" value="@User.Identity.Id()" />
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="AddStartDate" label="Start Date" type="date" class="" required="true" placeholder="e.g. 11/20/2019" value="@startDate" disabled="false"></vc:input>
+                    <strong class="text-smaller" id="AddEndDateWrapper" style="display:none;">End Date: <span id="AddEndDate" class="font-weight-400"></span></strong>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="w-100">
+                    <label for="AddSubscriptionId" class="mb-0 text-smaller pl-1 font-weight-600 d-block">Subscription Plan</label>
+                    <select class="selectpicker" id="AddSubscriptionId">
+                        @foreach (var item in Model.SubscriptionPlanOptions)
+                        {
+                            <option value="@item.Id" id="SubscriptionOption-@item.Id" data-months="@item.DurationInMonths">@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddModalContent" id="AddUserSubscriptionModal" locked="false" title="Add Subscription to user"></vc:modal>
+
+
+<input id="AddUserSubscriptionBackendModalURL" hidden value="@Url.Action("AddUserSubscriptionBackend", "Backend")" />

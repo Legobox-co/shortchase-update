@@ -1,0 +1,83 @@
+﻿@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+
+                        <img src="@Url.Content("~/img/newicons/masspayment.png")" class="img-fluid" width="40px" />&nbsp;
+                        Mass Payout
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h4>Instructions</h4>
+                <ol>
+                    <li>
+                        Download the template CSV (Comma-Separated Values) file: <a href="@Url.Content("~/resources/mass_payout_template.csv")" class="btn btn-info" download>Download Template CSV</a>
+                    </li>
+                    <li>
+                        Fill the file with the users' emails and values for payout
+                    </li>
+                    <li>
+                        Upload the filled CSV file into the form below
+                    </li>
+                    <li>
+                        Review information before submitting payout
+                    </li>
+                    <li>
+                        Done!
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card shadow-sm my-2">
+            <div class="card-body py-3 px-3">
+                <h4 class="">Upload filled CSV File </h4>
+                <form class="row" id="UploadCSFFileForm">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="custom-file d-block">
+                            <input type="file" class="custom-file-input" hidden id="UploadCSFFile">
+                            <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="UploadCSFFile">
+                                <span id="UploadCSFFileLabel" class="MontserratBold">Select CSV File</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-left pt-3">
+                        <button type="submit" class="btn btn-success">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="my-2" id="ReviewInfoWrapper">
+
+        </div>
+    </div>
+</div>
+
+<input id="SendMoneyToUsersInMassParseMassPayoutTemplateURL" hidden value="@Url.Action("ParseMassPayoutTemplate", "Backend")" />
+<input id="FinishMassPayoutURL" hidden value="@Url.Action("FinishMassPayout", "Backend")" />
+
+@{
+    string BatchStamp = DateTime.UtcNow.Year.ToString() + DateTime.UtcNow.Month.ToString() + DateTime.UtcNow.Day.ToString() + DateTime.UtcNow.Hour.ToString() + DateTime.UtcNow.Minute.ToString() + DateTime.UtcNow.Second.ToString() + DateTime.UtcNow.Millisecond.ToString();
+}
+<input id="BatchStamp" hidden value="@BatchStamp" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/SendMoneyToUsersInMass.js")" asp-append-version="true"></script>
+}

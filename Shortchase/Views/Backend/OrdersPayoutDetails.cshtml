@@ -1,0 +1,239 @@
+﻿@model OrderPayoutDetailsDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+                        <img src="@Url.Content("~/img/newicons/orderpayout.jpg")" class="img-fluid" width="40px" />&nbsp; Orders Payouts - Details Order No.: @Model.Order.OrderNumber
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="py-2">
+            <a asp-action="OrdersPayout" asp-controller="Backend" class="btn btn-link timezoneoffset"><img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" /></a>
+
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h3 class="text-center m-0 pb-2">General Order Information</h3>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                            <tr>
+                                <th>Payment Type</th>
+                                <td>@Model.Order.PaymentType</td>
+                            </tr>
+                            <tr>
+                                <th>Payment Status</th>
+                                <td>@Model.Order.PaymentStatus</td>
+                            </tr>
+                            <tr>
+                                <th>Order Type</th>
+                                <td>@Model.Order.OrderType</td>
+                            </tr>
+                            <tr>
+                                <th>Date Placed</th>
+                                <td>@DateHelper.DateFormat(Model.Order.RowDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            </tr>
+                            @if (Model.Order.PaymentStatus == OrderPaymentStatus.Paid && Model.Order.DatePaid.HasValue)
+                            {
+                                <tr>
+                                    <th>Date Paid</th>
+                                    <td>@DateHelper.DateFormat(Model.Order.DatePaid.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                </tr>
+                            }
+                            @if (Model.Order.PaymentStatus == OrderPaymentStatus.Cancelled && Model.Order.DatePaid.HasValue)
+                            {
+                                <tr>
+                                    <th>Date Cancelled</th>
+                                    <td>@DateHelper.DateFormat(Model.Order.DateCancelled.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                </tr>
+                            }
+                            @if (Model.Order.PaymentStatus == OrderPaymentStatus.Rejected && Model.Order.DatePaid.HasValue)
+                            {
+                                <tr>
+                                    <th>Date Rejected</th>
+                                    <td>@DateHelper.DateFormat(Model.Order.DateRejected.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+
+                            <tr>
+                                <th>Total (Before Tax and Fee)</th>
+                                <td>$ @Model.Order.TotalBeforeDiscount.ToString("0.00")</td>
+                            </tr>
+                            @if (Model.Order.Discount > 0.00m)
+                            {
+
+                                <tr>
+                                    <th>Referral Discount</th>
+                                    <td>
+                                        - $ @Model.Order.Discount.ToString("0.00")<br />
+                                        <span class="text-muted">(@Model.Order.DiscountPercent.ToString("0.00")% of @Model.Order.TotalBeforeDiscount.ToString("0.00"))</span>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <th>Comission</th>
+                                <td>
+                                    $ @Model.Order.ServiceFee.ToString("0.00")<br />
+                                    <span class="text-muted">(@Model.Order.ServiceFeePercent.ToString("0.00")% of @Model.Order.TotalBeforeTaxAndFees.ToString("0.00"))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Estimated Tax</th>
+                                <td>
+                                    $ @Model.Order.EstimatedTax.ToString("0.00")<br />
+                                    <span class="text-muted">(@Model.Order.EstimatedTaxPercent.ToString("0.00")% of @Model.Order.TotalBeforeTaxAndFees.ToString("0.00"))</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Total (After Tax and Fee)</th>
+                                <td>$ @Model.Order.TotalAfterTax.ToString("0.00")</td>
+                            </tr>
+                            <tr>
+                                <th>Wallet Balance (Before Purchase)</th>
+                                <td>$ @Model.Order.WalletBalanceBeforePurchase.ToString("0.00")</td>
+                            </tr>
+                            <tr>
+                                <th>Wallet Balance (After Purchase)</th>
+                                <td>$ @Model.Order.WalletBalanceAfterPurchase.ToString("0.00")</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.Payouts.Count > 0)
+        {
+            <div class="card shadow-sm my-2">
+                <div class="card-body py-3 px-3">
+                    <h3 class="text-center m-0 pb-2">Payouts from this order</h3>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+
+                            <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase">User</th>
+                                        <th class="text-uppercase">Total Payout Value</th>
+                                        <th class="text-uppercase">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        decimal totalPayouts = 0.00m;
+                                    }
+                                    @foreach (var payout in Model.Payouts)
+                                    {
+                                        totalPayouts += payout.ValueToPay;
+                                        <tr>
+                                            <td>
+                                                @payout.UserToPay
+                                            </td>
+                                            <td>
+                                                $ @payout.ValueToPay.ToString("0.00")
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm PayIndividuallyBtn" data-order="@Model.Order.Id" data-userid="@payout.UserToPayId" data-email="@payout.UserEmailToPay" data-amount="@payout.ValueToPay.ToString("0.00")">Pay now</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total Payout Amount </th>
+                                        <th>$ @totalPayouts.ToString("0.00")</th>
+                                        <th>
+                                            <button class="btn btn-warning btn-sm PayAllNowBtn" data-order="@Model.Order.Id">Pay all now</button>
+                                            <input type="hidden" id="PayAllNowInfo" value="@Model.PayoutsJson" />
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="card shadow-sm my-2">
+            <div class="card-body py-3 px-3">
+                <h3 class="text-center m-0 pb-2">Order Items</h3>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        @if (Model.OrderItems.Count > 0)
+                        {
+                            <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-uppercase">Listing Title</th>
+                                        <th class="text-uppercase">Sold By</th>
+                                        <th class="text-uppercase">Price</th>
+                                        <th class="text-uppercase">Comission</th>
+                                        <th class="text-uppercase">Payout Value</th>
+                                        <th class="text-uppercase">Payout Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.OrderItems)
+                                    {
+                                        decimal itemFee = (Model.Order.ServiceFeePercent * item.Price) / 100;
+                                        decimal payoutPrice = item.Price - itemFee;
+                                        <tr>
+                                            <td>@item.ListingTitle</td>
+                                            <td>@item.SoldBy</td>
+                                            <td>$ @item.Price</td>
+                                            <td>$ - @itemFee.ToString("0.00")</td>
+                                            <td>$ @payoutPrice.ToString("0.00")</td>
+                                            <td>
+                                                @if (item.PayoutId.HasValue)
+                                                {
+                                                    <text>Paid</text>
+                                                }
+                                                else
+                                                {
+                                                    <text>Not Paid</text>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<input id="MakeOrderIndividualPaypalPayoutURL" hidden value="@Url.Action("MakeOrderIndividualPaypalPayout", "Backend")" />
+<input id="MakeOrderBatchPaypalPayoutURL" hidden value="@Url.Action("MakeOrderBatchPaypalPayout", "Backend")" />
+
+@{
+    string BatchStamp = DateTime.UtcNow.Year.ToString() + DateTime.UtcNow.Month.ToString() + DateTime.UtcNow.Day.ToString() + DateTime.UtcNow.Hour.ToString() + DateTime.UtcNow.Minute.ToString() + DateTime.UtcNow.Second.ToString() + DateTime.UtcNow.Millisecond.ToString();
+}
+<input id="BatchStamp" hidden value="@BatchStamp" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/OrdersPayoutDetails.js")" asp-append-version="true"></script>
+}

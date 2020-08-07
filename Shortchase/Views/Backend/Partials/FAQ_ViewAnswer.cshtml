@@ -1,0 +1,12 @@
+﻿@model FAQListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> ViewAnswerModalContent = @<div>
+        <p class="font-weight-bold">Question: <span id="ViewAnswerQuestion" class="font-weight-500"></span></p>
+        <div class="" >
+            <span class="font-weight-bold">Answer:</span>
+            <div id="ViewAnswerAnswer">
+            </div>
+        </div>
+    </div>;}
+<vc:modal content="ViewAnswerModalContent" id="ViewAnswerFAQModal" locked="false" title="View FAQ Answer"></vc:modal>
+

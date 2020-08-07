@@ -1,0 +1,30 @@
+﻿@model SocialMediaList
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditSocialMediaModalForm">
+            <input type="hidden" value="0" id="EditSocialMediaId" />
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="EditName" label="Name" type="text" class="" required="true" placeholder="e.g. Facebook" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <vc:input id="EditIcon" label="Icon" type="text" class="" required="true" placeholder="e.g. fab fa-facebook-f" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-2">
+                <small>Icon Preview</small><br />
+                <i class="fab fa-facebook-f fa-2x" id="editIconPreview"></i>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditLink" label="Link" type="text" class="" required="true" placeholder="e.g. https://www.facebook.com/Shortchasedotcom" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditSocialMediaModal" locked="false" title="Edit Social Media"></vc:modal>
+
+
+<input id="EditSocialMediaModalURL" hidden value="@Url.Action("EditSocialMedia", "Backend")" />

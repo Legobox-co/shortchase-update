@@ -1,0 +1,68 @@
+﻿@model SubscriptionReceiptDto
+@{
+    Layout = "_PrintableLayout";
+}
+
+<section class="bg-grey-dark-3 text-smaller">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center py-2">
+                <img src="@Model.Logo" class="img-fluid" />
+                <h2 class="section-title m-0  py-2 MontserratBold">
+                    Subscription Receipt
+                </h2>
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                    <tr>
+                        <th width="50%">Subscription Name</th>
+                        <td>@Model.SubscriptionName</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Subscription Price</th>
+                        <td>$ @Model.SubscriptionPrice</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Paid Value</th>
+                        <td>$ @Model.SubscriptionPrice</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Payment Status</th>
+                        <td>@Model.PaymentStatus</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Start</th>
+                        <td>@Model.Start</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">End</th>
+                        <td>@Model.End</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Wallet Balance (Before purchase)</th>
+                        <td>$ @Model.WalletBalanceBefore</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Wallet Balance (After purchase)</th>
+                        <td>$ @Model.WalletBalanceAfter</td>
+                    </tr>
+                    <tr>
+                        <th width="50%">Payment Type</th>
+                        <td>@Model.PaymentType</td>
+                    </tr>
+                    @if (Convert.ToDecimal(Model.PaypalPaidValue) > 0.00m)
+                    {
+                        <tr>
+                            <th width="50%">Value Paid on Paypal</th>
+                            <td>$ @Model.PaypalPaidValue</td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+        <p class="text-center">Receipt generated at: @DateHelper.DateFormat(DateTime.UtcNow.FromUTCData(Model.TimezoneOffset))</p>
+    </div>
+</section>

@@ -1,0 +1,297 @@
+﻿@model ViewListingDto;
+@{
+    Layout = "_WebsiteLayout";
+
+}
+
+
+<section class="bg-grey-dark-3">
+    <div class="container post-a-pick-container">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 pt-5 pb-2 ">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                            <div class="col-sm-12 col-md-10 col-lg-8 px-sm-1 px-md-1 px-lg-1 px-0">
+                                <div class="card bg-listing-detail shadow">
+                                    <div class="card-body py-2 px-2">
+                                        <div class="row">
+                                            @if (Model.Listing.PickType != BetListingType.Free)
+                                            {
+
+                                                <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                                                    <p class=" my-2">
+
+                                                        <span class="bg-danger text-white text-smallest py-1 px-2 MontserratMedium">
+                                                            @Model.Listing.PickType
+                                                            @if (Model.Listing.PickType == BetListingType.Live)
+                                                            {
+
+                                                                string dateStart = DateHelper.ToISOString(Model.Listing.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                                                <span class="countDownWrapper" data-endtime="@dateStart">00:00:00</span>
+                                                            }
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            }
+
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <h2 class="MontserratMedium text-center">@Model.Listing.Title</h2>
+                                                <p class="MontserratMedium text-center pt-2 m-0">
+                                                    @if (Model.Listing.PickType == BetListingType.Free)
+                                                    {
+                                                        <text>Free</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>$ @Model.Listing.Price</text>
+                                                    }
+                                                </p>
+                                                <hr class="m-0 my-3 mx-2" />
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12 col-lg-1"></div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-10 text-small">
+                                                        <div class="container">
+
+                                                            <div class="row">
+
+                                                                <p class="col-12 m-0 p-0 y-2 py-2">
+                                                                    <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low ">
+                                                                        PICK:
+                                                                    </span>&nbsp;
+                                                                    @Model.Listing.Pick.Team1 vs @Model.Listing.Pick.Team2
+                                                                </p>
+                                                                @{
+                                                                    string oddsClass = "text-danger MontserratBold";
+                                                                    string oddsTitle = "Not verified by API";
+                                                                    if (Model.Listing.ResultVerificationByApi.HasValue)
+                                                                    {
+                                                                        if (Model.Listing.ResultVerificationByApi.Value)
+                                                                        {
+                                                                            oddsClass = "text-success MontserratBold";
+                                                                            oddsTitle = "Verified by API on " + DateHelper.POTDDateFormat(Model.Listing.DateVerifiedByApi.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                                @if (Model.Listing.Stake <= 0.0m && Model.Listing.Profit <= 0.0m)
+                                                                {
+                                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                            ODDS:
+                                                                        </span>&nbsp;
+                                                                        <span class="@oddsClass" title="@oddsTitle">@Model.Listing.Odds</span>
+                                                                    </p>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (Model.Listing.Stake <= 0.0m && Model.Listing.Profit > 0.0m)
+                                                                    {
+                                                                        <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                ODDS:
+                                                                            </span>&nbsp;
+                                                                            <span class="@oddsClass" title="@oddsTitle">@Model.Listing.Odds</span>
+                                                                        </p>
+                                                                        <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                PROFIT:
+                                                                            </span>&nbsp;
+                                                                            @Model.Listing.Profit
+                                                                        </p>
+                                                                    }
+                                                                    else if (Model.Listing.Stake > 0.0m && Model.Listing.Profit <= 0.0m)
+                                                                    {
+
+                                                                        <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                ODDS:
+                                                                            </span>&nbsp;
+                                                                            <span class="@oddsClass" title="@oddsTitle">@Model.Listing.Odds</span>
+                                                                        </p>
+                                                                        <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                STAKE:
+                                                                            </span>&nbsp;
+                                                                            @Model.Listing.Stake
+                                                                        </p>
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                        <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                ODDS:
+                                                                            </span>&nbsp;
+                                                                            <span class="@oddsClass" title="@oddsTitle">@Model.Listing.Odds</span>
+                                                                        </p>
+                                                                        <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                STAKE:
+                                                                            </span>&nbsp;
+                                                                            @Model.Listing.Stake
+                                                                        </p>
+                                                                        <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                                PROFIT:
+                                                                            </span>&nbsp;
+                                                                            @Model.Listing.Profit
+                                                                        </p>
+                                                                    }
+                                                                }
+
+                                                                <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                    <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                        PREVIEW:
+                                                                    </span>&nbsp;
+                                                                    @Model.Listing.Description
+                                                                </p>
+                                                                <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                    <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                        SCHEDULE:
+                                                                    </span>&nbsp;
+                                                                    @DateHelper.POTDDateFormat(Model.Listing.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                                </p>
+                                                                @{
+                                                                    bool isEventPastNow = Model.Listing.Pick.FinishTime < DateTime.UtcNow;
+
+                                                                }
+                                                                @if (Model.Listing.PickType == BetListingType.Free || isEventPastNow)
+                                                                {
+
+                                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                            PREDICTION:
+                                                                        </span>&nbsp;
+                                                                        @Model.Listing.Tip.Description
+                                                                    </p>
+                                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low word-break-all">
+                                                                            ANALYSIS:
+                                                                        </span>&nbsp;
+                                                                        @Model.Listing.Analysis
+                                                                    </p>
+                                                                }
+                                                                <p class="col-12 m-0 p-0 my-2 py-2">
+                                                                    <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                        WHERE TO PLAY:
+                                                                    </span>&nbsp;
+                                                                    @Model.Listing.Bookmaker.Description
+                                                                </p>
+                                                                <div class="col-12 pt-4 text-center">
+                                                                    @{
+                                                                        if (Model.Listing.PickType != BetListingType.Free)
+                                                                        {
+                                                                            if (Model.IsAuth)
+                                                                            {
+
+                                                                                if (Model.Listing.PostedbyId.ToString() == User.Identity.Id())
+                                                                                {
+                                                                                    <button class="btn btn-dark text-small unauth-actiontoself-link">Add to Cart</button>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (Model.IsInCart)
+                                                                                    {
+                                                                                        <button class="btn btn-dark text-small OpenNotAllowedCustomActionModal" data-message="Already on cart!">
+                                                                                            Add to Cart
+                                                                                        </button>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (Model.HasPurchasedBefore)
+                                                                                        {
+                                                                                            <button class="btn btn-dark text-small OpenNotAllowedCustomActionModal" data-message="You already purchased this listing before, check order manager for more information.">
+                                                                                                Add to Cart
+                                                                                            </button>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+
+                                                                                            <button class="btn btn-dark text-small AddItemToCartBtn" data-listing="@Model.Listing.Id.ToString()">Add to Cart</button>
+
+                                                                                        }
+
+                                                                                    }
+                                                                                }
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button class="btn btn-dark ActionNotAllowedNotSignedIn text-small">Add to Cart</button>
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div class="col-12 text-right py-2">
+                                                                    @if (Model.IsAuth)
+                                                                    {
+                                                                        if (Model.IsAdmin)
+                                                                        {
+                                                                            <button class="btn btn-transparent py-0 OpenAdminNotAllowedModal"><i class="fas fa-ellipsis-h"></i></button>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (Model.Listing.PostedbyId.ToString() == User.Identity.Id())
+                                                                            {
+                                                                                <button class="btn btn-transparent py-0 unauth-reportself-link"><i class="fas fa-ellipsis-h"></i></button>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <button class="btn btn-transparent py-0 ReportThisListing" data-id="@Model.Listing.Id"><i class="fas fa-ellipsis-h"></i></button>
+                                                                            }
+
+                                                                        }
+
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button class="btn btn-transparent py-0 ActionNotAllowedNotSignedIn"><i class="fas fa-ellipsis-h"></i></button>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 col-lg-1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <hr class="m-0 my-5" />
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <h1 class="text-darker MontserratBold text-center">
+                            Related Listings
+                        </h1>
+                        <div class="row">
+                            <vc:listing-related-card-collection is-auth="@Model.IsAuth" listings="@Model.RelatedListings" offset="@Convert.ToInt32(ViewData["TimezoneOffset"].ToString())"></vc:listing-related-card-collection>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<input type="hidden" id="AddItemCartUrl" value="@Url.Action("AddItemCart", "Home")" />
+<input type="hidden" id="ViewListingUrl" value="@Url.Action("ViewListing", "Home")" />
+<input type="hidden" id="AddBetListingReportUrl" value="@Url.Action("AddBetListingReport", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ViewListing.js")" asp-append-version="true"></script>
+}

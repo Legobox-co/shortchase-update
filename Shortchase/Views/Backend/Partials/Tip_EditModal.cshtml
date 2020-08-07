@@ -1,0 +1,26 @@
+﻿@model TipListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditTipModalForm">
+            <input type="hidden" id="EditTipId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:select id="EditMarket" label="Select Market" class="" required="true" searchable="true" default="" options="@Model.Markets" selected-value=""></vc:select>
+            </div>
+            @*<div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditName" label="Name" type="text" class="" required="true" placeholder="e.g. Under 0.5 Goals" value="" disabled="false"></vc:input>
+            </div>*@
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditDescription" label="Tip" type="text" class="" required="true" placeholder="e.g. Home team to win" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditTipModal" locked="false" title="Edit Tip"></vc:modal>
+
+
+<input id="EditTipModalURL" hidden value="@Url.Action("EditTip", "Backend")" />

@@ -1,0 +1,98 @@
+﻿@model PromotionPost;
+@{
+    Layout = "_DashboardLayout";
+
+    //var dateFromDB = Model.DatePublished.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())).ToString().Split(" ");
+    //var date = dateFromDB[0].Split('-');
+    //var time = dateFromDB[1].Split(':');
+    //if (dateFromDB[2] == "PM")
+    //{
+    //    if (time[0] == "12") time[0] = "00";
+    //    else
+    //    {
+    //        int value = (Convert.ToInt32(time[0]) + 12);
+    //        time[0] = value.ToString();
+    //    }
+    //}
+    string datePublished = DateHelper.ToISOString(Model.DatePublished.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));//date[2] + "/" + date[1] + "/" + date[0] + " " + time[0] + ":" + time[1] + ":" + time[2];
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-bookmark"></i>*@
+                        <img src="@Url.Content("~/img/newicons/promotions.png")" class="img-fluid" width="40px" />&nbsp;
+                        Edit Promotion post
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <a class="btn btn-link timezoneoffset" asp-action="Promotion" asp-controller="Backend">
+                        <img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <form class="row" id="EditPostForm">
+                    <input type="hidden" id="EditPostId" value="@Model.Id" />
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                        <button type="submit" class="btn btn-dark-as-homepage">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <vc:input id="EditPostTitle" label="Post Title" type="text" class="" required="true" placeholder="e.g. Shortchase is now on Instagram, follow us!" value="@Model.Title" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <vc:input id="EditPostSlug" label="Slug" type="text" class="" required="true" placeholder="e.g. shortchase-is-now-on-instagram-follow-us" value="@Model.Slug" disabled="true"></vc:input>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <vc:input id="EditPostExcerpt" label="Excerpt" type="text" class="" required="true" placeholder="e.g. Shortchase is now on Instagram" value="@Model.Excerpt" disabled="false"></vc:input>
+                        <p class="pl-1 m-0 text-smaller font-weight-bold">Content</p>
+                        <textarea class="form-control resize-only-vertical max-height-medium" id="EditPostContent" placeholder="Write the Post content here ...">@Model.Content</textarea>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <div id="PostDatePublishedWrapper">
+                            <vc:input id="EditPostDatePublished" label="Publish Date" type="text" class="datetimemask" required="false" placeholder="e.g. 10/31/2019 15:29:59" value="@datePublished" disabled="false"></vc:input>
+                            <p class="mt--4"><small class="text-muted">(The post is going to be automatically published at the date and time selected on the field above.)</small></p>
+                        </div>
+                        @{
+                            if (Model.FeaturedImage != "/img/blog/default.jpg")
+                            {
+                                string bgImagePath = ViewData["root"].ToString() + Model.FeaturedImage;
+
+                                <img src="@ImageHelper.ConvertImageToBase64(bgImagePath)" class="img-fluid " id="initialFeaturedImagePreview" />
+                                <br />
+                                <input type="hidden" value="1" id="PostHasPictureAlready" />
+                            }
+                            else
+                            {
+                                <input type="hidden" value="0" id="PostHasPictureAlready" />
+                            }
+                        }
+
+                        <vc:media-selector-button id="EditPostFeaturedImage" width="" height="" field-label="Select featured image"></vc:media-selector-button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="PromotionIndexURL" hidden value="@Url.Action("Promotion", "Backend")" />
+<input id="UpdatePromotionPostURL" hidden value="@Url.Action("UpdatePromotionPost", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/PromotionEditPost.js")" asp-append-version="true"></script>
+}

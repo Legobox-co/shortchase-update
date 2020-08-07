@@ -1,0 +1,175 @@
+﻿@model POTDLiveReportingListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-star"></i>*@
+                        <img src="@Url.Content("~/img/newicons/potd-posts.png")" class="img-fluid" width="40px" />&nbsp;
+                        POTD: Live Reporting
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage AddLiveReportModalBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="py-2">
+            <a asp-action="POTD" asp-controller="Backend" class="btn btn-link timezoneoffset"><img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" /></a>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h5 class="m-0 text-uppercase">POTD: </h5>
+                <table class="table table-striped table-bordered w-100" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase">Title</th>
+                            <th class="text-uppercase">Pick</th>
+                            <th class="text-uppercase">Market</th>
+                            <th class="text-uppercase">Tip</th>
+                            <th class="text-uppercase">Start Time</th>
+                            <th class="text-uppercase">Finish Time</th>
+                            <th class="text-uppercase">Venue</th>
+                            <th class="text-uppercase">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+                            string subcategory = "No subcategory";
+                            int? subcategoryId = null;
+                            if (Model.POTD.SubCategoryId.HasValue)
+                            {
+                                subcategory = Model.POTD.SubCategory.Name;
+                                subcategoryId = Model.POTD.SubCategory.Id;
+                            }
+                            string status = "";
+                            bool canEditOrDelete = true;
+                            if (Model.POTD.Pick.StartTime < DateTime.UtcNow && DateTime.UtcNow < Model.POTD.Pick.FinishTime)
+                            {
+                                status = "Active";
+                            }
+                            else
+                            {
+                                if (DateTime.UtcNow < Model.POTD.Pick.StartTime && DateTime.UtcNow < Model.POTD.Pick.FinishTime)
+                                {
+                                    status = "Active";
+                                }
+                                else
+                                {
+                                    status = "Inactive";
+                                    //canEditOrDelete = false;
+                                }
+                            }
+
+
+
+                            string dateStart = DateHelper.ToISOString(Model.POTD.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                            string dateFinish = DateHelper.ToISOString(Model.POTD.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+
+                        }
+                        <tr>
+                            <td>@Model.POTD.Title</td>
+                            <td>@Model.POTD.Pick.Team1 vs @Model.POTD.Pick.Team2</td>
+                            <td>@Model.POTD.Market.Name</td>
+                            <td>@Model.POTD.Tip.Description</td>
+                            <td>@DateHelper.DateFormat(Model.POTD.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            <td>@DateHelper.DateFormat(Model.POTD.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            <td>@Model.POTD.Venue</td>
+                            <td>@status</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h4>Live Reporting</h4>
+                @if (Model.LiveReportings == null || Model.LiveReportings.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No live reporting found on database for this POTD.
+                    </p>
+                }
+                else
+                {
+                    <table id="ListingReportsList" class="table table-striped table-bordered w-100  " cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase" width="15%">Date/Time</th>
+                                <th class="text-uppercase" width="15%">Reported By</th>
+                                <th class="text-uppercase" width="50%">Description</th>
+                                <th class="text-uppercase" width="5%">Likes</th>
+                                <th class="text-uppercase" width="5%">Dislikes</th>
+                                <th class="text-uppercase" width="10%">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.LiveReportings)
+                            {
+                                string dateValue = DateHelper.ToISOString(item.DateTimeReported.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                <tr>
+                                    <td id="DateTimeReported-@item.Id" data-value="@dateValue">@DateHelper.DateFormat(item.DateTimeReported.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    <td id="ReportedById-@item.Id" data-value="@item.ReportedById">
+                                        @item.ReportedBy.FirstName @item.ReportedBy.LastName
+                                        <br /> <span class="text-muted text-lowercase">@item.ReportedBy.Email</span>
+                                    </td>
+
+                                    <td id="Report-@item.Id">
+                                        <div>
+                                            @Html.Raw(item.Report)
+                                        </div>
+                                    </td>
+                                    <td>@item.UserInteractions.Count(i => i.InteractionType == UserInteractionType.Like) <button class="btn btn-sm btn-primary ViewInteractionsBtn" data-type="@UserInteractionType.Like" data-reporting="@item.Id"><i class="fas fa-eye"></i></button></td>
+                                    <td>@item.UserInteractions.Count(i => i.InteractionType == UserInteractionType.Dislike) <button class="btn btn-sm btn-primary ViewInteractionsBtn" data-type="@UserInteractionType.Dislike" data-reporting="@item.Id"><i class="fas fa-eye"></i></button></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-ban"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/POTDLiveReporting_AddModal" model="@Model" />
+<partial name="Partials/POTDLiveReporting_ViewInteractionsModal" />
+
+
+
+<input id="DeletePOTDLiveReportingURL" hidden value="@Url.Action("DeletePOTDLiveReporting", "Backend")" />
+
+@{
+    string dateValueNow = DateHelper.ToISOString(DateTime.UtcNow.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+
+}
+
+<input id="POTDId" hidden value="@Model.POTD.Id" />
+<input id="dateValueNow" hidden value="@dateValueNow" />
+<input id="LoggedInUserId" hidden value="@User.Identity.Id()" />
+
+
+
+<input id="POTDReportingLoadInteractionDataURL" hidden value="@Url.Action("POTDReportingLoadInteractionData", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/POTDLiveReporting.js")" asp-append-version="true"></script>
+}

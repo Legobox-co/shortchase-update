@@ -1,0 +1,42 @@
+﻿@model string;
+@{
+    Layout = "_WebsiteLayout";
+}
+
+<section class="bg-grey-dark-3 py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-3"></div>
+            <div class="col-sm-12 col-md-6">
+                <div class="shadow medium-rounded-corners bg-white">
+                    <div class="bg-yellow-light py-3 px-3 d-flex flex-row align-items-center">
+
+                        <p class="m-0 MontserratMedium py-2 flex-95">
+                            Type in the code you received on SMS to validate your phone. <small class="text-muted">If you didn't received it, <a class="reSendSMSCode" href="#">click here to resend</a>.</small>
+                        </p>
+                        <a asp-action="Index" asp-controller="Home" class="text-dark flex-5 timezoneoffset"><i class="fas fa-times"></i></a>
+                    </div>
+                    <form class="bg-white px-3 py-3" id="VerifySMSCodeForm">
+                        <input type="hidden" value="@Model" id="EmailToVerify" />
+                        <div class="form-group py-2">
+                            <label for="SMSVerificationCode" class="text-smaller">Verification Code</label>
+                            <input type="text" class="form-control text-small" id="SMSVerificationCode" placeholder="Enter your Verification Code here" value="">
+                        </div>
+                        <button class=" btn btn-warning text-smaller text-white bg-orange-dark border-orange-dark border-bottom-orange-dark-thicker px-4" id="VerifySMSCodeBtn">Validate</button>
+                        <a asp-action="Index" asp-controller="Home" class="text-grey-2 btn btn-link float-right text-smaller timezoneoffset">Cancel</a>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-3"></div>
+        </div>
+
+    </div>
+</section>
+
+<input id="ResendSMSVerificationCodeURL" hidden value="@Url.Action("ResendSMSVerificationCode", "Account")" />
+<input id="ValidateVerificationCodeURL" hidden value="@Url.Action("ValidateVerificationCode", "Account")" />
+<input id="AfterLoginHomeIndexURL" hidden value="@Url.Action("Index", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ValidatePhone.js")" asp-append-version="true"></script>
+}

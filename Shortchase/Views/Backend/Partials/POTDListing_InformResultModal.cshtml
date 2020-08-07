@@ -1,0 +1,21 @@
+﻿@model POTDListingListDto
+<!-- InformResult Modal -->
+@{Func<dynamic, object> InformResultModalContent = @<div>
+        <form class="row" id="InformResultPOTDListingModalForm">
+            <input type="hidden" value="0" id="InformResultPOTDId" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="InformResultResult" label="Result" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="InformResultModalContent" id="InformResultPOTDListingModal" locked="false" title="Inform Result POTD Listing"></vc:modal>
+
+
+<input id="InformResultPOTDListingModalURL" hidden value="@Url.Action("InformResultPOTDListing", "Backend")" />

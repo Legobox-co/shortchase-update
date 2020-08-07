@@ -1,0 +1,419 @@
+
+<div class="modal" tabindex="-1" role="dialog" id="BoisterousModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg boisterous-modal-lg-wrapper" role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Shortchase Boisterous
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center MontserratBlack text-grey-2">
+                    Select a plan
+                </p>
+                <div class="py-5">
+                    <vc:boisterous-modal></vc:boisterous-modal>
+                </div>
+                <p class="text-center d-none d-sm-none d-md-none d-lg-block text-small">
+                    Get ranked bet listings with outstanding chance of success<br />
+                    based on our proprietary algorithm. No commitments, cancel<br /> at any time!
+                </p>
+                <p class="text-center d-block d-sm-block d-md-block d-lg-none text-small">
+                    Get ranked bet listings with outstanding chance of success
+                    based on our proprietary algorithm. No commitments, cancel at any time!
+                </p>
+                <div class="text-center">
+
+                    <button class="btn btn-dark btn-lg MontserratBold text-small py-3 px-4 SignUpModalLink GetStartedBoisterous">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="ShortchaseProModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg boisterous-modal-lg-med-wrapper" role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    ShortchasePro Account
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <vc:shortchase-pro-modal></vc:shortchase-pro-modal>
+                <div class="text-center">
+
+                    <button class="btn btn-dark btn-lg MontserratBold text-small py-3 SignUpModalLink GetStartedShortchasePro">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="LoginModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Log in to your account
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+
+                <form class="text-center mt-2" id="SignInModal_Form">
+                    <div class="form-group my-5">
+                        <input type="email" class="login-form-input" id="SignInModal_Email" placeholder="Email">
+                    </div>
+                    <div class="form-group my-5">
+                        <input type="password" class="login-form-input" id="SignInModal_Password" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-lg MontserratMedium text-small py-3">
+                        Login
+                    </button>
+                    &nbsp;&nbsp;
+                    <a asp-action="ResetPassword" asp-controller="Home" class="btn btn-dark btn-lg MontserratMedium text-small py-3">
+                        Reset Password
+                    </a>
+
+                </form>
+                <p class="text-center pt-4 mt-3">
+                    Don't have a Shortchase account?
+
+                    <button class="btn btn-outline-dark btn-sm MontserratBold SignUpModalLink">
+                        Sign Up
+                    </button>
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<vc:sign-up-form></vc:sign-up-form>
+<input id="RegisterUserURL" hidden value="@Url.Action("RegisterUser", "Account")" />
+<input id="ValidatePhoneURL" hidden value="@Url.Action("ValidatePhone", "Home")" />
+
+<div class="modal" tabindex="-1" role="dialog" id="NotSignedInModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="errorMessageNotSignedInModal">
+                    You can post a prediction only after signing up.
+                </p>
+                <p class="text-center pt-4">
+                    <button class="btn btn-outline-dark btn-sm MontserratBold SignUpModalLink">
+                        Sign Up
+                    </button>
+                    or
+                    <button class="btn btn-outline-dark btn-sm MontserratBold LoginModalLink">
+                        Log In
+                    </button>
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer " id="ModalNotSignedInFooter">
+
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="NotEnabledForAdminModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="errorMessageNotSignedInModal">
+                    Administrators cannot use this feature.
+                </p>
+
+            </div>
+            <div class="modal-footer shortchase-modal-footer " id="ModalNotSignedInFooter">
+
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="NotEnabledForBettorModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="">
+                    You need to be a Capper to use this feature.
+                </p>
+
+            </div>
+            <div class="modal-footer shortchase-modal-footer " id="ModalNotSignedInFooter">
+
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="NotEnabledForCapperModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="">
+                    You need to be a Bettor to use this feature.
+                </p>
+
+            </div>
+            <div class="modal-footer shortchase-modal-footer " id="ModalNotSignedInFooter">
+
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="ReportThisListingModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Report This Listing
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <form id="ListingReportModalForm">
+                    <p class="text-center  text-dark">
+                        <i class="fas fa-ban"></i> Help us understand what's happening with this listing.<br />
+                        How would you describe it?
+                    </p>
+                    <div class="row py-2">
+                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-8">
+                            <button class="btn btn-default btn-sm text-smaller ReportSubjectPicker" data-subject="@ReportListingReasons.MisleadingScam">@ReportListingReasons.MisleadingScam</button>
+                            <button class="btn btn-default btn-sm text-smaller ReportSubjectPicker" data-subject="@ReportListingReasons.Spam">@ReportListingReasons.Spam</button>
+                            <button class="btn btn-default btn-sm text-smaller ReportSubjectPicker" data-subject="@ReportListingReasons.FakeNews">@ReportListingReasons.FakeNews</button>
+                            <button class="btn btn-default btn-sm text-smaller ReportSubjectPicker" data-subject="@ReportListingReasons.Prohibited">@ReportListingReasons.Prohibited</button>
+                            <button class="btn btn-default btn-sm text-smaller ReportSubjectPicker" data-subject="@ReportListingReasons.Other">@ReportListingReasons.Other</button>
+
+                            <input type="hidden" id="ReportSubjectValue" value="" />
+                            <input type="hidden" id="ReportListingIdValue" value="" />
+                            <p class="m-0 py-2 MontserratBold" style="display:none;">Report Subject: <span class="MontserratMedium" id="ReportSubjectWrapper"><span class="text-muted">Select one option above</span></span></p>
+                            <div class="mb-3 py-2" id="ReportContentWrapper" style="display: none;">
+                                <textarea class="form-control resize-only-vertical" id="ReportContent" placeholder="Tell us the reasons for your report here ..."></textarea>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                    </div>
+
+                    <div class="text-center">
+
+                        <button type="submit" class="btn btn-dark btn-sm text-small  text-small submitReport">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="NotAllowedActionModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="errorMessageNotAllowedActionModal">
+                    Action not permitted!
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                <span class="text-smaller text-light-grey">|</span>
+                <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="NotAllowedCustomActionModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Sorry!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+                <p class="text-center py-4" id="errorMessageNotAllowedCustomActionModal">
+                    Action not permitted!
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer " id="">
+                <p class="text-small text-center text-muted">
+                    <a asp-action="TermsAndConditions" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Terms of Service </a>
+                    <span class="text-smaller text-light-grey">|</span>
+                    <a asp-action="PrivacyPolicy" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">Privacy Policy </a>
+                    <span class="text-smaller text-light-grey">|</span>
+                    <a asp-action="FAQ" asp-controller="Home" class="btn btn-link text-smaller text-light-grey timezoneoffset">FAQs</a>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="ContinueShoppingModal" style="background-color: rgba(255, 255, 255, 0);">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-body">
+                <p class="text-left m-0 text-smaller">
+                    You've just add a item to cart
+                </p>
+            </div>
+            <div class="modal-footer text-right ">
+
+                <button class="btn btn-default btn-sm  text-small  ContinueShoppingButton" >
+                    Continue to shopping ?
+                </button>
+                <a class="btn btn-dark btn-sm  text-small timezoneoffset" asp-action="Cart" asp-controller="Home">
+                    Go to cart
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (User.Identity.IsAuthenticated && User.Identity.HasAnyPermissions(Permission.Bettor, Permission.Capper))
+{
+    <input id="LoadMessagesToMessager" hidden value="1" />
+    <vc:user-message-board></vc:user-message-board>
+}
+else
+{
+    <input id="LoadMessagesToMessager" hidden value="0" />
+}
+
+
+<input id="LogoutURL" hidden value="@Url.Action("LogOut", "Account")" />
+<input id="SignInURL" hidden value="@Url.Action("SignIn", "Account")" />
+<input id="RetrieveMessagesURL" hidden value="@Url.Action("RetrieveMessages", "Home")" />
+<input id="SwitchProfileURL" hidden value="@Url.Action("SwitchProfile", "Account")" />
+
+<vc:session-manager></vc:session-manager>
+
+<script src="@Url.Content("~/app/Shared/WebsiteModals/SignUpModal.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/app/Shared/WebsiteModals/SignInModal.js")" asp-append-version="true"></script>
+

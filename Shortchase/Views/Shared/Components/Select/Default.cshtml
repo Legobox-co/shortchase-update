@@ -1,0 +1,32 @@
+﻿@model ICollection<SelectListItem>
+<div class="w-100">
+    <label for="@ViewData["Id"]" class="mb-0 text-smaller pl-1 font-weight-600 d-block">@ViewData["Label"]</label>
+    <select class="selectpicker @ViewData["Class"]" id="@ViewData["Id"]"
+            @if (ViewData["Required"].ToString() == true.ToString()) { <text> required</text> }
+            @if (ViewData["Searchable"].ToString() == true.ToString()) { <text> data-live-search="true" </text> }>
+
+        @if (!string.IsNullOrWhiteSpace(ViewData["DefaultOption"].ToString()))
+        {
+            <option value="default">@ViewData["DefaultOption"]</option>
+        }
+        @if (Model == null || Model.Count <= 0)
+        {
+            <option value="invalid" selected disabled>No data to select</option>
+        }
+        else
+        {
+
+            foreach (var item in Model)
+            {
+                if (!string.IsNullOrWhiteSpace(ViewData["SelectedValue"].ToString()) && ViewData["SelectedValue"].ToString() == item.Value)
+                {
+                    <option value="@item.Value" selected>@item.Text</option>
+                }
+                else
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            }
+        }
+    </select>
+</div>

@@ -1,0 +1,107 @@
+﻿@model DropdownResultsDto
+
+@if (Model == null || (!Model.HasFreePicks && !Model.HasLivePicks && !Model.HasPremiumPicks && Model.Categories.Count <= 0 && Model.SubCategories.Count <= 0 && Model.Cappers.Count <= 0))
+{
+    <p class="m-0 py-2 px-2 text-smaller">No results found.</p>
+}
+else
+{
+    if (Model.Categories.Count > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="MontserratBold align-items-center d-flex flex-row m-0">
+                    <img src="@Url.Content("~/img/newicons/categories.png")" width="20px" />
+                    <span>&nbsp;</span>
+                    <span class="">Category</span>
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                @foreach (var item in Model.Categories)
+                {
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchCategory" data-id="@item.Id">
+                        @item.Name
+                    </p>
+                }
+            </div>
+        </div>
+        <hr class="m-0 my-1 mb-3" />
+    }
+    if (Model.SubCategories.Count > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="MontserratBold align-items-center d-flex flex-row m-0">
+                    <img src="@Url.Content("~/img/icons/category.png")" width="20px" />
+                    <span>&nbsp;</span>
+                    <span class="">Subcategory</span>
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                @foreach (var item in Model.SubCategories)
+                {
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchSubCategory" data-id="@item.Id" data-categoryid="@item.CategoryId">
+                        @item.Name
+                    </p>
+                }
+            </div>
+        </div>
+        <hr class="m-0 my-1 mb-3" />
+    }
+    if (Model.HasFreePicks || Model.HasLivePicks || Model.HasPremiumPicks)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="MontserratBold align-items-center d-flex flex-row m-0">
+                    <img src="@Url.Content("~/img/newicons/picks.png")" width="20px" />
+                    <span>&nbsp;</span>
+                    <span class="">Pick Type</span>
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                @if (Model.HasPremiumPicks)
+                {
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchPickType" data-type="@BetListingType.Premium">
+                        Premium
+                    </p>
+                }
+                @if (Model.HasLivePicks)
+                {
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchPickType" data-type="@BetListingType.Live">
+                        Live
+                    </p>
+                }
+                @if (Model.HasFreePicks)
+                {
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchPickType" data-type="@BetListingType.Free">
+                        Free
+                    </p>
+                }
+            </div>
+        </div>
+        <hr class="m-0 my-1 mb-3" />
+    }
+    if (Model.Cappers.Count > 0)
+    {
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="MontserratBold align-items-center d-flex flex-row m-0">
+                    <img src="@Url.Content("~/img/icons/user.png")" width="20px" />
+                    <span>&nbsp;</span>
+                    <span class="">Capper</span>
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                @foreach (var item in Model.Cappers)
+                {
+                    string searchKeyword = item.FirstName +" "+item.LastName;
+                    <p class="m-0 py-2 px-3 text-left text-smaller clickable dropdownlink DropdownSearchCapper" data-search="@searchKeyword">
+                        @item.FirstName @item.LastName
+                    </p>
+                }
+            </div>
+        </div>
+    }
+
+
+}

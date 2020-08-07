@@ -1,0 +1,153 @@
+﻿@model ShoppingCartDto
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container post-a-pick-container">
+        <div class="card">
+            <div class="card-body">
+                <div class="p-4 table-cart-shortchase-wrapper">
+                    @if (Model.Items != null && Model.Items.Count > 0)
+                    {
+                        <table class="table table-cart-shortchase mb-0">
+                            <thead>
+                                <tr>
+                                    <th width="55%">Listing</th>
+                                    <th width="20%">Sold by</th>
+                                    <th width="10%">Price</th>
+                                    <th width="5%" class="text-center">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+
+                                    <tr>
+                                        <td>@item.ListingTitle</td>
+                                        <td>@item.SoldBy</td>
+                                        <td>@item.Price.ToString("0.00")</td>
+                                        <td class="text-center">
+                                            <button class="btn m-0 p-0 text-danger RemoveItemFromCartBtn" data-item="@item.ListingId">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <p class=" text-right">
+                            <button class="btn btn-link btn-sm CleanCartBtn text-smallest">Remove all items</button>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-center m-0 py-3">
+                            There are no items on your cart.
+                            <br /><br />
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-dark text-small timezoneoffset">
+                                Back
+                            </a>
+                        </p>
+                    }
+
+                </div>
+
+                @if (Model.Items != null && Model.Items.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-7"></div>
+                        <div class="col-sm-12 col-md-6 col-lg-5">
+                            <div class="p-4 table-cart-summary-shortchase-wrapper">
+                                <h4 class="MontserratBold text-dark">
+                                    Order summary
+                                </h4>
+                                <table class="table table-cart-summary-shortchase">
+                                    <tr>
+                                        <th>
+                                            Order Value
+                                        </th>
+                                        <td class="text-right">
+                                            $ @Model.TotalBeforeDiscount.ToString("0.00")
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>
+                                            Service Fee
+                                        </th>
+                                        <td class="text-right">
+                                            $  @Model.ServiceFee.ToString("0.00")<br />
+                                            <p class="text-muted m-0 text-smaller">@Model.ServiceFeePercent.ToString("0.00")% of $ @Model.TotalBeforeTaxAndFees.ToString("0.00")</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            Est. Tax
+                                        </th>
+                                        <td class="text-right">
+                                            $  @Model.EstimatedTax.ToString("0.00")
+                                            <p class="text-muted m-0 text-smaller">@Model.EstimatedTaxPercent.ToString("0.00")% of $ @Model.TotalBeforeTaxAndFees.ToString("0.00")</p>
+                                        </td>
+                                    </tr>
+                                    @if (Model.Discount > 0.00m)
+                                    {
+                                        <tr>
+                                            <th>
+                                                Referral Discount
+                                            </th>
+                                            <td class="text-right">
+                                                - $  @Model.Discount.ToString("0.00")<br />
+                                                <p class="text-muted m-0 text-smaller">@Model.DiscountPercent.ToString("0.00")% of $ @Model.TotalBeforeDiscount.ToString("0.00")</p>
+                                            </td>
+                                        </tr>
+                                    }
+                                    @if (Model.WalletFunds > 0.00m)
+                                    {
+                                        <tr>
+                                            <th>
+                                                Shortchase Reward
+                                            </th>
+                                            <td class="text-right">
+                                                $  @Model.WalletFunds.ToString("0.00")
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr class="MontserratBlack text-danger">
+                                        <th>
+                                            Order Total
+                                        </th>
+                                        <td class="text-right">
+                                            $  @Model.TotalAfterTax.ToString("0.00")
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="text-left">
+                                    @if (Model.Items != null && Model.Items.Count > 0)
+                                    {
+                                        <a asp-action="Checkout" asp-controller="Home" class="btn btn-dark text-small timezoneoffset">
+                                            Proceed to Checkout
+                                        </a>
+                                    }
+
+                                    <a asp-action="Index" asp-controller="Home" class="btn btn-dark text-small timezoneoffset">
+                                        Cancel
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<input type="hidden" id="RemoveItemCartUrl" value="@Url.Action("RemoveItemCart", "Home")" />
+<input type="hidden" id="CleanCartUrl" value="@Url.Action("CleanCart", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/Cart.js")" asp-append-version="true"></script>
+}

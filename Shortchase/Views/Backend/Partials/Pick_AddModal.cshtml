@@ -1,0 +1,53 @@
+﻿@model PickListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row"   enctype="multipart/form-data" id="AddPickModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12 pb-3">
+                <vc:select id="AddCategory" label="Category" class="" required="true" searchable="true" default="" options="@Model.CategoriesOptions" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="AddTeam1" label="Home Team" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <input type="file" class="custom-file-input" hidden id="Team1PhotoFile">
+                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block text-left" for="Team1PhotoFile">
+                    <span class="img-crop-wrapper rounded-circle mb-3">
+                        <img src=" " class="img-fluid img-crop" />
+                    </span>
+                    <span id="pictureLabel1" class="MontserratBold pl-2">Choose Image for Home Team</span>
+                </label>
+              
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="AddTeam2" label="Away Team" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <input type="file" class="custom-file-input" hidden id="Team2PhotoFile">
+                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block text-left" for="Team2PhotoFile">
+                    <span class="img-crop-wrapper rounded-circle mb-3">
+                        <img src=" " class="img-fluid img-crop" />
+                    </span>
+                    <span id="pictureLabel2" class="MontserratBold pl-2">Choose Image for Away Team</span>
+                </label>
+               
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-input id="AddDateTimeStart" label="Start Time" value=""></vc:bet-listing-date-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-input id="AddDateTimeFinish" label="Finish Time" value=""></vc:bet-listing-date-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddModalContent" id="AddPickModal" locked="false" title="Add Pick"></vc:modal>
+
+
+<input id="AddPickModalURL" hidden value="@Url.Action("AddPick", "Backend")" />
+

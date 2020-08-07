@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+<div class="text-center headerJumbotron headerJumbotron3 " >
+    <div class="container">
+        <div class="row pb-0 pb-sm-0 pb-md-5 pb-lg-5 pb-xl-5">
+            <div class="col-sm-12 ">
+                <h1 class=" mt-5 dark-text-shortchase text-shadow-big d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                    The Marketplace
+                </h1>
+                <h1 class=" mt-5 dark-text-shortchase text-shadow-big d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+                    The Marketplace
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-center  marketplace-background" >
+                <h2 class=" text-center py-4 section-marketplace-title" style="margin-bottom:-10px">
+                    Browse Marketplace
+                </h2>
+                <p class="section-text text-big pb-0 pb-sm-0 pb-md-5 pb-lg-2 pb-xl-5">
+                    Get in on the action now
+                </p>
+            </div>
+        </div>
+
+        <vc:home-categories-marketplace-display show-all-items="true"></vc:home-categories-marketplace-display>
+    </div>
+</section>
+
+<input id="SearchResultsUrl" hidden value="@Url.Action("SearchResults", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/Marketplace.js")" asp-append-version="true"></script>
+}

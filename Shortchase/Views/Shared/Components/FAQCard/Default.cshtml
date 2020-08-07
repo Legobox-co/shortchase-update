@@ -1,0 +1,20 @@
+﻿@{ 
+    string targetValue = "#faqitem"+ ViewData["ItemId"].ToString();
+    string targetId = "faqitem"+ ViewData["ItemId"].ToString();
+    string question = ViewData["Question"].ToString();
+    string answer = ViewData["Answer"].ToString();
+
+}
+<div class="card ">
+    <div class="card-body py-2 text-grey-3">
+        <div class="faq-question" data-toggle="collapse" data-target="@targetValue" aria-expanded="false" aria-controls="@targetId">
+            @question
+        </div>
+        <div class="collapse faq-answer" id="@targetId">
+            @if (!string.IsNullOrWhiteSpace(answer))
+            {
+                <text>@Html.Raw(answer)</text>
+            }
+        </div>
+    </div>
+</div>

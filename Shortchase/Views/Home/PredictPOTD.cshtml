@@ -1,0 +1,113 @@
+﻿@model PredictPOTDDto
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+
+    string name = Model.POTD.Title;
+    string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + Model.POTD.Category.MarketplaceImage);
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-sm-12 col-md-1 col-lg-2">
+
+            </div>
+            <div class="col-sm-12 col-md-10 col-lg-8">
+                <div class="card shadow predict-potd-card-wrapper">
+                    <div class="card-body text-center predict-potd-card py-5">
+                        <h2 class="section-title py-1 text-center ">
+                            Post a Prediction
+                        </h2>
+                        <hr />
+
+                        <a asp-action="ViewPOTD" asp-controller="Home" asp-route-Id="@Model.POTD.Id" class="d-none d-sm-none d-md-flex d-lg-flex justify-content-center text-darker align-items-center no-transform-link timezoneoffset">
+                            <img src="@imageURL" class="img-fluid img-max-size" />
+                            <h4 class="m-0 px-2 MontserratBold text-grey-dark-3">
+                                @name
+                            </h4>
+                        </a>
+
+                        <a asp-action="ViewPOTD" asp-controller="Home" asp-route-Id="@Model.POTD.Id" class="d-flex d-sm-flex d-md-none d-lg-none justify-content-center text-darker align-items-center no-transform-link flex-column timezoneoffset">
+                            <img src="@imageURL" class="img-fluid img-max-size" />
+                            <h4 class="m-0 px-2 MontserratBold text-grey-dark-3">
+                                @name
+                            </h4>
+                        </a>
+
+                        @if (Model.POTD.Pick.FinishTime <= DateTime.UtcNow)
+                        {
+                            <a asp-action="ViewPOTD" asp-controller="Home" asp-route-Id="@Model.POTD.Id" class="btn btn-dark px-5 py-2 mt-3">
+                                Live Reporting
+                            </a>
+                        }
+                        else
+                        {
+                            <form id="NewPredictionPOTDForm">
+                                <div class="row py-3">
+                                    <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                                    <div class="col-sm-12 col-md-10 col-lg-8">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                                <div class="list-a-pick-form-input-wrapper">
+                                                    <select class="" id="PredictMarket" name="PredictMarket">
+                                                        <option id="" value="0" selected disabled>Select Market</option>
+                                                        @if (Model.MarketOptions != null && Model.MarketOptions.Count > 0)
+                                                        {
+                                                            foreach (var item in Model.MarketOptions)
+                                                            {
+                                                                <option value="@item.Id">@item.Name</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                                <div class="list-a-pick-form-input-wrapper">
+                                                    <select class="" id="PredictTip" name="PredictTip" disabled>
+                                                        <option id="" value="0" selected disabled>Select Tip</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input class="" type="hidden" id="POTDId" name="POTDId" value="@Model.POTD.Id">
+                                    </div>
+                                    <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                                </div>
+                                <div class="py-3">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+
+                                        <button class="btn btn-dark px-5 py-2" type="submit">
+                                            Post
+                                        </button>
+                                    }
+                                    else
+                                    {
+
+                                        <button class="btn btn-dark px-5 py-2 PostAPredictionNotSignedIn" type="button">
+                                            Post
+                                        </button>
+
+                                    }
+                                </div>
+                            </form>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-1 col-lg-2">
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<input id="SavePredictionPOTDURL" hidden value="@Url.Action("SavePredictionPOTD", "Home")" />
+
+<input id="GetDependentDataFromMarketURL" hidden value="@Url.Action("GetDependentDataFromMarket", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/PredictPOTD.js")" asp-append-version="true"></script>
+}

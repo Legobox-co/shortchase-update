@@ -1,0 +1,229 @@
+﻿@model ViewListingsInOrderDto
+@{
+    Layout = "_WebsiteLayout";
+}
+
+
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row">
+            @*<div class="col-sm-12 col-md-12 text-center">
+                <h2 class="section-title">
+                    Order #@Model.Order.OrderNumber
+                </h2>
+
+            </div>*@
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+            <div class="col-sm-12 col-md-8 col-lg-8 col-lg-8 px-sm-1 px-md-1 px-lg-1 px-0">
+
+                <div class="container-fluid">
+
+                    <div class="card bg-listing-detail shadow my-4">
+                        <div class="card-body py-2 px-2">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                                    <p class=" my-2">
+
+                                        <span class="bg-danger text-white text-smallest py-1 px-2 MontserratMedium">
+                                            @Model.CurrentItem.BetListing.PickType
+                                        </span>
+                                    </p>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <h2 class="MontserratMedium text-center">@Model.CurrentItem.BetListing.Title</h2>
+                                    <p class="MontserratMedium text-center pt-2 m-0">
+                                        @if (Model.CurrentItem.BetListing.PickType == BetListingType.Free)
+                                        {
+                                            <text>Free</text>
+                                        }
+                                        else
+                                        {
+                                            <text>$ @Model.CurrentItem.BetListing.Price</text>
+                                        }
+                                    </p>
+                                    <hr class="m-0 my-3 mx-2" />
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-1"></div>
+                                            <div class="col-sm-12 col-md-12 col-lg-10 text-small">
+                                                <div class="row">
+
+                                                    <p class="col-12 m-0 p-0 y-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low ">
+                                                            PICK:
+                                                        </span>&nbsp;
+                                                        @Model.CurrentItem.BetListing.Pick.Team1 vs @Model.CurrentItem.BetListing.Pick.Team2
+                                                    </p>
+                                                    @{
+                                                        string oddsClass = "text-danger MontserratBold";
+                                                        string oddsTitle = "Not verified by API";
+                                                        if (Model.CurrentItem.BetListing.ResultVerificationByApi.HasValue)
+                                                        {
+                                                            if (Model.CurrentItem.BetListing.ResultVerificationByApi.Value)
+                                                            {
+                                                                oddsClass = "text-success MontserratBold";
+                                                                oddsTitle = "Verified by API on " + DateHelper.POTDDateFormat(Model.CurrentItem.BetListing.DateVerifiedByApi.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())));
+                                                            }
+                                                        }
+
+                                                    }
+
+                                                    @if (Model.CurrentItem.BetListing.Stake <= 0.0m && Model.CurrentItem.BetListing.Profit <= 0.0m)
+                                                    {
+                                                        <p class="col-12 m-0 p-0 my-2 py-2">
+                                                            <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                ODDS:
+                                                            </span>&nbsp;
+                                                            <span class="@oddsClass" title="@oddsTitle">@Model.CurrentItem.BetListing.Odds</span>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Model.CurrentItem.BetListing.Stake <= 0.0m && Model.CurrentItem.BetListing.Profit > 0.0m)
+                                                        {
+                                                            <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    ODDS:
+                                                                </span>&nbsp;
+                                                                <span class="@oddsClass" title="@oddsTitle">@Model.CurrentItem.BetListing.Odds</span>
+                                                            </p>
+                                                            <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    PROFIT:
+                                                                </span>&nbsp;
+                                                                @Model.CurrentItem.BetListing.Profit
+                                                            </p>
+                                                        }
+                                                        else if (Model.CurrentItem.BetListing.Stake > 0.0m && Model.CurrentItem.BetListing.Profit <= 0.0m)
+                                                        {
+
+                                                            <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    ODDS:
+                                                                </span>&nbsp;
+                                                                <span class="@oddsClass" title="@oddsTitle">@Model.CurrentItem.BetListing.Odds</span>
+                                                            </p>
+                                                            <p class="col-6 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    STAKE:
+                                                                </span>&nbsp;
+                                                                @Model.CurrentItem.BetListing.Stake
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    ODDS:
+                                                                </span>&nbsp;
+                                                                <span class="@oddsClass" title="@oddsTitle">@Model.CurrentItem.BetListing.Odds</span>
+                                                            </p>
+                                                            <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    STAKE:
+                                                                </span>&nbsp;
+                                                                @Model.CurrentItem.BetListing.Stake
+                                                            </p>
+                                                            <p class="col-4 m-0 p-0 my-2 py-2">
+                                                                <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                                    PROFIT:
+                                                                </span>&nbsp;
+                                                                @Model.CurrentItem.BetListing.Profit
+                                                            </p>
+                                                        }
+                                                    }
+
+                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                            DESCRIPTION:
+                                                        </span>&nbsp;
+                                                        @Model.CurrentItem.BetListing.Description
+                                                    </p>
+                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                            SCHEDULE:
+                                                        </span>&nbsp;
+                                                        @DateHelper.POTDDateFormat(Model.CurrentItem.BetListing.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                    </p>
+                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                            ANALYSIS:
+                                                        </span>&nbsp;
+                                                        @Model.CurrentItem.BetListing.Analysis
+                                                    </p>
+                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                            PREDICTION:
+                                                        </span>&nbsp;
+                                                        @Model.CurrentItem.BetListing.Tip.Description
+                                                    </p>
+                                                    <p class="col-12 m-0 p-0 my-2 py-2">
+                                                        <span class="text-uppercase bg-listing-detail-text-emphasis text-white py-1 px-2 border-radius-ultra-low">
+                                                            WHERE TO PLAY:
+                                                        </span>&nbsp;
+                                                        @Model.CurrentItem.BetListing.Bookmaker.Description
+                                                    </p>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="text-center">
+                    <ul class="pagination justify-content-center">
+
+                        @if (Model.OrderItems.Count > 1)
+                        {
+                            Guid FirstId = Model.OrderItems.First().Id;
+                            Guid LastId = Model.OrderItems.Last().Id;
+                            int iterationCount = 1;
+                            <li class="page-item text-dark bg-white clickable GoToCurrentItemBtn text-smaller" data-id="@FirstId"><span class="page-link"><i class="fas fa-angle-double-left"></i></span></li>
+                            @foreach (var item in Model.OrderItems)
+                            {
+
+                                string itemClass = "bg-white clickable GoToCurrentItemBtn";
+                                string innerSpan = "bg-white clickable";
+                                if (Model.CurrentItem.Id == item.Id)
+                                {
+                                    itemClass = "text-white blue-pagination-active MontserratBold GoToCurrentItemBtn";
+                                    innerSpan = "text-white blue-pagination-active MontserratBold";
+                                }
+                                <li class="page-item  text-smaller @itemClass" data-id="@item.Id"><span class="page-link @innerSpan">@iterationCount</span></li>
+
+                                iterationCount++;
+                            }
+                            <li class="page-item text-dark bg-white clickable GoToCurrentItemBtn text-smaller" data-id="@LastId"><span class="page-link"><i class="fas fa-angle-double-right"></i></span></li>
+                        }
+                        else
+                        {
+                            <li class="page-item MontserratBold text-smaller  "><span class="page-link text-white blue-pagination-active ">1</span></li>
+                        }
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+        </div>
+
+    </div>
+</section>
+
+<input type="hidden" id="ViewListingsInOrderURL" value="@Url.Action("ViewListingsInOrder", "Home")" />
+<input type="hidden" id="OrderParam" value="@Security.LinkEncode(Security.Encrypt(Model.Order.Id.ToString()))" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ViewListingsInOrder.js")" asp-append-version="true"></script>
+}

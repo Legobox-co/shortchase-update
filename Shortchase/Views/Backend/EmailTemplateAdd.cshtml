@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-envelope"></i>*@
+                        <img src="@Url.Content("~/img/newicons/email-portal.png")" class="img-fluid" width="40px" />&nbsp;
+                        Add Email Template
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <a class="btn btn-link timezoneoffset" asp-action="EmailTemplateEditor" asp-controller="Backend">
+                        <img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <form class="row" id="AddEmailForm">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <vc:input id="AddSubject" label="Subject" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <vc:input id="AddTitle" label="Title" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <p class="pl-1 m-0 text-smaller font-weight-bold">Content</p>
+                        <textarea class="form-control resize-only-vertical max-height-medium" id="AddContent" placeholder=""></textarea>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                        <button type="submit" class="btn btn-dark-as-homepage">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="RedirectURL" hidden value="@Url.Action("EmailTemplateEditor", "Backend")" />
+<input id="CreateNewEmailTemplateURL" hidden value="@Url.Action("CreateNewEmailTemplate", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/EmailTemplateAdd.js")" asp-append-version="true"></script>
+}

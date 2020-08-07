@@ -1,0 +1,227 @@
+﻿@model UserProfilePageDto;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5 px-4">
+                <h2 class="section-title ">
+                    Profile
+                </h2>
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        @{
+
+                            string profilePicture = Url.Content("~/img/avatar.png");
+                            if (!string.IsNullOrWhiteSpace(Model.Picture))
+                            {
+                                profilePicture = ImageHelper.ConvertImageToBase64(Model.Picture);
+                            }
+                            
+                        }
+                        <img src="@profilePicture" class="img-fluid rounded-circle" />
+                    </div>
+                    <div class="col-sm-12 col-md-8 py-4">
+                        <h4 class="MontserratMedium">
+                            @Model.Name
+                        </h4>
+
+                        @for (int i = 1; i <= 5; ++i)
+                        {
+
+                            if (Model.Rating >= i)
+                            {
+                                @*<i class="fas fa-star text-yellow-light"></i>*@
+                                <img src="@Url.Content("~/img/newicons/fullstar.png")" width="13px" />
+                            }
+                            else
+                            {
+                                @*<i class="fas fa-star text-grey-light-2"></i>*@
+                                <img src="@Url.Content("~/img/newicons/greystar.png")" width="13px" />
+                            }
+                        }
+
+                        @if (!User.Identity.HasAnyPermissions(Permission.Admin) && Model.IsFollowing.HasValue)
+                        {
+                            if (Model.IsFollowing.Value)
+                            {
+                                <br />
+                                <button class="btn btn-warning text-smaller UnfollowUserBtn" data-to="@Model.Id">
+                                    Following
+                                </button>
+                            }
+                            else
+                            {
+                                <br />
+                                <button class="btn btn-warning text-smaller FollowUserBtn" data-to="@Model.Id">
+                                    Follow
+                                </button>
+                            }
+                        }
+
+                    </div>
+                   
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 pt-3 pb-1">
+                        <h5 class="bg-grey-purple text-center text-white MontserratBold py-3 light-rounded-corners shadow">
+                            Intro
+                        </h5>
+                        <p class="m-0 py-3 text-justify">
+                            @Model.Intro
+                        </p>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 py-1">
+                        <p class="m-0 py-3 ">
+                            <span class="bg-grey-purple text-center text-white MontserratMedium py-2 px-4 mr-2 light-rounded-corners line-height-2">
+                                From
+                            </span>
+
+                            @Model.From
+                        </p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 py-1">
+                        <p class="m-0 py-3 ">
+                            <span class="bg-grey-purple text-center text-white MontserratMedium py-2 px-4 mr-2 light-rounded-corners line-height-2">
+                                Joined Since
+                            </span>
+                            @DateHelper.DateSimpleFormat(Model.JoinedSince.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                        </p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 py-1">
+                        <p class="m-0 py-3 ">
+                            <span class="bg-grey-purple text-center text-white MontserratMedium py-2 px-4 mr-2 light-rounded-corners line-height-2">
+                                Last Posted
+                            </span>
+                            @if (Model.LastPosted.HasValue)
+                            {
+                                <text>@DateHelper.DateFormat(Model.LastPosted.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</text>
+                            }
+                            else
+                            {
+                                <text>Never</text>
+                            }
+
+                        </p>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12 py-1">
+                        <hr />
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-12">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <h5 class="bg-grey-purple text-center text-white MontserratBold py-3 light-rounded-corners shadow mb-0">
+                                    Picks
+                                </h5>
+                                <p class="m-0 py-3 text-center MontserratBold">
+                                    @Model.Picks
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <h5 class="bg-grey-purple text-center text-white MontserratBold py-3 light-rounded-corners shadow mb-0">
+                                    Wins
+                                </h5>
+                                <p class="m-0 py-3 text-center MontserratBold">
+                                    @Model.Wins
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <h5 class="bg-grey-purple text-center text-white MontserratBold py-3 light-rounded-corners shadow mb-0">
+                                    Hit Rate
+                                </h5>
+                                <p class="m-0 py-3 text-center MontserratBold">
+                                    @Model.HitRate.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)%
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-sm-12 col-md-12">
+                        <h5 class="bg-grey-purple text-center text-white MontserratBold py-3 light-rounded-corners shadow">
+                            Last 10 Picks (Verified)
+                        </h5>
+                        <p class="text-small m-0 p-1 text-center">
+                            @if (Model.Last10Picks != null && Model.Last10Picks.Count > 0)
+                            {
+                                foreach (var item in Model.Last10Picks)
+                                {
+                                    if (item.HasValue)
+                                    {
+                                        if (item.Value)
+                                        {
+                                            <span class="light-rounded-corners p-1 px-1 bg-success text-white" data-toggle="tooltip" data-placement="top" title="Correct"><i class="fas fa-check"></i></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="light-rounded-corners py-1 px-2 bg-danger text-white" data-toggle="tooltip" data-placement="top" title="Wrong"><i class="fas fa-times"></i></span>
+                                        }
+                                    }
+                                    @*else
+                                    {
+                                        <span class="light-rounded-corners py-1 px-2 bg-warning text-white" data-toggle="tooltip" data-placement="top" title="Waiting results"><i class="fas fa-question"></i></span>
+                                    }*@
+                                }
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-7 ">
+                <h2 class="section-title ">
+                    Listings
+                </h2>
+
+                <div class="row">
+                    @if (Model.Listings == null || Model.Listings.Count <= 0)
+                    {
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <p>
+                                No listings yet.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        int iterationCount = 0;
+                        foreach (var item in Model.Listings)
+                        {
+                            iterationCount++;
+                            <vc:bet-listing-toggle-card item="@item" name="@Model.Name" picture="@profilePicture" iteration="@iterationCount"></vc:bet-listing-toggle-card>
+                        }
+
+
+                        <div class="w-100 mt-2">
+                            <vc:profile-pagination action="@Url.Action("Profile", "Home")" id="@Model.Id" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:profile-pagination>
+                        </div>
+                    }
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<input id="FollowUserURL" hidden value="@Url.Action("FollowUser", "Home")" />
+<input id="UnfollowUserURL" hidden value="@Url.Action("UnfollowUser", "Home")" />
+<input id="EvaluateUserURL" hidden value="@Url.Action("EvaluateUser", "Home")" />
+<input id="ReEvaluateUserURL" hidden value="@Url.Action("ReEvaluateUser", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/Profile.js")" asp-append-version="true"></script>
+}

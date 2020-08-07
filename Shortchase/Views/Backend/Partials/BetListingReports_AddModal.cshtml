@@ -1,0 +1,18 @@
+﻿@model BetListingReportListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddBetListingReportModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:textarea id="AddReportContent" label="Report Content" class="" required="true" placeholder="e.g. User used false information" value="" disabled="false"></vc:textarea>
+            </div>
+            <input type="hidden" id="AddReportedListingId" value="@Model.BetListing.Id" />
+            <input type="hidden" id="AddReportedById" value="@User.Identity.Id()" />
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+    </div>;}
+<vc:modal content="AddModalContent" id="AddBetListingReportModal" locked="false" title="Add Listing Report"></vc:modal>
+
+<input id="AddBetListingReportItemModalURL" hidden value="@Url.Action("AddBetListingReport", "Backend")" />

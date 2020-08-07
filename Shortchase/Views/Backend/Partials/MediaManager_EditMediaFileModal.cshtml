@@ -1,0 +1,61 @@
+﻿@model MediaFolderListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditFileModalContent = @<div>
+        <form class="row" id="EditMediaFileModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditFileTitle" label="File Title" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+            <input type="hidden" id="EditFileId" value="0" />
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <img class="img-fluid" src="" id="EditFilePreviewMedia" />
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <p class="m-0">
+                    <span class="MontserratBold">Size: </span><span id="EditFileSize"></span> Kb<br />
+                    <span class="MontserratBold">Width: </span><span id="EditFileWidth"></span> pixels<br />
+                    <span class="MontserratBold">Height: </span><span id="EditFileHeight"></span> pixels<br />
+                    <span class="MontserratBold">Last Updated: </span><span id="EditFileLastUpdated"></span><br />
+                    @*<span class="MontserratBold">URL: </span><a href="#" target="_blank" class="btn btn-link" id="EditFileURL">Click here</a>*@
+                </p>
+                <button type="submit" form="FileDownloadForm" class="btn btn-success mt-2 btn-sm">Download</button>
+
+                <br />
+                <button type="button" class="btn btn-primary mt-2 CropMediaBtn  btn-sm">Crop</button>
+                <br />
+                <button type="button" class="btn btn-info mt-2 MoveMediaFormBtn  btn-sm">Move</button>
+                <br />
+                <button type="button" class="btn btn-danger mt-2 DeleteMediaFIleBtn  btn-sm">Delete</button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 py-3" style="display:none;" id="MoveFileForm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-9 col-lg-9">
+                        <vc:select id="MoveToId" label="Folder to move" class="w-100" required="true" searchable="true" default="Top Level" options="@Model.ParentFolderOptions" selected-value=""></vc:select>
+                    </div>
+                    <div class="col-sm-12 col-md-3 col-lg-3 pt-2 mt-1 text-right">
+                        <button type="button" class="btn btn-info mt-2 FinishMoveMediaFormBtn">Finish Move</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="pt-2 m-0 text-muted text-smaller MontserratBlack">
+                    <i class="fas fa-exclamation-triangle"></i> Important
+                </p>
+                <p class="py-2 m-0 text-muted text-smaller">
+                    For images to be used as the "Category Image" for listing Categories, use the following standard size: <br />350 pixels (width) x 220 pixels (height)
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+        <form id="FileDownloadForm" action="@Url.Action("DownloadMediaFile", "Backend")" >
+            <input type="hidden" id="FileIdDownload" name="FileIdDownload" value="" />
+        </form>
+
+    </div>;}
+<vc:modal content="EditFileModalContent" id="EditMediaFileModal" locked="false" title="Edit Media File"></vc:modal>
+
+
+<input id="EditMediaFileModalURL" hidden value="@Url.Action("EditMediaFile", "Backend")" />
+<input id="MoveMediaFileModalURL" hidden value="@Url.Action("MoveMediaFile", "Backend")" />

@@ -1,0 +1,16 @@
+﻿<div class="list-a-pick-form-input-wrapper list-a-pick-form-input-wrapper-datepicker flex-column">
+    <label class="text-left">
+        <span class="MontserratBold text-small text-dark-1">@ViewData["Label"]</span>
+    </label>
+    <div class="text-left w-100 list-a-pick-textarea-wrapper">
+        <textarea rows="6" class="charCount" id="@ViewData["Id"]" name="@ViewData["Id"]" placeholder="@ViewData["Placeholder"]" maxlength="@ViewData["MaxLength"]" minlength="@ViewData["MinLength"]"></textarea>
+        <div class="">
+            <span class="m-0 text-small text-light-grey text-right text-char-count float-right">
+                <span id="@ViewData["Id"]_CharCount">
+                    0
+                </span>
+                / @ViewData["MaxLength"]
+            </span>
+        </div>
+    </div>
+</div>

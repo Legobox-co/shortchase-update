@@ -1,0 +1,158 @@
+﻿@model ViewPOTDWebsite;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+
+    string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + Model.POTD.Category.MarketplaceImage);
+}
+<div class="text-center headerJumbotron headerJumbotron4">
+    <div class="container">
+        <div class="row pb-5">
+            <div class="col-sm-12 ">
+                <h1 class=" mt-5 dark-text-shortchase text-shadow-big huge-title">
+                    Prediction Feed
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="bg-grey-dark-3">
+    <div class="container extended-container">
+        <div class="card shadow-sm">
+            <div class="card-body py-5 text-center">
+                <h2 class="MontserratBold text-dark m-0 py-2 text-underlined">
+                    @Model.POTD.Title
+                </h2>
+                <p class="text-grey-solid text-small m-0 pt-1 pb-2">
+                    Posted on @DateHelper.DateFormat(Model.POTD.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                </p>
+                <p class="text-grey-solid MontserratBold px-3 py-3 m-0">
+                    @Model.POTD.Pick.Team1 vs @Model.POTD.Pick.Team2
+                </p>
+                <h5 class=" text-grey-solid m-0 py-3 pb-4">
+                    @Model.POTD.Venue
+                </h5>
+                <p class="text-grey-solid text-small px-3 py-3 m-0">
+                    @Model.POTD.Description
+                </p>
+
+                @if (Model.NextPOTD != null)
+                {
+                    <p class="text-grey-solid text-small py-5">
+                        Next:
+                        <a class="btn btn-light btn-rounded-corners timezoneoffset" asp-action="ViewPOTD" asp-controller="Home" asp-route-Id="@Model.NextPOTD.Id">
+                            @Model.NextPOTD.Title
+                        </a>
+                    </p>
+                }
+
+
+                @*@if (Model.UserPrediction != null)
+        {
+            <div class="text-center py-3">
+                <h5 class="MontserratBold">My Prediction</h5>
+                <p class="m-0 py-2">@Model.UserPrediction.Prediction</p>
+                <p class="text-muted text-smaller">@DateHelper.DateFormat(Model.UserPrediction.DatePredicted.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</p>
+            </div>
+        }*@
+
+                <h4 class="MontserratMedium text-dark m-0 py-2">
+                    Live Reporting
+                </h4>
+                <div class="row">
+                    <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                    <div class="col-sm-12 col-md-10 col-lg-8">
+                        <div class="liveReportingBox shadow-sm">
+                            @if (Model.LiveReportings != null && Model.LiveReportings.Count > 0)
+                            {
+                                <div class="container">
+                                    @foreach (var item in Model.LiveReportings)
+                                    {
+                                        <div class="row py-2">
+                                            <div class="col-sm-12 col-md-12 col-lg-6 text-left">
+                                                <p class="m-0 text-smaller font-weight-bolder pt-2">@item.ReportedBy.FirstName @item.ReportedBy.LastName</p>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-6 text-right">
+                                                <p class="m-0 text-smaller font-weight-bolder pt-2">@DateHelper.DateFormat(item.DateTimeReported.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</p>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 text-left ">
+                                                <div class="bg-white p-1 m-0">
+                                                    @Html.Raw(item.Report)
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 text-left">
+                                                @{
+                                                    string likeClass = "";
+                                                    string dislikeClass = "";
+                                                    string userId = User.Identity.Id();
+                                                    if (item.UserInteractions.Any(i => i.InteractionType == UserInteractionType.Like && i.InteractedById.ToString() == userId))
+                                                    {
+                                                        likeClass = "text-info";
+                                                    }
+                                                    if (item.UserInteractions.Any(i => i.InteractionType == UserInteractionType.Dislike && i.InteractedById.ToString() == userId))
+                                                    {
+                                                        dislikeClass = "text-info";
+                                                    }
+
+                                                }
+                                                <button class="btn btn-sm UserInteractionBtn @likeClass" data-report="@item.Id" data-user="@userId" data-interaction="@UserInteractionType.Like"><i class="fas fa-thumbs-up"></i> @item.UserInteractions.Count(i => i.InteractionType == UserInteractionType.Like)</button>
+                                                <button class="btn btn-sm UserInteractionBtn @dislikeClass" data-report="@item.Id" data-user="@userId" data-interaction="@UserInteractionType.Dislike"><i class="fas fa-thumbs-down"></i> @item.UserInteractions.Count(i => i.InteractionType == UserInteractionType.Dislike)</button>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        @*<div class="row py-3">
+                    <div class="col-sm-12 col-md-8 col-lg-9">
+                        <textarea class="potd-textarea shadow-sm" rows="3" placeholder="Type your message here"></textarea>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" hidden id="inputGroupFile01">
+                                <label class="custom-file-label no-label-file-input btn btn-dark text-small" for="inputGroupFile01">
+                                    <i class="fas fa-upload"></i>
+                                    Choose file to upload
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-lg-3 ">
+                        <div class="d-flex h-100 justify-content-center align-items-center">
+
+                            <button class="btn btn-send-potd btn-block shadow-sm py-3">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>*@
+                    </div>
+                    <div class="col-sm-12 col-md-1 col-lg-2"></div>
+                </div>
+                <div class="text-center py-3">
+                    @{
+                        string urlToShare = "https://www.shortchase.com/ViewPOTD/" + Model.POTD.Id.ToString() + "?TimeOffset=" + ViewData["TimezoneOffset"].ToString();
+                        string facebookShareURL = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
+                        string twiterShareURL = "https://twitter.com/share?url=" + urlToShare;
+                    }
+                    <a target="_blank" href="@twiterShareURL" class="btn btn-dark btn-social-link btn-twitter text-white ">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a target="_blank" href="@facebookShareURL" class="btn btn-dark btn-social-link btn-facebook text-white ">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<input id="EnterUserInteractionURL" hidden value="@Url.Action("EnterUserInteraction", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ViewPOTD.js")" asp-append-version="true"></script>
+}

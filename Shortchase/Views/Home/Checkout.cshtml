@@ -1,0 +1,285 @@
+﻿@model ShoppingCartDto
+@{
+    Layout = "_WebsiteLayout";
+}
+
+
+@if (!Model.CanCheckout)
+{
+
+    <section class="bg-grey-dark-3">
+        <div class="container post-a-pick-container">
+            <div class="card">
+                <div class="card-body">
+                    <div class="p-4 table-cart-shortchase-wrapper">
+
+                        <p class="text-center m-0 py-3">
+                            One or more items on your cart are no longer valid.
+                            <br /><br />
+                            <a asp-action="Cart" asp-controller="Home" class="btn btn-dark text-small timezoneoffset">
+                                Back to Cart
+                            </a>
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+else
+{
+    <section class="bg-grey-dark-3">
+        <div class="container post-a-pick-container">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 col-lg-3">
+                            @*<div class="bg-gradient-light py-3 px-3 light-rounded-corners shadow-sm ">
+                                    <p class="MontserratBold m-0 px-2 py-1">
+                                        Enter your promo code
+                                    </p>
+                                    <hr class="mx-1 my-2" />
+
+                                    <div class="form-group px-1">
+                                        <input type="text" class="form-control" id="" placeholder="Promo code">
+                                    </div>
+                                    <button class="btn btn-dark btn-block text-smaller">
+                                        Apply Promo
+                                    </button>
+                                </div>*@
+                            <div class="my-3 py-3 px-3 ">
+                                <p class="MontserratBold m-0 px-2 py-1">
+                                    Payment method
+
+                                </p>
+                                <hr class="mx-1 my-2" />
+                                @if (Model.HasEnoughFunds)
+                                {
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input my-0" type="radio" name="paymentType" id="WalletPayment" value="WalletPayment" checked>
+                                        <label class="form-check-label MontserratBold text-smaller d-flex align-items-center text-grey-2" for="WalletPayment">
+                                            Shortchase Wallet
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input my-0" type="radio" name="paymentType" id="PaypalPayment" value="PaypalPayment" checked>
+                                        <label class="form-check-label MontserratBold text-smaller d-flex align-items-center text-grey-2" for="PaypalPayment">
+                                            <img src="@Url.Content("~/img/paypal-icon.png")" class="img-fluid bg-white p-1 medium-rounded-corners" width="100px" />
+                                            Paypal
+                                        </label>
+                                    </div>
+                                    @*<div class="form-check d-flex align-items-center">
+                                            <input class="form-check-input my-0" type="radio" name="paymentType" id="StripePayment" value="StripePayment">
+                                            <label class="form-check-label MontserratBold text-smaller d-flex align-items-center text-grey-2" for="StripePayment">
+                                                <img src="@Url.Content("~/img/stripe-icon.png")" class="img-fluid bg-white p-1 medium-rounded-corners" width="100px" />
+                                                Stripe
+                                            </label>
+                                        </div>*@
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-8 col-lg-9 ">
+                            <div class="bg-gradient-light medium-rounded-corners">
+                                <div class="p-4 table-cart-shortchase-wrapper table-checkout-shortchase-wrapper medium-rounded-top-corners">
+                                    <h5 class="MontserratBold text-dark">
+                                        Shopping Cart
+                                    </h5>
+                                    @if (Model.Items != null && Model.Items.Count > 0)
+                                    {
+                                        <table class="table table-cart-shortchase mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="60%">Listing</th>
+                                                    <th width="25%">Sold by</th>
+                                                    <th width="15%">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.Items)
+                                                {
+
+                                                    <tr>
+                                                        <td>@item.ListingTitle</td>
+                                                        <td>@item.SoldBy</td>
+                                                        <td>@item.Price.ToString("0.00")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+
+                                <div class="p-4 table-cart-summary-shortchase-wrapper table-checkout-summary-shortchase-wrapper medium-rounded-bottom-corners">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <div class="form-check text-smaller">
+                                                <input class="form-check-input my-0 mt-1" type="checkbox" value="" id="TermsAndConditionsAgreement">
+                                                <label class="form-check-label pl-2" for="TermsAndConditionsAgreement">
+                                                    I have read and agree to the <a asp-action="TermsAndConditions" asp-controller="Home" class="text-decoration-none text-dark MontserratBold" target="_blank">Terms & Conditions</a>
+                                                </label>
+                                            </div>
+                                            <div class="form-check text-smaller">
+                                                <input class="form-check-input my-0 mt-1" type="checkbox" value="" id="PrivacyPolicyAgreement">
+                                                <label class="form-check-label pl-2" for="PrivacyPolicyAgreement">
+                                                    I have read and agree to the <a asp-action="PrivacyPolicy" asp-controller="Home" class="text-decoration-none text-dark MontserratBold" target="_blank">Privacy Policy</a>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <h5 class="MontserratBold text-dark">
+                                                Order summary
+                                            </h5>
+                                            <table class="table table-cart-summary-shortchase">
+                                                <tr>
+                                                    <th>
+                                                        Order Value
+                                                    </th>
+                                                    <td class="text-right">
+                                                        $ @Model.TotalBeforeDiscount.ToString("0.00")
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th>
+                                                        Service Fee
+                                                    </th>
+                                                    <td class="text-right">
+                                                        $  @Model.ServiceFee.ToString("0.00")<br />
+                                                        <p class="text-muted m-0 text-smaller">@Model.ServiceFeePercent.ToString("0.00")% of $ @Model.TotalBeforeTaxAndFees.ToString("0.00")</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        Est. Tax
+                                                    </th>
+                                                    <td class="text-right">
+                                                        $  @Model.EstimatedTax.ToString("0.00")
+                                                        <p class="text-muted m-0 text-smaller">@Model.EstimatedTaxPercent.ToString("0.00")% of $ @Model.TotalBeforeTaxAndFees.ToString("0.00")</p>
+                                                    </td>
+                                                </tr>
+
+                                                @if (Model.Discount > 0.00m)
+                                                {
+                                                    <tr>
+                                                        <th>
+                                                            Referral Discount
+                                                        </th>
+                                                        <td class="text-right">
+                                                            - $  @Model.Discount.ToString("0.00")<br />
+                                                            <p class="text-muted m-0 text-smaller">@Model.DiscountPercent.ToString("0.00")% of $ @Model.TotalBeforeDiscount.ToString("0.00")</p>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                @if (Model.WalletFunds > 0.00m)
+                                                {
+                                                    <tr>
+                                                        <th>
+                                                            Shortchase Reward
+                                                        </th>
+                                                        <td class="text-right">
+                                                            $  @Model.WalletFunds.ToString("0.00")
+                                                        </td>
+                                                    </tr>
+                                                }
+                                                <tr class="MontserratBlack text-danger">
+                                                    <th>
+                                                        Order Total <br /><span class="text-muted text-smaller">(after tax and fee)</span>
+                                                    </th>
+                                                    <td class="text-right">
+                                                        $ <span>@Model.TotalAfterTax.ToString("0.00")</span>
+                                                    </td>
+                                                </tr>
+
+
+                                                @{
+                                                    string fontClass = "";
+                                                    if (!Model.HasEnoughFunds)
+                                                    {
+                                                        fontClass = "MontserratBlack d-none";
+                                                    }
+                                                    else {
+                                                        fontClass = "d-none";
+                                                    }
+                                                }
+                                                <tr class="@fontClass">
+                                                    <th>
+                                                        @if (!Model.HasEnoughFunds)
+                                                        {
+                                                            <text>Remaining Value</text>
+                                                        }
+                                                        else
+                                                        {
+                                                            <text>MontserratBlack</text>
+                                                        }
+
+                                                    </th>
+                                                    <td class="text-right">
+                                                        $ <span id="fundsNeededToCompleteOrder">@Model.WalletBalanceAfterPurchase.ToString("0.00")</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-left">
+                                        @if (Model.HasEnoughFunds)
+                                        {
+                                            <button class="btn btn-dark text-small text-white CheckoutButton" data-type="wallet">
+                                                Checkout
+                                            </button>
+                                            <a asp-action="Cart" asp-controller="Home" class="btn btn-default text-small timezoneoffset">
+                                                Back to Cart
+                                            </a>
+                                        }
+                                        else
+                                        {
+
+                                            <button class="btn btn-dark text-small text-white CheckoutButton" data-type="paypal">
+                                                Checkout with Paypal
+                                            </button>
+                                            <a asp-action="Cart" asp-controller="Home" class="btn btn-default text-small timezoneoffset">
+                                                Back to Cart
+                                            </a>
+                                            <br />
+                                            <br />
+                                            <div id="paypalButtonsWrapper" style="display:none;">
+                                                <div id="paypal-button-container"></div>
+                                            </div>
+
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+}
+
+
+<input type="hidden" id="CheckoutByWalletUrl" value="@Url.Action("CheckoutByWallet", "Home")" />
+<input type="hidden" id="CheckoutByPaypalUrl" value="@Url.Action("CheckoutByPaypal", "Home")" />
+<input type="hidden" id="RedirectUrl" value="@Url.Action("Index", "Home")" />
+
+@section Scripts{
+    <vc:paypal-js-script></vc:paypal-js-script>
+    <script src="@Url.Content("~/app/Home/Checkout.js")" asp-append-version="true"></script>
+}

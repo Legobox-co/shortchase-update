@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1028;1031;1052;1822;1303</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191022184353_UpdateIdFromRewardsClaimTable.cs" />
+    <Compile Remove="Migrations\20191022184353_UpdateIdFromRewardsClaimTable.Designer.cs" />
+    <Compile Remove="Migrations\20191120190225_AddedMissingFields.cs" />
+    <Compile Remove="Migrations\20191120190225_AddedMissingFields.Designer.cs" />
+    <Compile Remove="Migrations\20191120190550_AddedListingReport.cs" />
+    <Compile Remove="Migrations\20191120190550_AddedListingReport.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Media\Blog\default.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Helpers\EmailAccount.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.3.103.54" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.100.1" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.101.78" />
+    <PackageReference Include="CsvHelper" Version="12.2.2" />
+    <PackageReference Include="FixerIOCore" Version="1.0.6" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.42.0" />
+    <PackageReference Include="Google.GData.Client" Version="2.2.0" />
+    <PackageReference Include="Google.GData.Contacts" Version="2.2.0" />
+    <PackageReference Include="Google.GData.Extensions" Version="2.2.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.8" />
+    <PackageReference Include="Hangfire.Dashboard.Authorization" Version="2.1.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.8" />
+    <PackageReference Include="Json.Net" Version="1.0.18" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Graph" Version="1.21.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.7.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.6.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="ObjectDumper" Version="1.0.0.12" />
+    <PackageReference Include="PayPalCheckoutSdk" Version="1.0.0" />
+    <PackageReference Include="Rotativa" Version="1.7.3" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0-beta" />
+    <PackageReference Include="ServiceStack.Text" Version="5.7.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <PackageReference Include="Wkhtmltopdf.NetCore" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Media\Blog\" />
+    <Folder Include="Media\User\" />
+    <Folder Include="wwwroot\img\NewFolder\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
+</Project>

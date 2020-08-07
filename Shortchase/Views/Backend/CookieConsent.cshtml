@@ -1,0 +1,44 @@
+﻿@model SemiStaticText;
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-cogs"></i>*@
+                        <img src="@Url.Content("~/img/newicons/cookies-consent.png")" class="img-fluid" width="40px" />&nbsp;
+                        Cookie Consent
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage UpdateCookieConsentBtn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <vc:input id="CookieConsentMessage" label="Cookie Consent Message" type="text" class="" required="true" placeholder="Write the Cookie Consent message here" value="@Model.Value" disabled="false"></vc:input>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<input id="UpdateCookieConsentURL" hidden value="@Url.Action("UpdateCookieConsent", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/CookieConsent.js")" asp-append-version="true"></script>
+}

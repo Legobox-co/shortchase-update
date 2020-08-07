@@ -1,0 +1,49 @@
+﻿@model Shortchase.Dtos.AuthDto
+@{
+    ViewBag.Title = "Login";
+}
+<div class="page login-page">
+    <div class="container">
+        <div class="form-inner">
+            <p>Enter your e-mail and password to log in</p>
+            <form id="account" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email">E-Mail</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <div class="input-group">
+                        <input asp-for="Password" type="password" class="form-control Password" />
+                        <span class="input-group-append">
+                            <span class="btn btn-outline-primary PasswordVisibility"><i class="far fa-eye"></i></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                            @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+            </form>
+            <small>New user? <a asp-action="Register" asp-controller="Account">Register</a></small>
+            <br />
+            <small><a asp-action="ForgotPassword" asp-controller="Account">Forgot your password?</a></small>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="@Url.Content("~/app/Account/Login.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Account/Shared/Password.js")" asp-append-version="true"></script>
+}

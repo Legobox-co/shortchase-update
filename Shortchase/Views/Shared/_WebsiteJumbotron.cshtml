@@ -1,0 +1,73 @@
+<div class="text-center headerJumbotron ">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <h1 class="pt-3 pb-3 mt-4 dark-text-shortchase text-shadow-big">
+                    Bet Listing Simplified. At Last!
+                </h1>
+            </div>
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3"></div>
+                    <div class="col-sm-12 col-md-6">
+                        <input type="text" class="homeSearchBar " id="homeSearchBar" placeholder="Find predictions, tips and odds">
+                        <div id="HeaderBarDropdown" class="HeaderBar-dropdown-content ">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 text-right CloseHomeSearchBarDropdown">
+                                        <p class="m-0 pt-1 "><i class="fas fa-times clickable text-dark"></i></p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12" id="HeaderBarDropdownResultsWrapper">
+
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <p class="m-0 py-2 text-smaller">
+                                            Search for "<span id="searchTermPlaceholder" class="MontserratBold searchTermPlaceholder"></span>"
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-3"></div>
+                </div>
+            </div>
+            <div class="col-sm-12 pb-5">
+                <h3 class="pt-3 pb-2 mt-5 dark-text-shortchase">
+                    Market your bet listing to millions
+                </h3>
+                @{
+                    bool userCanProceed = User.Identity.IsAuthenticated && User.Identity.HasAnyPermissions(Permission.Capper);
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        if (userCanProceed)
+                        {
+                            <a asp-action="ListYourPick" asp-controller="Home" class="btn btn-dark btn-jumbotron mb-5 MontserratBold timezoneoffset btn-nofocus-nooutline">List Your Pick</a>
+                        }
+                        else
+                        {
+                            if (User.Identity.HasAnyPermissions(Permission.Admin))
+                            {
+                                <a href="#" class="btn btn-dark btn-jumbotron mb-5 MontserratBold OpenAdminNotAllowedModal btn-nofocus-nooutline">List Your Pick</a>
+
+                            }
+                            else
+                            {
+                                <a href="#" class="btn btn-dark btn-jumbotron mb-5 MontserratBold SwitchProfileAndGoToPage btn-nofocus-nooutline" data-url="@Url.Action("ListYourPick", "Home")" data-profile="@Shortchase.Authorization.Permission.Capper">List Your Pick</a>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <a class="btn btn-dark btn-jumbotron mb-5 MontserratBold timezoneoffset btn-nofocus-nooutline" asp-action="ListYourPick" asp-controller="Home">List Your Pick</a>
+                    }
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="SearchResultsPageURL" value="@Url.Action("SearchResults", "Home")" />
+<input type="hidden" id="HomeSearchBarDropdownResultsURL" value="@Url.Action("HomeSearchBarDropdownResults", "Home")" />

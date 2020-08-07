@@ -1,0 +1,207 @@
+﻿@model ICollection<POTDListing>
+
+@if (Model != null && Model.Count > 0)
+{
+    int countIteration = 1;
+
+    <input type="hidden" id="ShouldIterateOverPOTD" value="1" />
+    <div class="potd-bg" id="potd-bg-changer">
+
+        <div class="potd-overlay py-5">
+            <div class="container ">
+                <div class="row min-height-500">
+                    <div class="col-sm-12 col-md-6 col-lg-6 order-12 d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="potdInnerRightSite w-100">
+                                <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
+                                <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
+                                <div class="innerRightSideWrapper">
+                                    <div class="innerRightSideOverlay">
+                                        <p class="text-left MontserratBold">
+                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 order-1 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="potdInnerRightSite w-100">
+                                <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
+                                <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
+                                <div class="innerRightSideWrapper">
+                                    <div class="innerRightSideOverlay">
+                                        <p class="text-left MontserratBold">
+                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 order-2">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+
+                            <input type="hidden" value="@Model.Count" id="TotalPOTDItems" />
+                            <input type="hidden" value="@countIteration" id="CurrentPOTDItem" />
+
+                            <div class="row col-12">
+
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="d-flex justify-content-center align-items-center h-100 w-100 mw-100">
+                                        @foreach (var item in Model)
+                                        {
+                                            string style = "display:none;";
+                                            if (countIteration == 1)
+                                            {
+                                                style = "";
+                                            }
+                                            string bgimageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.BackgroundImage);
+                                            string categoryImageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.Category.MarketplaceImage);
+                                            <div class="potd-item-wrapper col-12" id="potd-item-@countIteration" data-bg="@bgimageURL" style="@style">
+                                                <div class="row ">
+                                                    <div class="col-sm-12 col-md-12 col-lg-5 d-flex-row ">
+                                                        @{ bool userCanProceed = User.Identity.IsAuthenticated && User.Identity.HasAnyPermissions(Permission.Capper, Permission.Bettor);
+                                                            string errorClass = "PostAPredictionNotSignedIn";
+                                                            if (!userCanProceed && User.Identity.HasAnyPermissions(Permission.Admin))
+                                                            {
+                                                                errorClass = "OpenAdminNotAllowedModal";
+                                                            }
+                                                        }
+                                                        @if (userCanProceed)
+                                                        {
+                                                            <a asp-action="PredictPOTD" asp-controller="Home" asp-route-Id="@item.Id" class="no-transform-link timezoneoffset"><img src="@categoryImageURL" class="img-fluid" style="max-width: 130px;" /></a><p class="text-dark">hello</p>}
+
+                                                        else
+                                                        {
+                                                            <a href="#" class="no-transform-link @errorClass"><img src="@categoryImageURL" class="img-fluid" style="max-width: 130px;" /> </a>
+                                                            }
+                                                        <hr style="width: 38px; margin-left:-5px;  background: #FFFFFF; border: 1px solid #31303852; border-radius: 175px; opacity: 1;"/>
+                                                        <p style="display:inline;"class="text-dark">@item.Category.Name</p> <div style=" border-left: 1px solid green; height: 500px; display:inline;"></div>
+                                                    </div>
+                                                 
+                                                    <div class="col-sm-12 col-md-12 col-lg-7 ">
+                                                        <div class="d-flex h-100 justify-content-center align-items-center">
+                                                            @if (userCanProceed)
+                                                            {
+                                                                <a asp-action="PredictPOTD" asp-controller="Home" asp-route-Id="@item.Id" class="timezoneoffset no-transform-link potd-item-link-title m-0 px-1 MontserratBold text-uppercase">hello+  @item.Title</a> }
+                                                            else
+                                                            {
+                                                                <a href="#" class="no-transform-link potd-item-link-title m-0 px-1 MontserratBold text-uppercase @errorClass">@item.Title</a>}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row MontserratBold py-2 my-2">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <div class="d-flex h-100 justify-content-start align-items-center">
+                                                            <p sclass="m-0  potd-item-text text-uppercase MonotonRegular potd-item-text-bigger font-weight-900 potd-item-color potd-item-text-bigger-2 specialTextWhenSmallBecomesSmaller">
+                                                                @DateHelper.POTDDateFormat(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row MontserratBold py-2 my-2">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <p class="m-0 py-2 w-100  potd-item-bordered-text text-center  text-uppercase MonotonRegular potd-item-text-bigger font-weight-900 potd-item-color potd-item-text-bigger-2 specialTextWhenSmallBecomesSmaller">
+                                                            @item.Pick.Team1 vs @item.Pick.Team2
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row MontserratBold py-2 my-2">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <p class="m-0  potd-item-text text-uppercase mw-100 text-dark MonotonRegular potd-item-text-bigger font-weight-900 potd-item-color potd-item-text-bigger-2 specialTextWhenSmallBecomesSmaller">
+                                                            VENUE: @item.Venue
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row MontserratBold py-2 my-2">
+                                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                                        <a class="btn  potd-item-button timezoneoffset" style="background-color:#FFBE0C" asp-action="PredictPOTD" asp-controller="Home" asp-route-Id="@item.Id">
+                                                            Post a Prediction
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+                                            </div>countIteration++;
+                                        }
+
+
+
+
+
+                                    </div>
+                                </div>
+                                @*<div class="col-sm-1 col-md-1 col-lg-1">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <button class="btn btn-link text-white next-potd-item"><i class="fas fa-chevron-right fa-2x"></i></button>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <input type="hidden" id="ShouldIterateOverPOTD" value="0" />
+    <input type="hidden" id="ShouldIterateOverPOTD" value="1" />
+    <div class="potd-bg" id="potd-bg-changer">
+        <div class="potd-overlay py-5">
+            <div class="container ">
+                <div class="row min-height-500">
+                    <div class="col-sm-12 col-md-6 col-lg-6 order-12">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="potdInnerRightSite w-100">
+                                <h1 class="text-right MontserratBold">Pick of the Day</h1>
+                                <div class="innerRightSideWrapper">
+                                    <div class="innerRightSideOverlay">
+                                        <p class="text-left MontserratBold">
+                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 order-1">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+
+                            <input type="hidden" value="0" id="TotalPOTDItems" />
+                            <input type="hidden" value="0" id="CurrentPOTDItem" />
+
+                            <div class="row ">
+                                <div class="col-sm-10 col-md-10 col-lg-12">
+                                    <div class="d-flex justify-content-center align-items-center h-100 w-100 mw-100">
+                                        <div class="potd-item-wrapper" id="potd-item-1" data-bg="@Url.Content("~/img/potd/default-bg.jpg")">
+
+                                            <div class="row MontserratBold py-2 my-2">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <h4 class="m-0 text-white">
+                                                        No POTDs available now.
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+

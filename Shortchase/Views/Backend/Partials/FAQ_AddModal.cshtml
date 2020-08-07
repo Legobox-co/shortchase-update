@@ -1,0 +1,22 @@
+﻿@model FAQListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddFAQModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="AddQuestion" label="Question" type="text" class="" required="true" placeholder="e.g. Who is a capper?" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:textarea id="AddAnswer" label="Answer" class="" required="true" placeholder="e.g. Is the user who can post bet listings for other Shortchase.com users to buy." value="" disabled="false"></vc:textarea>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:select id="AddType" label="FAQ Type" class="" required="true" searchable="false" default="" options="@Model.FAQTypes" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+    </div>;}
+<vc:modal content="AddModalContent" id="AddFAQModal" locked="false" title="Add FAQ"></vc:modal>
+
+<input id="AddFAQItemModalURL" hidden value="@Url.Action("AddFAQItem", "Backend")" />

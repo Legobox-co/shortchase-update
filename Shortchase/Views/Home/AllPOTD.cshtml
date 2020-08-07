@@ -1,0 +1,197 @@
+﻿@model WebsiteUserPredictions
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+<div class="text-center headerJumbotron headerJumbotron4">
+    <div class="container">
+        <div class="row pb-0 pb-sm-0 pb-md-5 pb-lg-5 pb-xl-5">
+            <div class="col-sm-12 ">
+                <h1 class=" mt-5 dark-text-shortchase text-shadow-big huge-title">
+                    Pick of the Day
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="bg-grey-dark-3 py-4">
+    <div class="container">
+
+        <h2 class="section-title text-center text-dark  pb-3">
+            Predictions
+        </h2>
+
+        @if (Model.POTDs == null || Model.POTDs.Count <= 0)
+        {
+            <p class="text-center MontserratMedium py-5">Empty.</p>
+        }
+        else
+        {
+            int iterationCount = 0;
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                <div class="col-sm-12 col-md-12 col-lg-8">
+
+                    @foreach (var item in Model.POTDs)
+                    {
+                        iterationCount++;
+                        string areaId = "listing" + iterationCount + "_area";
+                        string iconId = "listing" + iterationCount + "_icon";
+                        string status = "";
+                        string result = "";
+                        string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.Category.MarketplaceImage);
+                        if (item.Pick.StartTime < DateTime.UtcNow && DateTime.UtcNow < item.Pick.FinishTime)
+                        {
+                            status = "Active";
+                            result = "In progress";
+                        }
+                        else
+                        {
+                            if (DateTime.UtcNow < item.Pick.StartTime && DateTime.UtcNow < item.Pick.FinishTime)
+                            {
+                                status = "Active";
+                                result = "Not available";
+                            }
+                            else
+                            {
+                                status = "Inactive";
+                                if (!string.IsNullOrWhiteSpace(item.Result))
+                                {
+                                    result = item.Result;
+                                }
+                                else
+                                {
+                                    result = "Result not informed yet.";
+                                }
+                            }
+                        }
+                        <div class="card clickable toggleHiddenArea my-1 outset-border-thin bg-grey-dark-3" data-area="@areaId" data-icon="@iconId" data-isclicked="false">
+                            <div class="card-body text-dark py-1 px-2">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <div class="row w-100 d-none d-sm-none d-md-none d-lg-flex d-xl-flex">
+                                            <div class="col-sm-12 col-md-3 col-lg-3 ">
+
+                                                <img class="img-fluid max-width-small" src="@imageURL" />
+                                            </div>
+                                            <div class="col-sm-12 col-md-8 col-lg-8">
+                                                <p class="p-0 m-0 d-flex h-100 align-items-center">
+                                                    @item.Pick.Team1 vs @item.Pick.Team2
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-12 col-md-1 col-lg-1 text-center">
+                                                <p class="p-0 m-0 d-flex h-100 align-items-center justify-content-center">
+                                                    <i class="fas fa-chevron-down @iconId"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row w-100 d-flex d-sm-flex d-md-flex d-lg-none d-xl-none">
+                                            <div class="col-3 ">
+
+                                                <img class="" src="@imageURL" width="50px" />
+                                            </div>
+                                            <div class="col-9">
+                                                <p class="p-0 m-0 d-flex h-100 align-items-center">
+                                                    @item.Pick.Team1 vs @item.Pick.Team2
+                                                </p>
+                                            </div>
+                                            <div class="col-12 text-right p-0">
+                                                <p class="p-0 m-0 d-flex h-100 align-items-center justify-content-end">
+                                                    <i class="fas fa-chevron-down @iconId"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <p class="pt-0 px-1 m-0 text-smaller">
+                                            @DateHelper.POTDDateFormat(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                        </p>
+                                        <p class="pt-0 px-1 m-0 text-smaller">
+                                            Venue: @item.Venue
+                                        </p>
+                                        <p class="pt-0 px-1 m-0 text-smaller">
+                                            Status: @status
+                                        </p>
+                                        <hr class="my-1" />
+                                        @*<p class="px-1 m-0 text-smaller">
+                                Result: @result
+                            </p>*@
+                                    </div>
+
+                                    @{
+                                        POTDListingPrediction prediction = item.POTDListingPredictions.SingleOrDefault(i => i.POTDId == item.Id && i.PredictedById.ToString() == User.Identity.Id());
+                                        if (prediction != null)
+                                        {
+                                            string profilePicture = Url.Content("~/img/avatar.png");
+                                            if (!string.IsNullOrWhiteSpace(prediction.PredictedBy.ProfilePicture))
+                                            {
+                                                profilePicture = ImageHelper.ConvertImageToBase64(prediction.PredictedBy.ProfilePicture);
+                                            }
+                                            <div class="col-sm-12 col-md-12 col-lg-12" id="@areaId" style="display:none;">
+                                                <div class="py-2">
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-12 col-lg-12 flex-row justify-content-start align-items-center info-details-predictions">
+                                                            <img src="@profilePicture" class="img-fluid rounded-circle " />
+                                                            <p class="p-0 m-0 text-small">
+                                                                @prediction.PredictedBy.FirstName @prediction.PredictedBy.LastName<br />
+                                                                @DateHelper.POTDDateFormat(prediction.DatePredicted.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-12 col-lg-12">
+                                                            <hr class="my-1 mt-2" />
+                                                            <p class="px-1 py-1 m-0 text-smaller">
+                                                                @*Market: @prediction.Market.Name <br />*@
+                                                                Prediction: @prediction.Tip.Description
+                                                                @if (prediction.VerifiedAsCorrect.HasValue)
+                                                                {
+                                                                    if (prediction.VerifiedAsCorrect.Value)
+                                                                    {
+                                                                        <span class="light-rounded-corners p-1 bg-success text-white"><i class="fas fa-check"></i></span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="light-rounded-corners p-1 bg-danger text-white"><i class="fas fa-times"></i></span>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-muted">(not verified yet)</span>
+                                                                }
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                                <div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    <div>
+                        <vc:pagination action="@Url.Action("AllPOTD", "Home")" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:pagination>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-2"></div>
+            </div>
+        }
+
+
+
+    </div>
+</section>
+
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/AllPOTD.js")" asp-append-version="true"></script>
+}

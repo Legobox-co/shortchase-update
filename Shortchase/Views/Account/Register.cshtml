@@ -1,0 +1,55 @@
+﻿@model Shortchase.Dtos.UserDto
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="page login-page">
+    <div class="container">
+        <div class="form-inner">
+            <p>Please enter your information below to register</p>
+            <form id="account" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Phone Number</label>
+                    <input asp-for="PhoneNumber" id="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">E-Mail</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <div class="input-group">
+                        <input asp-for="Password" type="password" class="form-control Password" />
+                        <span class="input-group-append">
+                            <span class="btn btn-outline-primary PasswordVisibility"><i class="far fa-eye"></i></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+            <small>Already have an account? <a asp-action="Login" asp-controller="Account">Log In</a></small>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="@Url.Content("~/app/Account/Register.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Account/Shared/Password.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Account/Shared/PhoneInputMask.js")" asp-append-version="true"></script>
+}

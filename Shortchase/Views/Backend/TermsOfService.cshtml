@@ -1,0 +1,44 @@
+﻿@model SemiStaticText;
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-align-justify"></i>*@
+                        <img src="@Url.Content("~/img/newicons/terms-of-service.png")" class="img-fluid" width="40px" />&nbsp;
+                        Terms of Service
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage UpdateTermsOfServiceBtn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <textarea class="form-control resize-only-vertical" id="TermosOfServiceInput" placeholder="Write the Terms of Service here ...">@Model.Value</textarea>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<input id="UpdateTermsOfServiceURL" hidden value="@Url.Action("UpdateTermsOfService", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/TermsOfService.js")" asp-append-version="true"></script>
+}

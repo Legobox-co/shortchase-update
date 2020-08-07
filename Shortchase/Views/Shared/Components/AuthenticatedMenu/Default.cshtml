@@ -1,0 +1,121 @@
+@model AuthenticatedUserDto
+
+<ul class="navbar-nav ">
+
+    <li class="nav-item">
+        <a class="nav-link text-success " href="#">
+            BETA
+        </a>
+    </li>
+    @if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor || Model.CurrentPermission == Shortchase.Authorization.Permission.Capper)
+    {
+
+        if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor)
+        {
+            if (!Model.IsBoisterous)
+            {
+<li class="nav-item">
+    <a class="nav-link text-dark timezoneoffset" asp-action="Subscription" asp-controller="Home" asp-route-Plan="@SubscriptionPlanType.Boisterous">Subscribe to Boisterous</a>
+</li> }
+
+<li class="nav-item">
+    <a asp-action="AllPOTD" asp-controller="Home" class="nav-link text-dark timezoneoffset">Predictions</a>
+</li> }
+                else
+                {
+
+                    if (!Model.IsProCapper)
+                    {
+<li class="nav-item">
+    <a class="nav-link text-dark timezoneoffset" asp-action="Subscription" asp-controller="Home" asp-route-Plan="@SubscriptionPlanType.ShortchasePro">Become a Pro Capper</a>
+</li> }
+<li class="nav-item">
+    <a asp-action="AllPOTD" asp-controller="Home" class="nav-link text-dark timezoneoffset">Predictions</a>
+</li>
+                    <li class="nav-item">
+                        <a asp-action="Listings" asp-controller="Home" class="nav-link text-dark timezoneoffset">Listings</a>
+                    </li> }
+                                }
+                                else
+                                {
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Backend" class="nav-link text-dark timezoneoffset">Access Backend</a>
+                    </li>}
+
+    @if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor || Model.CurrentPermission == Shortchase.Authorization.Permission.Capper)
+    {
+<li class="nav-item dropdown">
+    @{ string notificationClass = "";
+                        if (Model.NewNotifications != null && Model.NewNotifications.Count > 0)
+                        {
+                            notificationClass = "ReadNotificationsBtn";
+                        } }
+    <a class="nav-link dropdown-toggle dropdown-toggle-noafter " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="MontserratBold text-dark">Notifications</span>
+        @if (Model.NewNotifications != null && Model.NewNotifications.Count > 0)
+        {
+<span class="badge bg-orange-dark text-white MontserratBold">
+    @Model.NewNotifications.Count
+</span>}
+    </a>
+    <div class="dropdown-menu py-0" aria-labelledby="navbarDropdown" style="min-width:250px; max-height:250px; overflow-x: hidden; overflow-y: auto;">
+
+        @if (Model.NewNotifications != null && Model.NewNotifications.Count > 0)
+        {
+            foreach (var notification in Model.NewNotifications)
+            {
+<p class="m-0 p-2 text-smaller">@notification.Message</p>
+                        <hr class="m-0" /> }
+                        <p class="m-0 px-2 text-center"><button class="btn btn-link @notificationClass  text-smaller" data-url="@Url.Action("ReadAllNotifications", "Home")" data-user="@Model.User.Id.ToString()">Mark as read</button></p> }
+                                        else
+                                        {
+                        <p class="m-0 p-2 text-smaller">No new notifications.</p>}
+    </div>
+</li>}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle dropdown-toggle-noafter" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @{ string profilePicture = Url.Content("~/img/avatar.png");
+                            if (!string.IsNullOrWhiteSpace(Model.ProfilePicture))
+                            {
+                                profilePicture = ImageHelper.ConvertImageToBase64(Model.ProfilePicture);
+                            } }
+            <span class="d-flex justify-content-md-center justify-content-lg-center align-items-center ">
+                <span class="img-crop-wrapper-menu rounded-circle">
+                    <img src="@profilePicture" class="img-fluid img-crop" />
+                </span>
+                &nbsp;
+                Hello @Model.FirstName
+                &nbsp;
+                <i class="fas fa-caret-down"></i>
+            </span>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+            @if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor || Model.CurrentPermission == Shortchase.Authorization.Permission.Capper)
+            {
+                if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor)
+                {
+<a class="dropdown-item bg-orange-dark-on-hover SwitchProfile" data-profile="@Shortchase.Authorization.Permission.Capper" href="#">Switch to Capper</a> }
+                else
+                {
+<a class="dropdown-item bg-orange-dark-on-hover SwitchProfile" data-profile="@Shortchase.Authorization.Permission.Bettor" href="#">Switch to Bettor</a> }
+<div class="dropdown-divider"></div>
+                <a class="dropdown-item bg-orange-dark-on-hover timezoneoffset" asp-action="AccountManager" asp-controller="Home">Account Manager</a>
+                                <a class="dropdown-item bg-orange-dark-on-hover timezoneoffset" asp-action="OrderManager" asp-controller="Home">Order Manager</a>}
+
+            <a class="dropdown-item bg-orange-dark-on-hover CallLogOutAction" href="#">Log Out</a>
+        </div>
+    </li>
+    @if (Model.CurrentPermission == Shortchase.Authorization.Permission.Bettor || Model.CurrentPermission == Shortchase.Authorization.Permission.Capper)
+    {
+<li class="nav-item">
+    <a href="#" class="nav-link text-dark SwitchProfileAndGoToPage" data-url="@Url.Action("Cart", "Home")" data-profile="@Shortchase.Authorization.Permission.Bettor">
+        Cart
+        <span class="badge bg-orange-dark text-white MontserratBold">
+            @if (Model.TotalItemsInCart.HasValue)
+            {
+<text>@Model.TotalItemsInCart.Value</text>}
+        </span>
+    </a>
+</li>}
+</ul>

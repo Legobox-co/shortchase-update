@@ -1,0 +1,38 @@
+﻿@model SecondaryEmailTemplateListDto
+<!-- SendToUser Modal -->
+@{Func<dynamic, object> SendToUserModalContent = @<div>
+        <form class="row" id="SendToUserEmailModalForm">
+
+            <div class="col-sm-12 col-md-12 col-lg-12 text-smaller">
+                <strong>Subject: </strong> <span id="SendToUserEmailSubject"></span>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-smaller">
+                <strong>Title: </strong> <span id="SendToUserEmailTitle"></span>
+            </div>
+            <input type="hidden" id="SendToUserEmailTemplateId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12 py-2">
+                <div class="w-100">
+                    <label for="SendToUserEmailUserSelected" class="mb-0 text-smaller pl-1 font-weight-600 d-block">Select a Shortchaser</label>
+                    <select class="selectpicker w-100" id="SendToUserEmailUserSelected" required data-live-search="true">
+
+                        @foreach (var item in Model.Users)
+                        {
+                            <option value="@item.Id" id="useropt-@item.Id" data-email="@item.Email" data-name="@item.FirstName">@item.FirstName @item.LastName (@item.Email)</option>
+
+                        }
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Send</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="SendToUserModalContent" id="SendToUserEmailModal" locked="false" title="Send Email to a Shortchaser"></vc:modal>
+
+
+<input id="SendEmailTemplateToUserModalURL" hidden value="@Url.Action("SendEmailTemplateToUser", "Backend")" />

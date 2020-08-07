@@ -1,0 +1,14 @@
+﻿@{Func<dynamic, object> MediaPickerModalModalContent = @<div>
+        <input type="hidden" id="MediaPickerModalSubmitsDataTo2" value="" />
+        <input type="hidden" id="MediaPickerValueChecker2" value="" />
+        <input type="hidden" id="MediaPickerTitle2" value="" />
+        <input type="hidden" id="MediaPickerImagePreviewId2" value="" />
+        <div id="MediaPickerModalContent2">
+            Loading...
+        </div>
+
+
+    </div>;}
+<vc:modal-fullscreen content="MediaPickerModalModalContent" id="MediaPickerModal2" locked="true" title="Select Media File"></vc:modal-fullscreen>
+
+<input id="GetMediaPickerDataURL2" hidden value="@Url.Action("GetMediaPickerData2", "Backend")" />

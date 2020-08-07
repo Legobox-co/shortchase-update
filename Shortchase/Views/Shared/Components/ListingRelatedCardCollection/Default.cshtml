@@ -1,0 +1,161 @@
+﻿@model ListingCardCollectionDto
+
+
+@if (Model.Listings == null || Model.Listings.Count <= 0)
+{
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <p>
+            No related listings.
+
+        </p>
+    </div>
+}
+else
+{
+    foreach (var item in Model.Listings)
+    {
+        string categoryImageURL = ImageHelper.ConvertImageToBase64(Model.root.ToString() + item.Category.MarketplaceImage);
+        <div class="col-sm-12 col-md-4 col-lg-3 pb-3">
+            <div class="card hoverablePick bg-grey-light-1 transition border-transparent">
+                <div class="card-body py-3 ">
+                    <div class="row">
+                        @if (item.PickType != BetListingType.Free && item.PickType != BetListingType.Premium)
+                        {
+                            <div class="col-sm-12 col-md-12 col-lg-12 text-right py-0 my-0 pb-2 cardColHeightAdjustmentForcedByEdge">
+                                <span class="bg-danger text-white text-smallest py-1 px-2 MontserratMedium ">
+                                    @item.PickType
+                                    @if (item.PickType == BetListingType.Live)
+                                    {
+                                        string dateStart = DateHelper.ToISOString(item.Pick.FinishTime.FromUTCData(Model.Offset));
+                                        <span class="countDownWrapper" data-endtime="@dateStart">00:00:00</span>
+                                    }
+                                </span>
+
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="col-sm-12 col-md-12 col-lg-12 text-right py-0 my-0 pb-2 cardColHeightAdjustmentForcedByEdge">
+                                <span class="text-smallest py-1 px-2 MontserratMedium ">
+                                    <br />
+                                </span>
+
+                            </div>
+                        }
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                            <img src="@categoryImageURL" class="img-fluid img-max-size link pick-link" data-listing="@item.Id.ToString()" />
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <p class="mb-0 MontserratBold text-center text-small link pick-link d-flex justify-content-center align-items-center min-height-150" data-listing="@item.Id.ToString()">
+                                @item.Title
+                            </p>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <p class="mb-0  text-center text-small ">
+                                @if (item.PickType == BetListingType.Free)
+                                {
+                                    <text>Free</text>
+                                }
+                                else
+                                {
+                                    <text>$ @item.Price.ToString("0.00")</text>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <p class="mb-0  text-center text-small pt-4">
+                                <a asp-action="Profile" asp-controller="Home" asp-route-Id="@item.PostedbyId" class="btn btn-default btn-sm text-smaller btn-block profile-link timezoneoffset">
+                                    @item.Postedby.FirstName
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-6 px-0">
+                            <p class="mb-0  text-center text-icon-small pt-4 mt-2">
+                                @{
+                                    int totalCorrectPredictions = item.Postedby.BetListings.Where(i => i.IsCorrect.HasValue && i.IsCorrect.Value).Count();
+                                }
+                                @for (int i = 1; i <= 5; ++i)
+                                {
+                                    int rating = 0;
+                                    if (totalCorrectPredictions > 0)
+                                    {
+                                        if (totalCorrectPredictions <= 0)
+                                        {
+                                            rating = 0;
+                                        }
+                                        else if (totalCorrectPredictions >= 1 || totalCorrectPredictions <= 100)
+                                        {
+                                            rating = 1;
+                                        }
+                                        else if (totalCorrectPredictions >= 101 || totalCorrectPredictions <= 1000)
+                                        {
+                                            rating = 2;
+                                        }
+                                        else if (totalCorrectPredictions >= 1001 || totalCorrectPredictions <= 2000)
+                                        {
+                                            rating = 3;
+                                        }
+                                        else if (totalCorrectPredictions >= 2001 || totalCorrectPredictions <= 5000)
+                                        {
+                                            rating = 4;
+                                        }
+                                        else
+                                        {
+                                            rating = 5;
+                                        }
+                                    }
+                                    if (rating >= i)
+                                    {
+                                        <img src="@Url.Content("~/img/newicons/fullstar.png")" width="13px" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/img/newicons/greystar.png")" width="13px" />
+                                    }
+                                }
+                            </p>
+
+                        </div>
+
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                            <p class="mb-0  text-center text-small pt-4">
+                                @{
+                                    string buttonClass = "";
+                                    string dataListing = "";
+                                    if (Model.IsAuth)
+                                    {
+                                        /*if (item.PostedbyId.ToString() == User.Identity.Id())
+                                        {
+                                            buttonClass = "unauth-actiontoself-link";
+                                        }
+                                        else { */
+                                        buttonClass = "pick-link";
+                                        dataListing = item.Id.ToString();
+                                        //}
+                                    }
+                                    else
+                                    {
+                                        buttonClass = "pick-link";//"unauth-user-click";
+                                        dataListing = item.Id.ToString();
+                                    }
+                                }
+
+                                @if (item.PickType != BetListingType.Free)
+                                {
+                                    <button class="btn btn-outline-dark btn-sm medium-rounded-corners MontserratBold @buttonClass" data-listing="@dataListing" data-interaction="Buy">
+                                        Buy Now
+                                    </button>
+                                }
+                                else
+                                {
+                                <p class="m-0 text-smallest py-2"><br /></p>
+                            }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }

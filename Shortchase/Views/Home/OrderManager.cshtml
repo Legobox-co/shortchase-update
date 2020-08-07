@@ -1,0 +1,438 @@
+﻿@model OrderManagerDto
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-center">
+                <h2 class="section-title">
+                    Order Manager
+                </h2>
+
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+            <div class="col-sm-12 col-md-8 col-lg-8">
+                @if (Model.Orders == null || Model.Orders.Count <= 0)
+                {
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-12 col-md-12 text-center">
+                            @if (Model.IsCapper)
+                            {
+                                <p class="pt-4">Empty.</p>
+                            }
+                            else
+                            {
+                                <p class="pt-4">Empty.</p>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    int iterationCount = 0;
+                    foreach (var order in Model.Orders)
+                    {
+                        iterationCount++;
+                        string area = "listing" + iterationCount + "_area";
+                        string icon = "listing" + iterationCount + "_icon";
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="card clickable toggleHiddenAreaOnClick my-1 border-bold" data-area="@area" data-icon="@icon">
+                                    <div class="card-body px-2 py-1">
+                                        <div class="row d-none d-sm-none d-md-none d-lg-flex">
+                                            <div class="col-sm-12 col-lg-8 ">
+                                                <p class="m-0 pt-1 text-small text-grey-2">
+                                                    Order No.: @order.OrderNumber<br />
+                                                    Order Date: @DateHelper.DateSimpleFormat(order.OrderDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-3 text-right">
+                                                <p class="m-0 mt-1 py-2 px-1 ">
+                                                    <span class="outlined-text-grey">@order.OrderStatus</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-12 col-lg-1 text-right">
+                                                <p class="m-0 pt-3 pb-2 px-1">
+                                                    <i class="fas fa-chevron-down @icon"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row d-flex d-sm-flex d-md-flex d-lg-none">
+                                            <div class="col-6 ">
+                                                <p class="m-0 pt-1 text-small text-grey-2">
+                                                    Order No.: @order.OrderNumber<br />
+                                                    <span class="text-smaller">Order Date: @DateHelper.DateSimpleFormat(order.OrderDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                <p class="m-0 mt-1 py-2 px-1 ">
+                                                    <span class="outlined-text-grey">@order.OrderStatus</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <p class="m-0 mt-1 py-2 pb-2 px-1">
+                                                    <i class="fas fa-chevron-down @icon"></i>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="text-dark px-1 py-2" id="@area" style="display:none;">
+                                            <div class="row">
+                                                <div class="col-sm-12 col-lg-12 col-md-12 ">
+                                                    @{ 
+                                                        decimal CapperOrderValue = 0.00m;
+                                                        decimal CapperTax = 0.00m;
+                                                        decimal CapperFeeOrComission = 0.00m;
+                                                    }
+                                                    @if (order.Items != null && order.Items.Count > 0)
+                                                    {
+                                                        foreach (var item in order.Items)
+                                                        {
+                                                            CapperOrderValue += item.Price;
+                                                            CapperFeeOrComission += (item.Price * (order.ServiceFeePercent/100));
+                                                            CapperTax += (item.Price * (order.TaxPercent/100));
+
+                                                            string categoryImageURL = ImageHelper.ConvertImageToBase64(Model.root.ToString() + item.Image);
+
+                                                            string imageUrl = Url.Content("~/img/avatar.png");
+                                                            if (!string.IsNullOrWhiteSpace(item.UserProfilePicture))
+                                                            {
+                                                                imageUrl = ImageHelper.ConvertImageToBase64(item.UserProfilePicture);
+                                                            }
+                                                            <div class="row">
+                                                                <div class="col-12 d-none d-sm-none d-md-flex d-lg-flex d-xl-flex">
+                                                                    <div class="container-fluid p-0">
+                                                                        <div class="row">
+
+                                                                            <div class="col-sm-2 col-lg-1  py-2 ">
+                                                                                <div class="text-right d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                                                                                    <img src="@imageUrl" class=" rounded-circle" width="50px" />
+                                                                                </div>
+                                                                                <div class="text-left d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                                                                                    <img src="@imageUrl" class="rounded-circle" width="50px" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-10 col-lg-11">
+                                                                                <p class="m-0 pt-1 text-small text-grey-2 d-flex h-100 justify-content-start align-items-center">
+                                                                                    @item.PostedByName<br />
+                                                                                    @DateHelper.POTDDateFormat(item.PostedByDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 d-flex d-sm-flex d-md-none d-lg-none d-xl-none">
+                                                                    <div class="row">
+
+                                                                        <div class="col-3  py-2 ">
+                                                                            <div class="text-right d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                                                                                <img src="@imageUrl" class=" rounded-circle" width="50px" />
+                                                                            </div>
+                                                                            <div class="text-left d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                                                                                <img src="@imageUrl" class="rounded-circle" width="40px" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-9">
+                                                                            <p class="m-0 pt-1 text-small text-grey-2 d-flex h-100 justify-content-start align-items-center">
+                                                                                @item.PostedByName<br />
+                                                                                @DateHelper.POTDDateFormat(item.PostedByDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                                    <div class="row w-100 d-none d-sm-none d-md-none d-lg-flex d-xl-flex">
+                                                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                                                            <img src="@categoryImageURL" class="img-fluid max-width-small" />
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-12 col-lg-6 ">
+                                                                            <p class="m-0 text-small d-flex align-items-center h-100">
+                                                                                @if (!string.IsNullOrWhiteSpace(item.Subcategory))
+                                                                                {
+                                                                                    <text>@item.Subcategory @item.Title</text>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <text>@item.Title</text>
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                                                            <p class="m-0 text-small d-flex align-items-center h-100 justify-content-end">
+                                                                                <span class="outlined-text-grey">$ @item.Price.ToString("0.00")</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row w-100 d-flex d-sm-flex d-md-flex d-lg-none d-xl-none">
+
+                                                                        <div class="col-2">
+                                                                            <img src="@categoryImageURL" class="" width="30px" />
+                                                                        </div>
+                                                                        <div class="col-6 ">
+                                                                            <p class="m-0 text-small d-flex align-items-center h-100">
+                                                                                @if (!string.IsNullOrWhiteSpace(item.Subcategory))
+                                                                                {
+                                                                                    <text>@item.Subcategory @item.Title</text>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <text>@item.Title</text>
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="col-4">
+                                                                            <p class="m-0 text-small d-flex align-items-center h-100 justify-content-end">
+                                                                                <span class="outlined-text-grey">$ @item.Price.ToString("0.00")</span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-sm-12 col-md-12 col-lg-12">
+
+                                                                    <p class="m-0 py-1 text-small d-flex align-items-center h-100 justify-content-start border-bottom-line">
+                                                                        @item.Pick, (Odds) @Convert.ToDecimal(item.Odds).ToString("0.00")<br />
+                                                                        @DateHelper.DateSimpleFormat(item.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+
+                                                <div class="col-sm-12 col-md-12 col-lg-12 ">
+                                                    <div class="d-none d-sm-none d-md-block d-lg-block">
+                                                        <table class="w-50">
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    Order Value:
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.OrderValue.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>$ @CapperOrderValue.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>Service Fee:</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>Commission:</text>
+                                                                    }
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.ServiceFee.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>- $ @CapperFeeOrComission.ToString("0.00")</text>
+                                                                    }
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    * Est. Tax:
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.Tax.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>- $ @CapperTax.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            @if (order.DiscountTotal > 0.00m)
+                                                            {
+
+                                                                <tr>
+                                                                    <td class="text-left text-small" width="50%">
+                                                                        Referral Discount:
+                                                                    </td>
+                                                                    <td class="text-right text-small B612Mono-Regular">
+                                                                        - $ @order.DiscountTotal.ToString("0.00")
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+
+
+
+                                                    <div class="d-block d-sm-block d-md-none d-lg-none">
+                                                        <table class="w-100">
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    Order Value:
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.OrderValue.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>$ @CapperOrderValue.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>Service Fee:</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>Commission:</text>
+                                                                    }
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.ServiceFee.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>- $ @CapperFeeOrComission.ToString("0.00")</text>
+                                                                    }
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-left text-small" width="50%">
+                                                                    * Est. Tax:
+                                                                </td>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.Tax.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <text>- $ @CapperTax.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                            @if (order.DiscountTotal > 0.00m)
+                                                            {
+
+                                                                <tr>
+                                                                    <td class="text-left text-small" width="50%">
+                                                                        Referral Discount:
+                                                                    </td>
+                                                                    <td class="text-right text-small B612Mono-Regular">
+                                                                        - $ @order.DiscountTotal.ToString("0.00")
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </table>
+                                                    </div>
+
+                                                    <p class="border-bottom-line m-0"></p>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+
+                                                    <div class="d-none d-sm-none d-md-block d-lg-block">
+                                                        <table class="w-50">
+                                                            <tr>
+                                                                <th class="text-left text-small" width="50%">
+                                                                    Total:
+                                                                </th>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.OrderTotal.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        decimal orderTotalCapper =  CapperOrderValue - CapperTax - CapperFeeOrComission;
+                                                                        <text>$ @orderTotalCapper.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+
+
+                                                    <div class="d-block d-sm-block d-md-none d-lg-none">
+                                                        <table class="w-100">
+                                                            <tr>
+                                                                <th class="text-left text-small" width="50%">
+                                                                    Total:
+                                                                </th>
+                                                                <td class="text-right text-small B612Mono-Regular">
+                                                                    @if (!Model.IsCapper)
+                                                                    {
+                                                                        <text>$ @order.OrderTotal.ToString("0.00")</text>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        decimal orderTotalCapper = CapperFeeOrComission + CapperOrderValue + CapperTax;
+                                                                        <text>$ @orderTotalCapper.ToString("0.00")</text>
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    }
+
+
+                }
+            </div>
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+        </div>
+        <p class="text-smaller text-center mt-5 mb-0">
+            The credit balance from your wallet will be automatically applied when you buy a bet listing or subscribe to Shortchase Pro or Boisterous account plans.
+        </p>
+    </div>
+</section>
+
+
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/OrderManager.js")" asp-append-version="true"></script>
+}

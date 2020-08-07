@@ -1,0 +1,53 @@
+@model WebsiteSubscriptionPlanDto;
+
+@if (Model == null || Model.SubscriptionPlans == null || Model.SubscriptionPlans.Count <= 0)
+{
+    <p>No plans found.</p>
+}
+else
+{
+
+    <div class="container pb-3">
+        <div class="row">
+            @foreach (var item in Model.SubscriptionPlans)
+            {
+                <div class="col-4 text-center px-0 px-1 ">
+                    <div class="px-4 py-0">
+                        <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+
+                            <div class="boisterous-modal-radio-wrapper py-2 bg-purple-light my-2 shadow text-center">
+                                
+                                <div class="form-check pl-0 text-center  d-flex flex-column justify-content-between align-items-center">
+                                    <input class="form-check-input BoisterousPlansRadio  m-0 p-0" type="radio" name="BoisterousPlans" id="@item.Name" value="@item.Id">
+                                    <br />
+                                    <label class="form-check-label text-center d-flex justify-content-center align-items-center" for="@item.Name">
+
+                                        <span class="specialTextWhenSmallBecomesSmaller">
+                                            @item.Name<br />$@item.ValuePerMonth/mo
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+
+                            <div class="boisterous-modal-radio-wrapper py-2 bg-purple-light my-2 shadow text-center">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="@item.Name">
+                                        <input class="form-check-input BoisterousPlansRadio" type="radio" name="BoisterousPlans" id="@item.Name" value="@item.Id">
+
+                                        <span class="specialTextWhenSmallBecomesSmaller">@item.Name<br />$@item.ValuePerMonth/mo</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+    </div>
+
+    <input type="hidden" id="BoisterousPlanPicked" value="0" />
+}

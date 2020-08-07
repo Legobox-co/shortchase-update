@@ -1,0 +1,67 @@
+﻿@model ICollection<BlogListWebsiteItemDto>
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-center">
+                @if (Model == null || Model.Count <= 0)
+                {
+                    <h2 class="section-title pb-5">
+                        Blog
+                    </h2>
+                }
+                else
+                {
+                    <p class="text-muted text-smaller">
+                        Shortchase / <a asp-action="BlogList" asp-controller="Home" class="timezoneoffset text-muted">Blog</a>
+                    </p>
+                }
+                @if (Model == null || Model.Count <= 0)
+                {
+                    <p>Empty.</p>
+                }
+                else
+                {
+                    if (Convert.ToInt32(ViewData["PageNumber"].ToString()) > 1)
+                    {
+                        <div>
+                            <vc:pagination action="@Url.Action("BlogList", "Home")" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:pagination>
+                        </div>
+                    }
+
+
+                    foreach (var item in Model)
+                    {
+                        string bgImagePath = ViewData["root"].ToString() + item.FeaturedImage;
+                        string imageUrl = "";
+                        string date = DateHelper.DateSimpleFormat(item.DatePublished.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true).ToUpper();
+                        if (item.FeaturedImage == "/img/blog/default.jpg")
+                        {
+                            imageUrl = Url.Content(item.FeaturedImage);
+                        }
+                        else
+                        {
+                            imageUrl = ImageHelper.ConvertImageToBase64(bgImagePath);
+                        }
+
+
+                        <vc:post-card action="Blog" controller="Home" content="@item.Excerpt" title="@item.Title" slug="@item.Slug" date="@date" image="@imageUrl"></vc:post-card>
+
+                    }
+
+
+                    if (Convert.ToInt32(ViewData["PageNumber"].ToString()) > 1)
+                    {
+                        <div>
+                            <vc:pagination action="@Url.Action("BlogList", "Home")" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:pagination>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+</section>

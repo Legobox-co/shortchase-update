@@ -1,0 +1,87 @@
+﻿@model POTDListingListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditPOTDListingModalForm">
+            <input type="hidden" id="EditPOTDId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditTitle" label="Title" type="text" class="" required="true" placeholder="e.g. ICC WORLD CUP TWENTY20 MEN:: ASIA REGION FINAL MATCH 1" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" required="" id="EditCategory" name="EditCategory">
+                        <option value="0" disabled selected>Select Category</option>
+                        @if (Model.CategoriesOptions != null && Model.CategoriesOptions.Count > 0)
+                        {
+                            foreach (var item in Model.CategoriesOptions)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <input type="hidden" id="EditHasSubcategories" value="0" />
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="EditSubCategory" name="EditSubCategory" disabled>
+                        <option id="" value="0" selected>Select Subcategory</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="EditPick" name="EditPick" disabled>
+                        <option id="" value="0" selected>Select Pick</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="EditMarket" name="EditMarket" disabled>
+                        <option id="" value="0" selected>Select Market</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="EditTip" name="EditTip" disabled>
+                        <option id="" value="0" selected>Select Tip</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditVenue" label="Venue" type="text" class="" required="true" placeholder="e.g. INDIAN ASSOCIATION GROUND, SINGAPORE" value="" disabled="false"></vc:input>
+            </div>
+
+
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-read-only-input id="EditDateTimeStart" label="Start Time" ></vc:bet-listing-date-read-only-input>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-read-only-input id="EditDateTimeFinish" label="Finish Time" ></vc:bet-listing-date-read-only-input>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <img src="" id="editPreviewImage" class="img-fluid" />
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-8">
+                <vc:file-input id="EditBackgroundImage" label="Background Image" class=""></vc:file-input>
+                <p class="m-0 text-muted text-smaller">(Leave this field empty if you don't want to change the background image)</p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12"><br /></div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditPOTDListingModal" locked="false" title="Edit POTD Listing"></vc:modal>
+
+
+<input id="EditPOTDListingModalURL" hidden value="@Url.Action("EditPOTDListing", "Backend")" />

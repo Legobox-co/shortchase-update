@@ -1,0 +1,90 @@
+﻿@model FAQWebsiteListDto;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 text-left pb-5">
+                <h2 class="section-title pb-5 huge-title mb-3">
+                    Frequently Asked Questions
+                </h2>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-sm-12 col-md-12 col-lg-12"></div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-3 d-none d-sm-none d-md-none d-lg-block">
+                        <nav class="nav faq-navigator" id="FaqNavigator">
+                            <a href="#General" data-id="General" class="faq-selector " id="GeneralLinkFAQSelector">General</a>
+                            <a href="#Capper" data-id="Capper" class="faq-selector" id="CapperLinkFAQSelector">Capper</a>
+                            <a href="#Bettor" data-id="Bettor" class="faq-selector" id="BettorLinkFAQSelector">Bettor</a>
+                        </nav>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-9">
+                        <div id="General" class="faq-section">
+                            <h5 class="faq-section-title MontserratMedium"  id="GeneralFAQLabel">GENERAL INFORMATION</h5>
+                            @if (Model == null || Model.GeneralItems.Count <= 0)
+                            {
+                                <p>No FAQ items yet.</p>
+                            }
+                            else {
+                                foreach (var item in Model.GeneralItems) { 
+                                    <vc:faq-card item-id="@item.Id" question="@item.Question" answer="@item.Answer"></vc:faq-card>
+                                }
+                            }
+
+
+                        </div>
+                        <div id="Capper" class="faq-section">
+                            <h5 class="faq-section-title MontserratMedium" id="CapperFAQLabel">CAPPER</h5>
+                            @if (Model == null || Model.CapperItems.Count <= 0)
+                            {
+                                <p>No FAQ items yet.</p>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.CapperItems)
+                                {
+                                    <vc:faq-card item-id="@item.Id" question="@item.Question" answer="@item.Answer"></vc:faq-card>
+                                }
+                            }
+
+
+
+                        </div>
+                        <div id="Bettor" class="faq-section">
+                            <h5 class="faq-section-title MontserratMedium" id="BettorFAQLabel">BETTOR</h5>
+                            @if (Model == null || Model.BettorItems.Count <= 0)
+                            {
+                                <p>No FAQ items yet.</p>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.BettorItems)
+                                {
+                                    <vc:faq-card item-id="@item.Id" question="@item.Question" answer="@item.Answer"></vc:faq-card>
+                                }
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12"></div>
+
+
+        </div>
+
+    </div>
+</section>
+
+
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/FAQ.js")" asp-append-version="true"></script>
+}

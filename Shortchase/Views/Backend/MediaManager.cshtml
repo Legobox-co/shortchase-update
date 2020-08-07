@@ -1,0 +1,184 @@
+﻿@model MediaFolderListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-images"></i>*@
+                        <img src="@Url.Content("~/img/newicons/media.png")" class="img-fluid" width="40px" />&nbsp;
+                        Media Manager
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 text-right">
+                    @if (Model.CurrentFolder != null)
+                    {
+                        <button class="btn btn-danger DeleteMediaFolderModalBtn btn-sm" data-id="@Model.CurrentFolder.Id.ToString()">
+                            <i class="fas fa-trash"></i> Delete Folder
+                        </button>
+                        <button class="btn btn-warning EditMediaFolderModalBtn btn-sm" data-name="@Model.CurrentFolder.Name" data-id="@Model.CurrentFolder.Id.ToString()">
+                            <i class="fas fa-edit"></i> Rename Folder
+                        </button>
+                    }
+                    <button class="btn btn-dark-as-homepage AddMediaFolderModalBtn btn-sm">
+                        <i class="fas fa-plus"></i> Add Folder
+                    </button>
+                    <button class="btn btn-dark-as-homepage AddMediaModalBtn btn-sm">
+                        <i class="fas fa-plus"></i> Add Media
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+
+
+        <div class="row">
+            @if (Model.CurrentFolder != null)
+            {
+
+                <div class="col-sm-12 col-md-12 col-lg-12 text-left py-2">
+                    <p class="w-100 m-0 d-flex flex-row justify-content-start align-items-center">
+                        @if (Model.TopLevelId.HasValue)
+                        {
+                            <a class="btn btn-light btn-sm timezoneoffset my-2" asp-action="MediaManager" asp-controller="Backend" asp-route-Folder="@Model.TopLevelId.Value">
+                                <i class="fas fa-chevron-circle-up"></i>
+                                Up one level
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-light btn-sm timezoneoffset my-2" asp-action="MediaManager" asp-controller="Backend">
+                                <i class="fas fa-chevron-circle-up"></i>
+                                Up one level
+                            </a>
+                        }
+                        <strong><i class="fas fa-folder-open"></i> @Model.CurrentFolder.Name</strong>
+                    </p>
+                    <hr class="m-0" />
+                </div>
+            }
+            @if ((Model.Folders == null || Model.Folders.Count() <= 0) && (Model.FilesInFolder == null || Model.FilesInFolder.Count() <= 0))
+            {
+                <div class="col-sm-12 col-md-12 col-lg-12 text-left ">
+                    <div class="card shadow-sm">
+                        <div class="card-body py-3 px-3">
+                            <p class="mb-0 text-small font-weight-900">
+                                No media found on database.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                if (Model.Folders != null && Model.Folders.Count() > 0)
+                {
+                    foreach (var folder in Model.Folders)
+                    {
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <a class="card mb-3 shadow-sm clickable timezoneoffset" asp-action="MediaManager" asp-controller="Backend" asp-route-Folder="@folder.Id">
+                                <div class="card-body py-1 px-2">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 col-lg-2 px-2">
+                                            <div class="h-100 w-100 d-flex align-items-center justify-content-end">
+
+                                                <i class="fas fa-folder"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-9 col-lg-10 px-1">
+                                            <div class="h-100 w-100 d-flex flex-column align-items-start justify-content-center">
+                                                <h5 class="card-title m-0 text-smaller">@folder.Name</h5>
+                                                <p class="card-text m-0 text-smaller"><small class="text-muted">Last Updated: @DateHelper.DateSimpleFormat(folder.LastUpdated.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+
+                    }
+                }
+
+                if (Model.FilesInFolder != null && Model.FilesInFolder.Count() > 0)
+                {
+                    foreach (var file in Model.FilesInFolder)
+                    {
+                        string mediaFile = "";
+                        if (!string.IsNullOrWhiteSpace(file.PhysicalPath))
+                        {
+                            mediaFile = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + file.PhysicalPath);
+                        }
+                        decimal size = file.Size / 1000.00m;
+                        string sizeStr = size.ToString("0.00");
+                        string urlSTR = file.URL;
+                        <div class="col-sm-12 col-md-2 col-lg-2">
+                            <div class="card mb-3 shadow-sm clickable timezoneoffset OpenEditFileModal" data-id="@file.Id.ToString()" data-title="@file.Title" data-size="@sizeStr" data-lastupdated="@DateHelper.DateSimpleFormat(file.LastUpdated.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))" data-media="@mediaFile" data-url="@urlSTR" data-width="@file.Width.ToString("0.00")" data-height="@file.Height.ToString("0.00")">
+                                <div class="card-body py-1 px-2">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-3 col-lg-2 px-2">
+                                            <div class="h-100 w-100 d-flex align-items-center justify-content-end">
+                                                <i class="fas fa-image"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6 col-lg-7 px-1">
+                                            <div class="h-100 w-100 d-flex flex-column align-items-start justify-content-center">
+                                                <h5 class="card-title m-0 text-smaller">@file.Title </h5>
+                                                <p class="card-text m-0 text-smaller"><small class="text-muted">Last Updated: @DateHelper.DateSimpleFormat(file.LastUpdated.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-3 col-lg-3 ">
+                                            <div class="h-100 w-100 d-flex flex-column align-items-center justify-content-center">
+                                                <p class="card-text m-0 text-smaller"><small class="text-muted">@sizeStr<br />Kb</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    }
+                }
+            }
+        </div>
+
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/MediaManager_AddMediaFolderModal" model="@Model" />
+<partial name="Partials/MediaManager_EditMediaFolderModal" model="@Model" />
+<partial name="Partials/MediaManager_AddMediaFileModal" model="@Model" />
+<partial name="Partials/MediaManager_EditMediaFileModal" model="@Model" />
+
+
+@{
+    string ParentId = "";
+    if (Model.CurrentFolder != null)
+    {
+        ParentId = Model.CurrentFolder.Id.ToString();
+    }
+}
+
+<input id="DeleteMediaFolderURL" hidden value="@Url.Action("DeleteMediaFolder", "Backend")" />
+<input id="DeleteMediaFileURL" hidden value="@Url.Action("DeleteMediaFile", "Backend")" />
+<input id="ParentFolderId" hidden value="@ParentId" />
+<input id="RedirectURL" hidden value="@Url.Action("MediaManager", "Backend")" />
+<input id="CropMediaURL" hidden value="@Url.Action("MediaManagerCropMedia", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/MediaManager.js")" asp-append-version="true"></script>
+}

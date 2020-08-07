@@ -1,0 +1,36 @@
+﻿@model MediaFolderListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddFileModalContent = @<div>
+        <form class="row" id="AddMediaFileModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="AddFileTitle" label="File Title" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="custom-file d-block">
+                    <input type="file" class="custom-file-input" hidden id="AddFileMedia">
+                    <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="AddFileMedia">
+                        <span id="AddFileMediaLabel" class="MontserratBold">Select media</span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <p class="pt-4 m-0 text-muted text-smaller MontserratBlack">
+                    <i class="fas fa-exclamation-triangle"></i> Important
+                </p>
+                <p class="py-2 m-0 text-muted text-smaller">
+                    For images to be used as the "Category Image" for listing Categories, use the following standard size: 350 pixels (width) x 220 pixels (height)
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddFileModalContent" id="AddMediaFileModal" locked="false" title="Add Media File"></vc:modal>
+
+
+<input id="AddMediaFileModalURL" hidden value="@Url.Action("AddMediaFile", "Backend")" />

@@ -1,0 +1,48 @@
+﻿@model BetListingListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> ValidateManuallyModalContent = @<div>
+        <form class="row" id="ValidateManuallyBetListingModalForm">
+            <input type="hidden" id="ValidateManuallyBetListingId" value="0" />
+
+            <div class="col-sm-12 col-md-12 col-lg-12 pb-4">
+                <p class="m-0 text-smaller">
+                    <span class="MontserratBold">Pick:</span>
+                    <span id="PickValidationPlaceholder"></span><br />
+                    <span class="MontserratBold">
+                        Category:
+                    </span><span id="CategoryValidationPlaceholder"></span><br />
+                    <span class="MontserratBold">
+                        Subcategory:
+                    </span><span id="SubCategoryValidationPlaceholder"></span><br />
+                    <span class="MontserratBold">
+                        Market:
+                    </span><span id="MarketValidationPlaceholder"></span><br />
+                    <span class="MontserratBold">Tip: </span><span id="TipValidationPlaceholder"></span><br />
+
+                    <span class="MontserratBold">
+                        Start Time:
+                    </span><span id="StartValidationPlaceholder"></span><br />
+                </p>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="w-100">
+                    <label for="IsCorrectValidateManually" class="mb-0 text-smaller pl-1 font-weight-600 d-block">Is prediction correct?</label>
+                    <select class="selectpicker" id="IsCorrectValidateManually" required>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="ValidateManuallyModalContent" id="ValidateManuallyBetListingModal" locked="false" title="Validate Bet Listing"></vc:modal>
+
+
+<input id="ValidateBetListingManuallyURL" hidden value="@Url.Action("ValidateBetListingManually", "Backend")" />

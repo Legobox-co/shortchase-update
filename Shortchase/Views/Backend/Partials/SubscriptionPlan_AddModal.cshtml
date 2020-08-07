@@ -1,0 +1,26 @@
+﻿@model SubscriptionPlanListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddSubscriptionPlanModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="AddName" label="Plan" type="text" class="" required="true" placeholder="e.g. Monthly" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:select id="AddType" label="Type" class="" required="true" searchable="false" default="" options="@Model.SubscriptionPlanTypeOptions" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:number-input id="AddDurationInMonths" label="Duration (in months)" min-value="1" max-value="" step="1" class="" required="true" placeholder="e.g. 1" value="1" disabled="false"></vc:number-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="AddValuePerMonth" label="Price/Month" type="text" class="dollar-inputmask" required="true" placeholder="e.g. 8.99" value="0.00" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+    </div>;}
+<vc:modal content="AddModalContent" id="AddSubscriptionPlanModal" locked="false" title="Add Subscription Plan"></vc:modal>
+
+
+<input id="AddSubscriptionPlanModalURL" hidden value="@Url.Action("AddSubscriptionPlan", "Backend")" />

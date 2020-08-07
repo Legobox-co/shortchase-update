@@ -1,0 +1,33 @@
+﻿@model ListingCategoryListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditListingCategoryModalForm">
+            <input type="hidden" id="EditListingCategoryId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditName" label="Name" type="text" class="" required="true" placeholder="e.g. Football" value="" disabled="false"></vc:input>
+            </div>
+            @*<div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditDescription" label="Description" type="text" class="" required="false" placeholder="e.g. Also called Soccer" value="" disabled="false"></vc:input>
+            </div>*@
+        <div class="col-sm-12 col-md-12 col-lg-6 text-center">
+            <img src="" id="EditDisplayImageHolder" width="75" />
+            @*<vc:file-input id="EditDisplayImage" label="Category Image" class=""></vc:file-input>*@
+            <vc:media-selector-button id="EditDisplayImage" width="350" height="220" field-label="Category Image"></vc:media-selector-button>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 text-center">
+            <img src="" id="EditMarketplaceImageHolder" width="75" />
+            @*<vc:file-input id="EditMarketplaceImage" label="Marketplace Image" class=""></vc:file-input>*@
+            <vc:media-selector-button2 id="EditMarketplaceImage" field-label="Marketplace Image"></vc:media-selector-button2>
+        </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditListingCategoryModal" locked="false" title="Edit Listing Category"></vc:modal>
+
+
+<input id="EditListingCategoryModalURL" hidden value="@Url.Action("EditListingCategory", "Backend")" />

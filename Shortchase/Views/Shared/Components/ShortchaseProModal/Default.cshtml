@@ -1,0 +1,36 @@
+@model WebsiteSubscriptionPlanDto;
+
+@if (Model == null || Model.SubscriptionPlans == null || Model.SubscriptionPlans.Count <= 0 || Model.SubscriptionPlans.Count > 1)
+{
+    <p>No plans found.</p>
+}
+else
+{
+
+    @foreach (var item in Model.SubscriptionPlans)
+    {
+        <input type="hidden" id="ShortChaseProPlanId" value="@item.Id" />
+        <h1 class="text-center MontserratBold text-dark">
+            $@item.ValuePerMonth
+        </h1>
+        <div class="mt-4">
+            <p class="text-center my-5">
+                <strong class="MontserratBold text-dark">monthly</strong><br />
+                plus 8% fee<br />
+                in commission per order
+            </p>
+            <p class="text-center d-none d-sm-none d-md-none d-lg-block text-small mt-5 mb-4">
+                Get everything from Shortchase standard account<br />
+                plus posting unlimited picks and live bet listings in<br />
+                the marketplace.
+            </p>
+            <p class="text-center d-block d-sm-block d-md-block d-lg-none text-small mt-5 mb-4">
+                Get everything from Shortchase standard account
+                plus posting unlimited picks and live bet listings in
+                the marketplace.
+            </p>
+        </div>
+    }
+
+
+}

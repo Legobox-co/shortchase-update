@@ -1,0 +1,48 @@
+﻿@model ProfilePagination
+
+@if (Model.TotalPages >= 1)
+{
+    int start = Model.CurrentPage;
+    if (start <= 3) { start = 1; }
+    else { start = start - 2; }
+    <div class="paginationContainer text-center d-flex justify-content-center">
+        <ul class="pagination paginationMargin">
+            @if (Model.CurrentPage > 1)
+            {
+                int pageNumber = Model.CurrentPage - 1;
+                <li class="page-item" id="PageBack">
+                    <a class="page-link pagelinkHeader profilepaginationItemClick blue-pagination-text d-flex h-100 justify-content-center align-items-center text-smallest" data-id="@Model.UserId" data-page="@pageNumber" data-url="@Model.Action" data-pagesize="@Model.PageSize" href="#" aria-label="First">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+            }
+            @for (int i = start; i <= start + 4 && i <= Model.TotalPages; i++)
+            {
+                string liClass = "";
+                string aClass = "";
+                if (Model.CurrentPage != i)
+                {
+                    liClass = "GotoPage";
+                    aClass = "blue-pagination-text";
+                }
+                else
+                {
+                    aClass = "blue-pagination-active text-white MontserratBold currentPageLink";
+                }
+
+                <li class="page-item text-smaller @liClass">
+                    <a class="page-link pagelinkHeader profilepaginationItemClick pagination-round-item @aClass" data-id="@Model.UserId" data-page="@i" data-url="@Model.Action" data-pagesize="@Model.PageSize" href="#">@i</a>
+                </li>
+            }
+            @if (Model.TotalPages != Model.CurrentPage)
+            {
+                int pageNumber = Model.CurrentPage + 1;
+                <li class="page-item" id="PageFront">
+                    <a class="page-link pagelinkHeader profilepaginationItemClick  blue-pagination-text d-flex h-100 justify-content-center align-items-center text-smallest" href="#" data-id="@Model.UserId" aria-label="Last" data-page="@pageNumber" data-url="@Model.Action" data-pagesize="@Model.PageSize">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

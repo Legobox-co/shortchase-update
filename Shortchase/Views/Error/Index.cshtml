@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "_WebsiteLayout";
+}
+
+
+<div class="text-center ">
+    <div class="container">
+        <div class="row pb-5">
+            <div class="col-sm-12 ">
+                <h1 class=" mt-5 dark-text-shortchase text-shadow-big">
+                    @if (string.IsNullOrWhiteSpace(ViewData["Title"].ToString()))
+                    {
+                        <text>There was an error on your request. Try again later. </text>
+                    }
+                    else
+                    {
+                        <text>@ViewData["Title"].ToString()</text>
+                    }
+                </h1>
+                <p class="text-center m-0 py-4">
+                    @if (string.IsNullOrWhiteSpace(ViewData["Message"].ToString()))
+                    {
+                        <text>There was an error on your request. Try again later. </text>
+                    }
+                    else { 
+                        <text>@ViewData["Message"].ToString()</text>
+                    }
+                    <br /><br />
+                    <a asp-action="Index" asp-controller="Backend" class="btn btn-dark btn-rounded timezoneoffset">Ok</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>

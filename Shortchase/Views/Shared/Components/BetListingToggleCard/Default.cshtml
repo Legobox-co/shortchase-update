@@ -1,0 +1,220 @@
+﻿@model BetListingToggleCardDto
+@{
+
+    string status = "";
+    string listingArea = "listing" + Model.IterationCounter + "_area";
+    string listingIcon = "listing" + Model.IterationCounter + "_icon";
+    string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + Model.BetListing.Category.MarketplaceImage);
+    if (Model.BetListing.Pick.StartTime < DateTime.UtcNow && DateTime.UtcNow < Model.BetListing.Pick.FinishTime)
+    {
+        status = "Active";
+    }
+    else
+    {
+        if (DateTime.UtcNow < Model.BetListing.Pick.StartTime && DateTime.UtcNow < Model.BetListing.Pick.FinishTime)
+        {
+            status = "Active";
+        }
+        else
+        {
+            status = "Inactive";
+        }
+    }
+}
+<div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="card clickable toggleHiddenAreaOnClick my-1 bg-grey-dark-3 outset-border-thin" data-area="@listingArea" data-icon="@listingIcon" data-isclicked="false">
+        <div class="card-body px-2 py-1 ">
+            <div class="row d-none d-sm-none d-md-none d-lg-flex ">
+                <div class="col-sm-12 col-lg-2 text-center py-2 ">
+                    <img src="@Model.ProfilePicture" class="img-fluid rounded-circle" width=50px" />
+                </div>
+                <div class="col-sm-12 col-lg-6 px-0">
+                    <p class="m-0 pt-1 text-small text-grey-2 d-flex h-100 justify-content-start align-items-center">
+                        @Model.UserName<br />
+                        @DateHelper.POTDDateFormat(Model.BetListing.RowDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                    </p>
+                </div>
+                <div class="col-sm-12 col-lg-3 text-right">
+                    <p class="m-0 mt-1 py-2 px-1 d-flex h-100 justify-content-end align-items-center">
+                        <span class="outlined-text-grey">@status</span>
+                    </p>
+                </div>
+                <div class="col-sm-12 col-lg-1 text-right">
+                    <p class="m-0 pt-3 pb-2 px-1 d-flex h-100 justify-content-end align-items-center">
+                        <i class="fas fa-chevron-down @listingIcon"></i>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="row d-flex d-sm-flex d-md-flex d-lg-none ">
+                <div class="col-2 text-center py-2 ">
+                    <img src="@Model.ProfilePicture" class="img-fluid rounded-circle" width="25px" />
+                </div>
+                <div class="col-4 px-0 text-left">
+                    <p class="m-0 pt-1 text-small text-grey-2">
+                        @Model.UserName<br />
+                        <span class="text-smaller">@DateHelper.POTDDateFormat(Model.BetListing.RowDate.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</span>
+                    </p>
+                </div>
+                <div class="col-4 text-right">
+                    <p class="m-0 mt-1 py-2 px-1 ">
+                        <span class="outlined-text-grey">@status</span>
+                    </p>
+                </div>
+                <div class="col-2 text-center">
+                    <p class="m-0 mt-1 py-2 pb-2 px-1">
+                        <i class="fas fa-chevron-down @listingIcon"></i>
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="text-dark" id="@listingArea" style="display:none;">
+                <div class="row ">
+                    <div class="col-12 d-none d-sm-none d-md-none d-lg-flex d-xl-flex">
+                        <div class="row w-100">
+                            <div class="col-sm-12 col-md-12 col-lg-3">
+                                <img src="@imageURL" class="img-fluid max-width-small" />
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6 ">
+                                <p class="m-0 text-small d-flex align-items-center h-100">
+                                    @if (Model.BetListing.SubCategoryId.HasValue)
+                                    {
+                                        <text>@Model.BetListing.SubCategory.Name / </text>
+                                    }
+                                    @Model.BetListing.Title
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-3">
+                                <p class="m-0 text-small d-flex align-items-center h-100 justify-content-end">
+                                    <span class="outlined-text-grey">
+                                        @if (Model.BetListing.PickType == BetListingType.Free)
+                                        {
+                                            <span class="">Free</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="">
+                                                $ @Model.BetListing.Price
+                                            </span>
+                                        }
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-12 d-flex d-sm-flex d-md-flex d-lg-none d-xl-none">
+                        <div class="row w-100">
+                            <div class="col-2 justify-content-center">
+                                <img src="@imageURL" class="" width="30px" />
+                            </div>
+                            <div class="col-6 justify-content-start">
+                                <p class="m-0 text-small d-flex align-items-center h-100">
+                                    @if (Model.BetListing.SubCategoryId.HasValue)
+                                    {
+                                        <text>@Model.BetListing.SubCategory.Name / </text>
+                                    }
+                                    @Model.BetListing.Title
+                                </p>
+                            </div>
+                            <div class="col-4 justify-content-end">
+                                <p class="m-0 text-small d-flex align-items-center h-100 justify-content-end">
+                                    <span class="outlined-text-grey">
+                                        @if (Model.BetListing.PickType == BetListingType.Free)
+                                        {
+                                            <span class="">Free</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="">
+                                                $ @Model.BetListing.Price
+                                            </span>
+                                        }
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+
+                        <p class="m-0 py-1 text-small d-flex flex-column align-items-start h-100 justify-content-start border-bottom-line">
+                            <span>@Model.BetListing.Pick.Team1 vs @Model.BetListing.Pick.Team2, (Odds) @Model.BetListing.Odds</span>
+
+                            <span>
+                                @DateHelper.POTDDateFormat(Model.BetListing.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 ">
+                        <div class="">
+                            <p class="m-0 py-1 text-small d-flex align-items-start h-100 justify-content-start word-break-all flex-column">
+                                @{
+                                    bool isEventPastNow = Model.BetListing.Pick.FinishTime <= DateTime.UtcNow;
+
+                                    if (isEventPastNow)
+                                    {
+                                        string resultIcon = "fas fa-minus";
+                                        string resultBgWrapper = "bg-light";
+                                        if (Model.BetListing.IsCorrect.HasValue)
+                                        {
+                                            if (Model.BetListing.IsCorrect.Value)
+                                            {
+                                                resultBgWrapper = "bg-success py-1 px-2-25";
+                                                resultIcon = "fas fa-check";
+                                            }
+                                            else
+                                            {
+                                                resultBgWrapper = "bg-danger py-1 px-2";
+                                                resultIcon = "fas fa-times";
+                                            }
+                                        }
+
+                                        <text>
+                                            <span>Analysis: @Model.BetListing.Analysis</span>
+                                            <span>
+                                                Prediction: @Model.BetListing.Tip.Description
+                                                <span class="@resultBgWrapper text-white  border-radius-ultra-low"><i class="@resultIcon"></i></span>
+                                            </span>
+                                        </text>
+                                    }
+                                }
+                                <span>
+                                    Where to play: @Model.BetListing.Bookmaker.Description
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+
+                        <p class="m-0 py-1 text-small d-flex align-Model.BetListings-center h-100 justify-content-start">
+                            <span class="outlined-text-grey">
+                                @Model.BetListing.Views
+
+                                @if (Model.BetListing.Views == 1)
+                                {
+
+                                    <text> view</text>
+                                }
+                                else
+                                {
+                                    <text> views</text>
+                                }
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

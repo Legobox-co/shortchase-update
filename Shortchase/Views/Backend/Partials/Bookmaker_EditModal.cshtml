@@ -1,0 +1,20 @@
+﻿@model BookmakerListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditBookmakerModalForm">
+            <input type="hidden" id="EditBookmakerId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="EditDescription" label="Name" type="text" class="" required="true" placeholder="e.g. Predictions 1X2" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditBookmakerModal" locked="false" title="Edit Bookmaker"></vc:modal>
+
+
+<input id="EditBookmakerModalURL" hidden value="@Url.Action("EditBookmaker", "Backend")" />

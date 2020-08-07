@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html class="websiteHtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <vc:app-title app-end="front"></vc:app-title>
+
+    <link rel="shortcut icon" href="@Url.Content("~/img/mini-logo.png")" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.css")" asp-append-version="true"  />
+    <link rel="stylesheet" href="@Url.Content("~/lib/datatables/datatables.min.css")" asp-append-version="true"  />
+    <link href="@Url.Content("~/lib/summernote/summernote.css")" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="@Url.Content("~/css/site.css")" asp-append-version="true"  />
+    <link rel="stylesheet" href="@Url.Content("~/css/forms.css")" asp-append-version="true"  />
+</head>
+<body class="websiteBody">
+    <partial name="_FullPageLoader" />
+    <partial name="_WebsiteHeader" />
+    <partial name="_WebsiteJumbotron" />
+    <div class="websiteBodyContent">
+        @RenderBody()
+    </div>
+
+
+    <partial name="_WebsiteFooter" />
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.js")" asp-append-version="true"></script>
+
+    <script src="@Url.Content("~/lib/sweetalert/sweetalert.js")"></script>
+    <script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/jquery.inputmask.bundle.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/summernote/summernote.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/datatables/datatables.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/maskmoney/jquery.maskMoney.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/momentjs/moment.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/axios/axios.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/app/Home/Index.js")" asp-append-version="true"></script>
+
+    <partial name="_WebsiteModals" />
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

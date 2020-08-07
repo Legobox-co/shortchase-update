@@ -1,0 +1,86 @@
+﻿@model SecondaryEmailTemplateListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-envelope"></i>*@
+                        <img src="@Url.Content("~/img/newicons/email-portal.png")" class="img-fluid" width="40px" />&nbsp;
+                        Email Portal
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <a class="btn btn-dark-as-homepage timezoneoffset" asp-action="EmailTemplateAdd" asp-controller="Backend">
+                        <i class="fas fa-plus"></i> Add
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model.Templates == null || Model.Templates.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No Email Templates found on database.
+                    </p>
+                }
+                else
+                {
+                    <table id="SecondaryEmailTemplatesList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Subject</th>
+                                <th class="text-uppercase">Title</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Templates)
+                            {
+
+                                <tr>
+                                    <td id="Subject-@item.Id" data-value="@item.Subject">@item.Subject</td>
+                                    <td id="Title-@item.Id" data-value="@item.Title">@item.Title</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary timezoneoffset" asp-action="EmailTemplateEdit" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></a>
+                                        <button class="btn btn-sm btn-info SendEmailBtn" data-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Send to a Shortchaser">
+                                            @*<i class="fas fa-paper-plane"></i>*@
+                                            <img src="@Url.Content("~/img/newicons/send-email-to-shortchaser.png")" class="img-fluid" width="20px" />
+                                        </button>
+                                        <button class="btn btn-sm btn-warning SendEmailAnonymousBtn" data-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Send to others">
+                                            @*<i class="fas fa-paper-plane"></i>*@
+                                            <img src="@Url.Content("~/img/newicons/send-email-to-others.png")" class="img-fluid" width="20px" />
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/EmailTemplateEditor_SendEmailToUser" model="@Model" />
+<partial name="Partials/EmailTemplateEditor_SendEmailToAnonymous" model="@Model" />
+
+<input id="DeleteSecondaryEmailTemplateURL" hidden value="@Url.Action("DeleteSecondaryEmailTemplate", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/EmailTemplateEditor.js")" asp-append-version="true"></script>
+}

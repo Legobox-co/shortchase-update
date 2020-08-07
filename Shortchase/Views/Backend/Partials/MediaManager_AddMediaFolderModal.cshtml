@@ -1,0 +1,20 @@
+﻿@model MediaFolderListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddMediaFolderModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="AddName" label="Folder Name" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+            </div>
+           
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddModalContent" id="AddMediaFolderModal" locked="false" title="Add Media Folder"></vc:modal>
+
+
+<input id="AddMediaFolderModalURL" hidden value="@Url.Action("AddMediaFolder", "Backend")" />

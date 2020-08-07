@@ -1,0 +1,11 @@
+﻿<div class="custom-control custom-checkbox @ViewData["Class"]">
+    <input class="custom-control-input " id="@ViewData["Id"]" type="checkbox"
+           @if(ViewData["Required"].ToString() == true.ToString()){ 
+               <text>required</text>
+           }
+           @if(ViewData["Checked"].ToString() == true.ToString()){ 
+               <text>checked</text>
+           }
+           >
+    <label class="custom-control-label" for="@ViewData["Id"]">@ViewData["Label"]</label>
+</div>

@@ -1,0 +1,163 @@
+﻿@model WebsiteBetListingListYourPickDto;
+@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container py-5 post-a-pick-container">
+
+        <div class="row ml-0 mr-0">
+            <div class="col-sm-12 col-md-12 col-lg-2 text-center">
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-8 text-center px-0 px-sm-0 px-md-3 px-lg-3 px-xl-3">
+                <div class="card shadow border-radius-low">
+                    <div class="card-body pb-5 list-your-pick-bg">
+                        <p class="m-0 text-right">
+                            <a class="text-light-grey timezoneoffset" asp-action="Index" asp-controller="Home"><i class="fas fa-times "></i></a>
+                        </p>
+                        <h2 class="section-title py-2">
+                            Post a Pick
+                        </h2>
+                        <p>
+                            Create and post your bet listing to reach millions of bettors.
+                        </p>
+                        <div class=" px-0 px-sm-0 px-md-3 px-lg-3 px-xl-3">
+
+                            <form class="row" id="AddBetListingForm">
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <vc:bet-listing-input id="AddListingTitle" max-length="45" placeholder="Listing Title"></vc:bet-listing-input>
+                                </div>
+                                <div class="col-4 pr-1">
+                                    <div class="list-a-pick-form-input-wrapper">
+                                        <input type="hidden" id="ValidationCallURL" value="" />
+                                        <select class="" required="" id="AddCategory" name="AddCategory">
+                                            <option value="0" disabled selected>Select Category</option>
+                                            @if (Model.CategoriesOptions != null && Model.CategoriesOptions.Count > 0)
+                                            {
+                                                foreach (var item in Model.CategoriesOptions)
+                                                {
+                                                    <option value="@item.Id" id="catopt-@item.Id" data-key="@item.APIKey" data-method="@item.APIMethod" data-url="@item.APIURL" data-type="@item.APIType">@item.Name</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4 px-1">
+
+                                    <input type="hidden" id="AddHasSubcategories" value="0" />
+                                    <div class="list-a-pick-form-input-wrapper">
+                                        <select class="" id="AddSubCategory" name="AddSubCategory" disabled>
+                                            <option id="" value="0" selected>Select Subcategory</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4 pl-1">
+                                    <vc:bet-listing-decimal-input id="AddListingPrice" placeholder="Price"></vc:bet-listing-decimal-input>
+                                </div>
+                                <div class="col-8 pr-1">
+                                    <div class="list-a-pick-form-input-wrapper">
+                                        <select class="" id="AddPick" name="AddPick" disabled>
+                                            <option id="" value="0" selected>Select Pick</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4 pl-1">
+                                    <vc:bet-listing-select id="AddListingPickType" placeholder="Select Pick Type" options="Model.BetListingsTypesOptions"></vc:bet-listing-select>
+                                </div>
+
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <vc:bet-listing-input id="AddListingDescription" max-length="750" placeholder="Preview"></vc:bet-listing-input>
+                                </div>
+
+                                <div class="col-4 pr-1">
+                                    <vc:bet-listing-select id="AddListingOddFormat" placeholder="Select Odds Format" options="Model.BetListingsOddFormatOptions"></vc:bet-listing-select>
+                                </div>
+                                <div class="col-2 px-1">
+                                    <vc:bet-listing-decimal-input id="AddListingOdds" placeholder="Odds"></vc:bet-listing-decimal-input>
+                                </div>
+
+
+                                <div class="col-3 px-1">
+                                    <vc:bet-listing-decimal-input id="AddStake" placeholder="Stake"></vc:bet-listing-decimal-input>
+                                </div>
+                                <div class="col-3 pl-1">
+                                    <vc:bet-listing-decimal-input id="AddProfit" placeholder="Profit"></vc:bet-listing-decimal-input>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <vc:bet-listing-select id="AddListingWhereToPlay" placeholder="Where to play (Match your odds with a bookmaker)" options="Model.BookmakerOptions"></vc:bet-listing-select>
+                                </div>
+
+
+
+                                <div class="col-6">
+                                    <vc:bet-listing-date-read-only-input id="AddDateTimeStart" label="Start Time"></vc:bet-listing-date-read-only-input>
+                                </div>
+
+                                <div class="col-6">
+                                    <vc:bet-listing-date-read-only-input id="AddDateTimeFinish" label="Finish Time"></vc:bet-listing-date-read-only-input>
+                                </div>
+
+
+
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <vc:bet-listing-textarea id="AddListingAnalysis" label="Analysis" placeholder="Type short analysis not more than 1000 characters." min-length="140" max-length="1000"></vc:bet-listing-textarea>
+                                </div>
+
+
+                                <div class="col-6">
+                                    <div class="list-a-pick-form-input-wrapper">
+                                        <select class="" id="AddMarket" name="AddMarket" disabled>
+                                            <option id="" value="0" selected>Select Market</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="list-a-pick-form-input-wrapper">
+                                        <select class="" id="AddTip" name="AddTip" disabled>
+                                            <option id="" value="0" selected>Select Tip</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-12 col-lg-12 pt-0 pb-1" style="padding-top: 2em !important;">
+                                    @{
+                                        string btnType = "";
+                                        string btnClass = "";
+                                    }
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+
+                                        btnType = "submit";
+                                        btnClass = "";
+                                    }
+                                    else
+                                    {
+                                        btnType = "button";
+                                        btnClass = "OpenNotAuthNotAllowedModal";
+                                    }
+                                    <button type="@btnType" class="btn btn-dark px-5 py-2 @btnClass">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-2 text-center">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<input id="GetDependentDataFromCategoryURL" hidden value="@Url.Action("GetDependentDataFromCategory", "Home")" />
+<input id="GetDependentDataFromMarketURL" hidden value="@Url.Action("GetDependentDataFromMarket", "Home")" />
+<input id="AddBetListingURL" hidden value="@Url.Action("AddBetListing", "Home")" />
+<input id="LoggedInUserID" hidden value="@User.Identity.Id()" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ListYourPick.js")" asp-append-version="true"></script>
+}

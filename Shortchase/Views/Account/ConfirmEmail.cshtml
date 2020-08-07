@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+<div class="page login-page">
+    <div class="container">
+        <div class="form-outer text-center d-flex align-items-center">
+            <div class="form-inner">
+                <p>Please type or paste the code that we have sent you below. If you can't find the email, please check your spam folder or wait a few minutes. If you didn't receive it, click <a href="#" id="ResendVerification">here to resend</a>.</p>
+                <p id="ResendVerificationFeedback"></p>
+                <form id="confirmEmail" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label for="ConfirmationCode">Confirmation Code</label>
+                        <input name="ConfirmationCode" id="ConfirmationCode" class="form-control" />
+                        <span class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <input id="confirmCode" type="submit" value="Send" class="btn btn-primary btn-block">
+                    </div>
+                </form>
+                <small><a asp-action="LogOff" asp-controller="Account" class="timezoneoffset">Log off</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+<input hidden id="ResendCodeUrl" value="@Url.Action("ResendEmailConfirmation", "Account")" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="@Url.Content("~/app/Account/ConfirmEmail.js")" asp-append-version="true"></script>
+}

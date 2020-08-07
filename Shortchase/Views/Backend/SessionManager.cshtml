@@ -1,0 +1,50 @@
+﻿@model SessionManagerDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-cogs"></i>*@
+                        <img src="@Url.Content("~/img/newicons/session-manager.png")" class="img-fluid" width="40px" />&nbsp;
+                        Session Manager
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <form id="SessionManagerForm" class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4">
+
+                        <vc:input id="SessionTimeout" label="@SystemConstantName.SessionTimeout (in minutes)" type="number" class="" required="true" placeholder="" value="@Model.SessionTimeout" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-left">
+                        <button type="submit" class="btn btn-dark-as-homepage"><i class="fas fa-check"></i> Save changes</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<input id="UpdateSessionManagerURL" hidden value="@Url.Action("UpdateSessionManager", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/SessionManager.js")" asp-append-version="true"></script>
+}

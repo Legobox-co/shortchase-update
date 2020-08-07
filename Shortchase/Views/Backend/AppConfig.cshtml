@@ -1,0 +1,88 @@
+﻿@model AppConfigs
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-cog"></i>*@
+                        <img src="@Url.Content("~/img/newicons/app-manager.png")" class="img-fluid" width="40px" />&nbsp;
+                        App Configuration
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage UpdateAppConfigBtn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <vc:input id="AppName" label="App Name" type="text" class="" required="true" placeholder="" value="@Model.AppName.Value" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <vc:input id="AppTagline" label="App Tagline" type="text" class="" required="true" placeholder="" value="@Model.AppTagline.Value" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+
+                        @*<div class="custom-file d-block">
+                                <input type="file" class="custom-file-input" hidden id="AppLogo">
+                                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="AppLogo">
+                                    <span id="AppLogoLabel" class="MontserratBold">Select Backend App Logo</span>
+                                </label>
+                            </div>*@
+                        @*<input type="hidden" class="mediaselectorinput" id="AppLogo" value="" data-labelwrapper="AppLogoLabelWrapper" data-label="AppLogoLabel">
+                            <button class="btn btn-white btn-block OpenSelectMediaModal" data-submits="AppLogo" >
+                                <i class="fas fa-image"></i> Select App Logo
+                            </button>
+                            <p class="m-0 py-2" id="AppLogoLabelWrapper" style="display:none;">
+                                <span id="" class="MontserratBold text-smaller">Selected:</span> <span id="AppLogoLabel" class=" text-smaller"></span>
+                            </p>*@
+
+                        <vc:media-selector-button id="AppLogo" width="" height="" field-label="Select App Logo"></vc:media-selector-button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6 text-center">
+
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.AppLogo.Value))
+                            {
+                                string bgImagePath = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + Model.AppLogo.Value);
+
+                                <img src="@bgImagePath" class="img-fluid " id="initialFeaturedImagePreview" />
+                                <input type="hidden" id="LogoHasValueAlready" value="true" />
+                                <br />
+                                <strong class="text-muted">Current Logo</strong>
+                            }
+                            else
+                            {
+                                <input type="hidden" id="LogoHasValueAlready" value="false" />
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<input id="UpdateAppConfigURL" hidden value="@Url.Action("UpdateAppConfig", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/AppConfig.js")" asp-append-version="true"></script>
+}

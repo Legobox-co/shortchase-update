@@ -1,0 +1,92 @@
+﻿@{
+    Layout = "_WebsiteLayoutWithoutJumbotron";
+}
+<section class="bg-grey-dark-3">
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-sm-12 col-md-6 order-2 bg-white">
+                <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                    <div class="row py-5 w-100 ">
+                        <div class="col-sm-12 col-md-1"></div>
+                        <div class="col-sm-12 col-md-10">
+                            <form class="" id="ContactForm">
+                                <div class="form-group contact-form">
+                                    <label for="" class="MontserratBold text-smaller text-dark">
+                                        FULL NAME *
+                                    </label>
+                                    <input type="text" class="contact-form-input" id="ContactFullName" autocomplete="off">
+                                </div>
+                                <div class="form-group contact-form">
+                                    <label for="" class="MontserratBold text-smaller text-dark">
+                                        EMAIL *
+                                    </label>
+                                    <input type="text" class="contact-form-input" id="ContactEmail" autocomplete="off">
+                                </div>
+                                <div class="form-group contact-form">
+                                    <label for="" class="MontserratBold text-smaller text-dark">
+                                        TELEPHONE *
+                                    </label>
+                                    <input type="text" class="contact-form-input" id="ContactTelephone" autocomplete="off">
+                                </div>
+
+                                <div class="form-group contact-form">
+                                    <label for="" class="MontserratBold text-smaller text-dark">
+                                        YOUR MESSAGE *
+                                    </label>
+                                    <textarea rows="5" class="contact-form-input" id="ContactMessage" placeholder="Write your message here"></textarea>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-lg btn-dark MontserratBold text-smaller btn-submit-contact-form">SEND MESSAGE</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 col-md-1"></div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-sm-12 col-md-6 order-1 px-0">
+
+                <div class="contactFormSide  m-0 w-100 h-100 d-flex justify-content-center align-items-center">
+
+                    <div class="contactFormSideOverlay  m-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                        <div class="row m-0">
+                            <div class="col-sm-12 col-md-2"></div>
+                            <div class="col-sm-12 col-md-8 text-white p-sm-5 p-md-0 p-lg-0">
+                                <h2 class="py-3">
+                                    Advertise with us
+                                </h2>
+                                <hr class="bg-white" />
+                                <p class="text-paragraph-big-2 py-2">
+                                    If you are interested to advertise on Shortchase, please fill out our contact form and send us your questions and inquiries and we are sure to answer within 24 hours, sooner in most cases.
+                                </p>
+                                <p class="text-paragraph-big-2 py-2">
+                                    Alternatively
+                                </p>
+                                <p class="text-paragraph-big-2 py-2">
+                                    You can email us at
+                                    <a href="mailto:support@shortchase.com" class="text-white">support@shortchase.com</a>
+                                </p>
+                                <p class="text-paragraph-big-2 py-2">
+                                    Please be advised that we don’t work with any external representatives and we sell our advertisement units directly.
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-2"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<input type="hidden" id="SendContactMessageUrl" value="@Url.Action("SendContactMessage", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/ContactForm.js")" asp-append-version="true"></script>
+}

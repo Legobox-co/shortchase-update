@@ -1,0 +1,168 @@
+﻿@model BetListingReportListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-list-ul"></i>*@
+
+                        <img src="@Url.Content("~/img/newicons/bet-listings.png")" class="img-fluid" width="40px" />&nbsp;
+                        Bet Listings: Manage Reports
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage AddListingReportModalBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="py-2">
+            <a asp-action="BetListings" asp-controller="Backend" class="btn btn-link timezoneoffset"><img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" /></a>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h5 class="m-0 text-uppercase">Listing: </h5>
+                <table class="table table-striped table-bordered w-100" cellspacing="0">
+                    <thead>
+                        <tr>
+                            @*<th class="text-uppercase">Status</th>*@
+                            <th class="text-uppercase">Title</th>
+                            <th class="text-uppercase">Category</th>
+                            <th class="text-uppercase">Subcategory</th>
+                            <th class="text-uppercase">Start Time</th>
+                            <th class="text-uppercase">Finish Time</th>
+                            <th class="text-uppercase">Pick Type</th>
+                            <th class="text-uppercase">Price</th>
+                            <th class="text-uppercase">Posted By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @*<td>
+                                    @if (Model.BetListing.IsReported)
+                                    {
+                                        <text>Reported</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Public</text>
+                                    }
+                                </td>*@
+                            <td>@Model.BetListing.Title</td>
+                            <td>@Model.BetListing.Category.Name</td>
+                            <td>
+                                @if (Model.BetListing.SubCategoryId.HasValue)
+                                {
+                                    <text>@Model.BetListing.SubCategory.Name</text>
+                                }
+                                else
+                                {
+                                    <text>No Subcategory</text>
+                                }
+                            </td>
+                            <td>@DateHelper.DateFormat(Model.BetListing.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            <td>@DateHelper.DateFormat(Model.BetListing.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            <td>@Model.BetListing.PickType</td>
+                            <td>@Model.BetListing.Price</td>
+                            <td>@Model.BetListing.Postedby.FirstName @Model.BetListing.Postedby.LastName</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h4>All Reports</h4>
+                <hr class="m-0 my-1" />
+                @if (Model.Reports == null || Model.Reports.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No reports found on database for this listing.
+                    </p>
+                }
+                else
+                {
+                    <table id="ListingReportsList" class="table table-striped table-bordered w-100  " cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Date Reported</th>
+                                <th class="text-uppercase">Reported By</th>
+                                <th class="text-uppercase">Description</th>
+                                <th class="text-uppercase">Is Valid?</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Reports)
+                            {
+                                string isValid = "No";
+                                if (item.IsCorrect)
+                                {
+                                    isValid = "Yes";
+                                }
+                                <tr>
+                                    <td id="DateReported-@item.Id.ToString()" data-value="@item.DateReported">@DateHelper.DateFormat(item.DateReported.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    <td id="ReportedById-@item.Id.ToString()" data-value="@item.ReportedById">
+                                        @item.ReportedBy.FirstName @item.ReportedBy.FirstName
+                                        <br /> <span class="text-lowercase text-muted">@item.ReportedBy.Email</span>
+                                    </td>
+                                    <td id="ReportContent-@item.Id.ToString()">
+                                        @if (!string.IsNullOrWhiteSpace(item.ReportTopic))
+                                        {
+                                            @item.ReportTopic <br />
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(item.ReportContent))
+                                        {
+                                            <button class="btn btn-sm btn-info ViewReportContentBtn" data-id="@item.Id.ToString()" data-value="@item.ReportContent">View Report Content</button>
+                                        }
+
+                                    </td>
+
+                                    <td id="IsValid-@item.Id.ToString()" data-value="@item.IsCorrect">@isValid</td>
+                                    <td>
+                                        @if (!item.IsCorrect)
+                                        {
+                                            <button class="btn btn-sm btn-success ValidateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Mark as valid"><i class="fas fa-check"></i></button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-warning InvalidateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Mark as invalid"><i class="fas fa-ban"></i></button>
+                                        }
+                                        <button class="btn btn-sm btn-outline-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/BetListingReports_AddModal" model="@Model" />
+<partial name="Partials/BetListingReports_ViewModal" model="@Model" />
+
+
+
+<input id="SwitchStatusBetListingReportURL" hidden value="@Url.Action("SwitchStatusBetListingReport", "Backend")" />
+<input id="DeleteBetListingReportURL" hidden value="@Url.Action("DeleteBetListingReport", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/BetListingReports.js")" asp-append-version="true"></script>
+}

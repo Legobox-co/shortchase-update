@@ -1,0 +1,334 @@
+﻿@model ManageUserSubscriptionDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-user-plus"></i>*@
+                        <img src="@Url.Content("~/img/newicons/boisterous.png")" class="img-fluid" width="40px" />&nbsp;
+                        Boisterous Bettors: Manage user subscriptions
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage AddUserSubscriptionModalBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="py-2">
+            <a asp-action="ManageBoisterousUsers" asp-controller="Backend" class="btn btn-dark-as-homepage timezoneoffset"><img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" /></a>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h5 class="m-0 text-uppercase">User: <span class="font-weight-400">@Model.User.FirstName @Model.User.LastName <span class="text-muted">(@Model.User.Email)</span></span></h5>
+                <div class="row py-2">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <h5>ACTIVE BOISTEROUS SUBSCRIPTION</h5>
+                        @if (Model.ActiveSubscriptionBoisterous == null)
+                        {
+                            <p>
+                                No active Boisterous subscriptions.
+                            </p>
+                        }
+                        else
+                        {
+                            <div>
+                                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                                    <tr>
+                                        <th class="text-uppercase">Subscription Name</th>
+                                        <td>@Model.ActiveSubscriptionBoisterous.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Subscription Price</th>
+                                        <td>@Model.ActiveSubscriptionBoisterous.SubscriptionPrice</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Paid Value</th>
+                                        <td>@Model.ActiveSubscriptionBoisterous.PaidValue</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Payment Status</th>
+                                        <td>
+                                            @Model.ActiveSubscriptionBoisterous.PaymentStatus
+                                            @if (Model.ActiveSubscriptionBoisterous.PaymentStatus == UserSubscriptionPaymentStatus.Gift && Model.ActiveSubscriptionBoisterous.GiftBy != null)
+                                            {
+                                                <p class="m-0 text-muted text-smaller">GIFTED BY: @Model.ActiveSubscriptionBoisterous.GiftBy.FirstName @Model.ActiveSubscriptionBoisterous.GiftBy.LastName</p>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Start</th>
+                                        <td>@DateHelper.DateSimpleFormat(Model.ActiveSubscriptionBoisterous.SubscriptionStart.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">End</th>
+                                        <td>@DateHelper.DateSimpleFormat(Model.ActiveSubscriptionBoisterous.SubscriptionEnd.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">User Wallet Balance (before purchase)</th>
+                                        <td>$ @Model.ActiveSubscriptionBoisterous.WalletBalanceBeforePurchase.ToString("0.00")</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">User Wallet Balance (after purchase)</th>
+                                        <td>
+                                            @if (Model.ActiveSubscriptionBoisterous.WalletBalanceAfterPurchase >= 0)
+                                            {
+                                                <text>$ @Model.ActiveSubscriptionBoisterous.WalletBalanceBeforePurchase.ToString("0.00")</text>
+                                            }
+                                            else
+                                            {
+                                                <text>$ 0.00</text>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Payment Type</th>
+                                        <td>
+                                            @if (!string.IsNullOrWhiteSpace(Model.ActiveSubscriptionBoisterous.PaypalOrderId))
+                                            {
+                                                <text>Paypal</text>
+                                            }
+                                            else
+                                            {
+                                                <text>Wallet</text>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    @if (!string.IsNullOrWhiteSpace(Model.ActiveSubscriptionBoisterous.PaypalOrderId))
+                                    {
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Paid Value</th>
+                                            <td>$ @Model.ActiveSubscriptionBoisterous.TotalPaidOnPaypal.ToString("0.00")</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Order Id</th>
+                                            <td>@Model.ActiveSubscriptionBoisterous.PaypalOrderId</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Order Status</th>
+                                            <td>@Model.ActiveSubscriptionBoisterous.PaypalOrderStatus</td>
+                                        </tr>
+                                    }
+                                </table>
+                                @if (Model.ActiveSubscriptionBoisterous.PaymentStatus != UserSubscriptionPaymentStatus.Paid)
+                                {
+                                    <div class="py-2">
+                                        <button class="btn btn-sm btn-danger CancelItemBtn" data-id="@Model.ActiveSubscriptionBoisterous.Id.ToString()">
+                                            <i class="fas fa-ban"></i> Cancel
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <h5>ACTIVE SHORTCHASE PRO SUBSCRIPTION</h5>
+                        @if (Model.ActiveSubscriptionShortchasePro == null)
+                        {
+                            <p>
+                                No active Shortchase Pro subscriptions.
+                            </p>
+                        }
+                        else
+                        {
+                            <div>
+                                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                                    <tr>
+                                        <th class="text-uppercase">Subscription Name</th>
+                                        <td>@Model.ActiveSubscriptionShortchasePro.Name</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Subscription Price</th>
+                                        <td>@Model.ActiveSubscriptionShortchasePro.SubscriptionPrice</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Paid Value</th>
+                                        <td>@Model.ActiveSubscriptionShortchasePro.PaidValue</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Payment Status</th>
+                                        <td>
+                                            @Model.ActiveSubscriptionShortchasePro.PaymentStatus
+                                            @if (Model.ActiveSubscriptionShortchasePro.PaymentStatus == UserSubscriptionPaymentStatus.Gift && Model.ActiveSubscriptionShortchasePro.GiftBy != null)
+                                            {
+                                                <p class="m-0 text-muted text-smaller">GIFTED BY: @Model.ActiveSubscriptionShortchasePro.GiftBy.FirstName @Model.ActiveSubscriptionShortchasePro.GiftBy.LastName</p>
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Start</th>
+                                        <td>@DateHelper.DateSimpleFormat(Model.ActiveSubscriptionShortchasePro.SubscriptionStart.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">End</th>
+                                        <td>@DateHelper.DateSimpleFormat(Model.ActiveSubscriptionShortchasePro.SubscriptionEnd.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">User Wallet Balance (before purchase)</th>
+                                        <td>$ @Model.ActiveSubscriptionShortchasePro.WalletBalanceBeforePurchase.ToString("0.00")</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">User Wallet Balance (before purchase)</th>
+                                        <td>
+                                            @if (Model.ActiveSubscriptionShortchasePro.WalletBalanceAfterPurchase >= 0)
+                                            {
+                                                <text>$ @Model.ActiveSubscriptionShortchasePro.WalletBalanceBeforePurchase.ToString("0.00")</text>
+                                            }
+                                            else
+                                            {
+                                                <text>$ 0.00</text>
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase">Payment Type</th>
+                                        <td>
+                                            @if (!string.IsNullOrWhiteSpace(Model.ActiveSubscriptionShortchasePro.PaypalOrderId))
+                                            {
+                                                <text>Paypal</text>
+                                            }
+                                            else
+                                            {
+                                                <text>Wallet</text>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    @if (!string.IsNullOrWhiteSpace(Model.ActiveSubscriptionShortchasePro.PaypalOrderId))
+                                    {
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Paid Value</th>
+                                            <td>$ @Model.ActiveSubscriptionShortchasePro.TotalPaidOnPaypal.ToString("0.00")</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Order Id</th>
+                                            <td>@Model.ActiveSubscriptionShortchasePro.PaypalOrderId</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-uppercase">Paypal Order Status</th>
+                                            <td>@Model.ActiveSubscriptionShortchasePro.PaypalOrderStatus</td>
+                                        </tr>
+                                    }
+                                </table>
+                                @if (Model.ActiveSubscriptionShortchasePro.PaymentStatus != UserSubscriptionPaymentStatus.Paid)
+                                {
+                                    <div class="py-2">
+                                        <button class="btn btn-sm btn-danger CancelItemBtn" data-id="@Model.ActiveSubscriptionShortchasePro.Id.ToString()">
+                                            <i class="fas fa-ban"></i> Cancel
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <h4>All Subscriptions</h4>
+                <hr class="m-0 my-1" />
+                @if (Model.Subscriptions == null || Model.Subscriptions.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No subscriptions found on database for this user.
+                    </p>
+                }
+                else
+                {
+                    <table id="UserSubscriptionsList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Subscription Type</th>
+                                <th class="text-uppercase">Subscription Name</th>
+                                <th class="text-uppercase">Subscription Price</th>
+                                <th class="text-uppercase">Paid Value</th>
+                                <th class="text-uppercase">Payment Status</th>
+                                <th class="text-uppercase">Start</th>
+                                <th class="text-uppercase">End</th>
+                                <th class="text-uppercase">Status</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Subscriptions)
+                            {
+                                string status = "Not active";
+                                if (item.SubscriptionEnd > DateTime.UtcNow)
+                                {
+
+                                    if (item.PaymentStatus == UserSubscriptionPaymentStatus.Cancelled)
+                                    {
+                                        status = "Cancelled";
+                                    }
+                                    else if (item.PaymentStatus == UserSubscriptionPaymentStatus.Rejected)
+                                    {
+                                        status = "Payment Rejected";
+                                    }
+                                    else
+                                    {
+                                        status = "Active";
+                                    }
+                                }
+                                <tr>
+                                    <td id="Type-@item.Id.ToString()" data-value="@item.Type">@item.Type</td>
+                                    <td id="Name-@item.Id.ToString()" data-value="@item.Name">@item.Name</td>
+                                    <td id="SubscriptionPrice-@item.Id.ToString()" data-value="@item.SubscriptionPrice">@item.SubscriptionPrice</td>
+                                    <td id="PaidValue-@item.Id.ToString()" data-value="@item.PaidValue">@item.PaidValue</td>
+                                    <td id="PaymentStatus-@item.Id.ToString()" data-value="@item.PaymentStatus">@item.PaymentStatus</td>
+                                    <td id="Start-@item.Id.ToString()" data-value="@item.SubscriptionStart">@DateHelper.DateSimpleFormat(item.SubscriptionStart)</td>
+                                    <td id="End-@item.Id.ToString()" data-value="@item.SubscriptionEnd">@DateHelper.DateSimpleFormat(item.SubscriptionEnd)</td>
+                                    <td id="Status-@item.Id.ToString()">@status</td>
+                                    <td>
+                                        @if (item.PaymentStatus == UserSubscriptionPaymentStatus.Cancelled)
+                                        {
+                                            <button class="btn btn-sm btn-outline-danger DeleteItemBtn" data-id="@item.Id.ToString()" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
+
+                                        }
+                                        else if (item.PaymentStatus != UserSubscriptionPaymentStatus.Paid && item.PaymentStatus != UserSubscriptionPaymentStatus.Rejected)
+                                        {
+                                            <button class="btn btn-sm btn-danger CancelItemBtn" data-id="@item.Id.ToString()" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fas fa-ban"></i></button>
+
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(item.ReceiptPDF))
+                                        {
+                                            <a class="btn btn-sm btn-info " asp-action="DownloadSubscriptionReceipt" asp-controller="Backend" asp-route-SubscriptionId="@item.Id" data-toggle="tooltip" data-placement="top" title="Download Receipt" download><i class="fas fa-download"></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+<partial name="Partials/ManageUserSubscription_AddModal" model="@Model" />
+@*<partial name="Partials/ManageUsers_EditModal" model="@Model" />*@
+
+
+<input id="CancelUserSubscriptionBackendURL" hidden value="@Url.Action("CancelUserSubscriptionBackend", "Backend")" />
+<input id="DeleteUserSubscriptionBackendURL" hidden value="@Url.Action("DeleteUserSubscriptionBackend", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/ManageBoisterousUserSubscriptions.js")" asp-append-version="true"></script>
+}

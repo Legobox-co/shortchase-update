@@ -1,0 +1,18 @@
+﻿
+<div class="form-group">
+    <label for="@ViewData["Id"]" class="mb-0 text-smaller pl-1 font-weight-600">
+        @ViewData["Label"]
+        @if (ViewData["Label"].ToString() == "Icon") { 
+        <small><a href='https://fontawesome.com/icons?d=gallery&s=brands&m=free' target="_blank">(Examples)</a></small>
+        }
+</label>
+<input type="number" class="form-control @ViewData["Class"]" id="@ViewData["Id"]" placeholder="@ViewData["Placeholder"]" value="@ViewData["Value"]" min="@Convert.ToDouble(ViewData["MinValue"])"
+       @if (ViewData["Required"].ToString() == true.ToString()) { <text> required</text>
+           }
+       @if (ViewData["Disabled"].ToString() == true.ToString()) { <text> disabled </text>
+           }
+       @if (!string.IsNullOrWhiteSpace(ViewData["MaxValue"].ToString())) { <text> max="@Convert.ToInt32(ViewData["MaxValue"])" </text>
+           }
+       @if (!string.IsNullOrWhiteSpace(ViewData["Step"].ToString())) { <text> step="@Convert.ToDouble(ViewData["Step"])" </text>
+           }>
+</div>

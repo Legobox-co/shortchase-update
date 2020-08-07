@@ -1,0 +1,16 @@
+﻿@{
+    string id = ViewData["Id"].ToString();
+    string labelwrapper = ViewData["Id"].ToString() + "LabelWrapper2";
+    string label = ViewData["Id"].ToString() + "Label2";
+    string fieldLabel = ViewData["FieldLabel"].ToString();
+    string imageId = ViewData["Id"].ToString() + "Image2";
+}
+<input type="hidden" class="mediaselectorinput2" id="@id" value="" data-labelwrapper="@labelwrapper" data-label="@label">
+<button class="btn btn-white btn-block OpenSelectMediaModal2" data-submits="@id" data-image="@imageId">
+    <i class="fas fa-image"></i> @fieldLabel
+</button>
+<p class="m-0 py-2" id="@labelwrapper" style="display:none;">
+    <span id="" class="MontserratBold text-smaller">Selected:</span> <span id="@label" class=" text-smaller"></span><br />
+    <span id="" class="MontserratBold text-smaller">Preview:</span>
+    <img class="img-fluid" src="" id="@imageId" style="max-width:250px;" />
+</p>

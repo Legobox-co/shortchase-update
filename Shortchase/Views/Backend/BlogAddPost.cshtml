@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-newspaper"></i>*@
+
+                        <img src="@Url.Content("~/img/newicons/blog.png")" class="img-fluid" width="40px" />&nbsp;
+                        Add Blog post
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <a class="btn btn-link timezoneoffset" asp-action="Blog" asp-controller="Backend">
+                        <img src="@Url.Content("~/img/newicons/back.png")" class="img-fluid" width="30px" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <form class="row" id="AddPostForm">
+                    <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                        <button type="submit" class="btn btn-dark-as-homepage">
+                            Save
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <vc:input id="AddPostTitle" label="Post Title" type="text" class="" required="true" placeholder="e.g. Shortchase is now on Instagram, follow us!" value="" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <vc:input id="AddPostSlug" label="Slug" type="text" class="" required="true" placeholder="e.g. shortchase-is-now-on-instagram-follow-us" value="" disabled="true"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <vc:checkbox id="AddPostIsPublished" label="Is Published?" class="" required="false" checked="false"></vc:checkbox>
+                        <p><small class="text-muted">(Check the box above to make it published when you save it. Only published blog posts will show up on the website)</small></p>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        <div id="PostDatePublishedWrapper">
+                            <vc:input id="AddPostDatePublished" label="Publish Date" type="text" class="datetimemask" required="false" placeholder="e.g. 10/31/2019 15:29:59" value="" disabled="false"></vc:input>
+                            <p class="mt--4"><small class="text-muted">(The post is going to be automatically published at the date and time selected on the field above.)</small></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <vc:input id="AddPostExcerpt" label="Excerpt" type="text" class="" required="true" placeholder="e.g. Shortchase is now on Instagram" value="" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-8">
+                        <p class="pl-1 m-0 text-smaller font-weight-bold">Content</p>
+                        <textarea class="form-control resize-only-vertical max-height-medium" id="AddPostContent" placeholder="Write the Post content here ..."></textarea>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-4">
+                        @*<div class="custom-file d-block">
+                                <input type="file" class="custom-file-input" hidden id="AddPostFeaturedImage">
+                                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="AddPostFeaturedImage">
+                                    <span id="pictureLabel" class="MontserratBold">Select featured image</span>
+                                </label>
+                            </div>*@
+                        <vc:media-selector-button id="AddPostFeaturedImage" width="" height="" field-label="Select featured image"></vc:media-selector-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="BlogIndexURL" hidden value="@Url.Action("Blog", "Backend")" />
+<input id="CreateNewBlogPostURL" hidden value="@Url.Action("CreateNewBlogPost", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/BlogAddPost.js")" asp-append-version="true"></script>
+}

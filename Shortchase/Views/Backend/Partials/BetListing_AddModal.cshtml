@@ -1,0 +1,107 @@
+﻿@model BetListingListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> AddModalContent = @<div>
+        <form class="row" id="AddBetListingModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:bet-listing-input id="AddListingTitle" max-length="45" placeholder="Listing Title"></vc:bet-listing-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" required="" id="AddCategory" name="AddCategory">
+                        <option value="0" disabled selected>Select Category</option>
+                        @if (Model.CategoriesOptions != null && Model.CategoriesOptions.Count > 0) {
+                            foreach (var item in Model.CategoriesOptions) { 
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <input type="hidden" id="AddHasSubcategories" value="0" />
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="AddSubCategory" name="AddSubCategory" disabled>
+                        <option id="" value="0" selected>Select Subcategory</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <vc:bet-listing-decimal-input id="AddListingPrice" placeholder="Price"></vc:bet-listing-decimal-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-8">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="AddPick" name="AddPick" disabled>
+                        <option id="" value="0" selected>Select Pick</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <vc:bet-listing-select id="AddListingPickType" placeholder="Select Pick Type" options="Model.BetListingsTypesOptions"></vc:bet-listing-select>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:bet-listing-input id="AddListingDescription" max-length="150" placeholder="Description (Optional)"></vc:bet-listing-input>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <vc:bet-listing-select id="AddListingOddFormat" placeholder="Select Odds Format" options="Model.BetListingsOddFormatOptions"></vc:bet-listing-select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-2">
+                <vc:bet-listing-decimal-input id="AddListingOdds" placeholder="Odds"></vc:bet-listing-decimal-input>
+            </div>
+
+
+            <div class="col-sm-12 col-md-12 col-lg-3">
+                <vc:bet-listing-decimal-input id="AddStake" placeholder="Stake"></vc:bet-listing-decimal-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-3">
+                <vc:bet-listing-decimal-input id="AddProfit" placeholder="Profit"></vc:bet-listing-decimal-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <vc:bet-listing-select id="AddListingWhereToPlay" placeholder="Where to play (Match your odds with a bookmaker)" options="Model.BookmakerOptions"></vc:bet-listing-select>
+            </div>
+
+
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-read-only-input id="AddDateTimeStart" label="Start Time" ></vc:bet-listing-date-read-only-input>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:bet-listing-date-read-only-input id="AddDateTimeFinish" label="Finish Time"></vc:bet-listing-date-read-only-input>
+            </div>
+
+
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:bet-listing-textarea id="AddListingAnalysis" label="Analysis" placeholder="Type short analysis not more than 1000 characters." min-length="140" max-length="1000"></vc:bet-listing-textarea>
+
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="AddMarket" name="AddMarket" disabled>
+                        <option id="" value="0" selected>Select Market</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="list-a-pick-form-input-wrapper">
+                    <select class="" id="AddTip" name="AddTip" disabled>
+                        <option id="" value="0" selected>Select Tip</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="AddModalContent" id="AddBetListingModal" locked="false" title="Add Bet Listing"></vc:modal>
+
+
+<input id="AddBetListingModalURL" hidden value="@Url.Action("AddBetListing", "Backend")" />

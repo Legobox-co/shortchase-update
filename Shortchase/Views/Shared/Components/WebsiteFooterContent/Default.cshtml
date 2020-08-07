@@ -1,0 +1,167 @@
+@model FooterData;
+@{
+    bool showCookieMessage = Model.ShowCookieMessage;
+    string footerClass = "";
+    string countDownAdminTime = "false";
+    if (showCookieMessage)
+    {
+        footerClass = "footerPaddingForcookie";
+    }
+    if (Model.IsAdmin)
+    {
+        countDownAdminTime = "true";
+    }
+}
+@if (Model == null || Model.AddressData == null || !Model.AddressData.DisplayAddresses || Model.AddressData.Addresses.Count <= 0)
+{
+    <footer class="border-top footer text-muted websiteFooter @footerClass footer-text-responsivity">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-3 py-3">
+
+                    <p class="py-1">
+                        @DateTime.Now.Year &copy; <a href="https://shortchase.com" class="footer-home-url">Shortchase, Inc.</a> 
+                    </p>
+                    <p class="py-1">
+                        All Rights Reserved.
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-3 py-3">
+                    <a asp-action="BlogList" asp-controller="Home" class="d-block py-1 timezoneoffset">Blog</a>
+                    <a asp-action="About" asp-controller="Home" class="d-block py-1">About</a>
+                    <a asp-action="FAQ" asp-controller="Home" class="d-block py-1">FAQ</a>
+                    <a asp-action="NewsList" asp-controller="Home" class="d-block py-1 timezoneoffset">News</a>
+                </div>
+                <div class="col-sm-12 col-md-3 py-3">
+                    <a asp-action="PrivacyPolicy" asp-controller="Home" class="d-block py-1">Privacy Policy</a>
+                    <a asp-action="TermsAndConditions" asp-controller="Home" class="d-block py-1">Terms of Service</a>
+                    <a asp-action="PromotionsList" asp-controller="Home" class="d-block py-1 timezoneoffset">Promotions</a>
+                    <a asp-action="Advertising" asp-controller="Home" class="d-block py-1">Advertising</a>
+                </div>
+                <div class="col-sm-12 col-md-3 py-3">
+                    <p class="py-1">
+                        Connect With Us
+                    </p>
+                        @if (Model.SocialMediaData != null && Model.SocialMediaData.Count() > 0)
+                        {
+                            foreach (var item in Model.SocialMediaData)
+                            {
+                                if (item.IsEnabled)
+                                {
+                                    if (item.Name == "Email")
+                                    {
+                                        <a href="mailto:@item.Link" target="_blank" class="btn btn-dark specialTreatmentForSpecifcResolutions"><i class="@item.Icon"></i></a><text> &nbsp; &nbsp; </text>
+                                    }
+                                    else
+                                    {
+                                        <a href="@item.Link" target="_blank" class="btn btn-dark specialTreatmentForSpecifcResolutions"><i class="@item.Icon"></i></a><text> &nbsp; &nbsp; </text>
+                                    }
+                                }
+
+
+                            }
+                        }
+                   
+
+                </div>
+            </div>
+        </div>
+    </footer>
+}
+else
+{
+
+    <footer class="border-top footer text-muted websiteFooter @footerClass footer-text-responsivity">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-3 py-3">
+
+                    <p class="py-1">
+                        @DateTime.Now.Year &copy; <a href="https://shortchase.com" class="text-white">Shortchase, Inc.</a> 
+                    </p>
+                    <p class="py-1">
+                        All Rights Reserved.
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-2 py-3">
+                    <a asp-action="BlogList" asp-controller="Home" class="d-block py-1 timezoneoffset">Blog</a>
+                    <a asp-action="About" asp-controller="Home" class="d-block py-1">About</a>
+                    <a asp-action="FAQ" asp-controller="Home" class="d-block py-1">FAQ</a>
+                    <a asp-action="NewsList" asp-controller="Home" class="d-block py-1 timezoneoffset">News</a>
+                </div>
+                <div class="col-sm-12 col-md-2 py-3">
+                    <a asp-action="PrivacyPolicy" asp-controller="Home" class="d-block py-1">Privacy Policy</a>
+                    <a asp-action="TermsAndConditions" asp-controller="Home" class="d-block py-1">Terms of Service</a>
+                    <a asp-action="PromotionsList" asp-controller="Home" class="d-block py-1 timezoneoffset">Promotions</a>
+                    <a asp-action="Advertising" asp-controller="Home" class="d-block py-1">Advertising</a>
+                </div>
+                <div class="col-sm-12 col-md-3 py-3">
+                    <p class="py-1">
+                        Connect With Us
+                    </p>
+                    @if (Model.SocialMediaData != null && Model.SocialMediaData.Count() > 0)
+                    {
+                        foreach (var item in Model.SocialMediaData)
+                        {
+                            if (item.IsEnabled)
+                            {
+                                if (item.Name == "Email")
+                                {
+                                    <a href="mailto:@item.Link" target="_blank" class="btn btn-dark specialTreatmentForSpecifcResolutions"><i class="@item.Icon"></i></a><text> &nbsp; &nbsp; </text>
+                                }
+                                else
+                                {
+                                    <a href="@item.Link" target="_blank" class="btn btn-dark specialTreatmentForSpecifcResolutions"><i class="@item.Icon"></i></a><text> &nbsp; &nbsp; </text>
+                                }
+                            }
+
+
+                        }
+                    }
+                </div>
+                <div class="col-sm-12 col-md-2 address py-3">
+                    @foreach (var item in Model.AddressData.Addresses)
+                    {
+                        <p>
+                            <span class="MontserratBold">@item.Location</span><br />
+                            @item.StreetAddress<br />
+                            @item.City @item.Province, @item.ZipCode<br />
+                            @item.Country.Name
+                        </p>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </footer>
+}
+
+@if (showCookieMessage)
+{
+    <div class="bg-white w-100" style="position: fixed;bottom: 0;" id="CookieAcceptanceNoteWrapper">
+        <div class="container">
+            <div class="row py-2">
+                <div class="col-sm-12 col-md-12 col-lg-10 justify-content-center align-items-center">
+                    <p class="m-0 py-1 text-smaller h-100 justify-content-center align-items-center MontserratMedium">
+                        @Model.AddressData.CookieConsentMessage
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-2 justify-content-center align-items-center">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <button class="btn btn-sm btn-primary text-smaller AcceptCookies" data-method="@Url.Action("AcceptCookies", "Home")"> Accept </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-primary text-smaller AcceptCookiesJSOnly" > Accept </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<input type="hidden" id="CountDownAdminTime" data-value="@countDownAdminTime" />

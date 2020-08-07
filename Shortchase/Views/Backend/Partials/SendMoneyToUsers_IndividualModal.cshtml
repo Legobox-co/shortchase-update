@@ -1,0 +1,20 @@
+﻿@model UserListDto
+<!-- Add Modal -->
+@{Func<dynamic, object> SendMoneyToUsersIndividualModalContent = @<div>
+        <form class="row" id="SendMoneyToUsersIndividualModalForm">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="PaypalEmailToSend" label="Paypal Account" type="text" class="" required="true" placeholder="" value="" disabled="true"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <vc:input id="AmountToBeSend" label="Amount" type="text" class="dollar-inputmask" required="true" placeholder="" value="" disabled="false"></vc:input>
+                <input type="hidden" id="UserIdValue" value="x" />
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-success">Send</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="SendMoneyToUsersIndividualModalContent" id="SendMoneyToUsers_IndividualModal" locked="false" title="Send Individual Payment"></vc:modal>

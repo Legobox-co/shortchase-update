@@ -1,0 +1,27 @@
+﻿@model SubscriptionPlanListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditSubscriptionPlanModalForm">
+            <input type="hidden" id="EditSubscriptionPlanId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="EditName" label="Plan" type="text" class="" required="true" placeholder="e.g. Monthly" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:select id="EditType" label="Type" class="" required="true" searchable="false" default="" options="@Model.SubscriptionPlanTypeOptions" selected-value=""></vc:select>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:number-input id="EditDurationInMonths" label="Duration (in months)" min-value="1" max-value="" step="1" class="" required="true" placeholder="e.g. 1" value="1" disabled="false"></vc:number-input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <vc:input id="EditValuePerMonth" label="Price/Month" type="text" class="dollar-inputmask" required="true" placeholder="e.g. 8.99" value="0.00" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right pt-3">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+    </div>;}
+<vc:modal content="EditModalContent" id="EditSubscriptionPlanModal" locked="false" title="Edit Subscription Plan"></vc:modal>
+
+
+<input id="EditSubscriptionPlanModalURL" hidden value="@Url.Action("EditSubscriptionPlan", "Backend")" />

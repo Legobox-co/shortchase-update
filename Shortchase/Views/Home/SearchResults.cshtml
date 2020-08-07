@@ -1,0 +1,457 @@
+﻿@model SearchResults;
+@{
+    Layout = "_WebsiteLayout";
+}
+
+<section class="bg-grey-dark-3">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="card shadow-sm bg-grey-light-1">
+                    <div class="card-body px-4">
+
+                        <div class="text-center py-2 d-block d-sm-block d-md-none d-lg-none">
+                            <button class="btn btn-dark text-small MontserratMedium ToggleFiltersMobile">
+                                <i class="fas fa-filter"></i> Filters
+                            </button>
+                            <button class="btn btn-dark text-small MontserratMedium ToggleSortersMobile">
+                                <i class="fas fa-sort"></i> Sort
+                            </button>
+                        </div>
+                        <div class="row bg-white py-4" id="SearchResults_topPart">
+                            <div class="col-sm-12 col-md-12 col-lg-3">
+                                <p class="m-0 text-small d-flex w-100 h-100 justify-content-start align-items-center">
+                                    Showing @ViewData["CurrentNumberOfItems"].ToString() results / total @ViewData["TotalItems"].ToString()
+                                </p>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-9">
+                                <div class="row d-none d-sm-none d-md-flex d-lg-flex transition" id="sorters">
+                                    <div class="col-sm-12 col-md-12 col-lg-1 px-0">
+                                        <p class="m-0 text-smaller text-center d-flex w-100 h-100 justify-content-center align-items-center">
+                                            Sort By
+                                        </p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-3 px-1">
+                                        @{
+                                            string disabledOption = "disabled";
+                                            if (Model.CanSortBy)
+                                            {
+                                                disabledOption = "";
+                                            }
+
+                                        }
+                                        <select name="recommended" id="recommended" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SortBy" @disabledOption>
+                                            @if (!string.IsNullOrWhiteSpace(Model.Filters.SortBy))
+                                            {
+                                                <option value="" disabled> Recommended </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="" selected disabled> Recommended </option>
+                                            }
+                                            @if (Model.Filters.SortBy == SortListingTypeType.Boisterous)
+                                            {
+                                                <option value="@SortListingTypeType.Boisterous" selected>Boisterous</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortListingTypeType.Boisterous">Boisterous</option>
+                                            }
+
+                                            @if (Model.Filters.SortBy == SortListingTypeType.Newest)
+                                            {
+                                                <option value="@SortListingTypeType.Newest" selected>Newest</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortListingTypeType.Newest">Newest</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-2 px-1">
+                                        <select name="sort-by" id="product-sort-by" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SortByPrice">
+                                            @if (!string.IsNullOrWhiteSpace(Model.Filters.SortByPrice))
+                                            {
+                                                <option value="" disabled> Price </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="" selected disabled> Price </option>
+                                            }
+                                            @if (Model.Filters.SortByPrice == SortOrderType.Ascending)
+                                            {
+                                                <option value="@SortOrderType.Ascending" selected>Low to High</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortOrderType.Ascending">Low to High</option>
+                                            }
+
+                                            @if (Model.Filters.SortByPrice == SortOrderType.Descending)
+                                            {
+                                                <option value="@SortOrderType.Descending" selected>High to Low</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortOrderType.Descending">High to Low</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-2 px-1">
+                                        <select name="picktype" id="picktype-sort-by" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SortByPickType">
+                                            @if (!string.IsNullOrWhiteSpace(Model.Filters.SortByPickType))
+                                            {
+                                                <option value="" disabled> Pick Type </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="" selected disabled> Pick Type </option>
+                                            }
+                                            @if (Model.PickTypeOptions != null && Model.PickTypeOptions.Count > 0)
+                                            {
+                                                foreach (var option in Model.PickTypeOptions)
+                                                {
+                                                    if (option.Selected)
+                                                    {
+
+                                                        <option id="picktypeopt-@option.Value" value="@option.Value" selected>@option.Text</option>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <option id="picktypeopt-@option.Value" value="@option.Value">@option.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-2 px-1">
+                                        <select name="sort-odds" id="odds-sort-by" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SortByOdds">
+                                            @if (!string.IsNullOrWhiteSpace(Model.Filters.SortByOdds))
+                                            {
+                                                <option value="" disabled> Odds </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="" selected disabled> Odds </option>
+                                            }
+                                            @if (Model.Filters.SortByOdds == SortOrderType.Ascending)
+                                            {
+                                                <option value="@SortOrderType.Ascending" selected>Low to High</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortOrderType.Ascending">Low to High</option>
+                                            }
+
+                                            @if (Model.Filters.SortByOdds == SortOrderType.Descending)
+                                            {
+                                                <option value="@SortOrderType.Descending" selected>High to Low</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@SortOrderType.Descending">High to Low</option>
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-2 px-1">
+                                        <select name="sort-currency" id="currency-sort-by" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SortByCurrency">
+                                            @if (!string.IsNullOrWhiteSpace(Model.Filters.SortByCurrency))
+                                            {
+                                                <option value="" disabled> Currency </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="" selected disabled> Currency </option>
+                                            }
+
+
+                                            @if (Model.CurrencyOptions != null && Model.CurrencyOptions.Count > 0)
+                                            {
+                                                foreach (var option in Model.CurrencyOptions)
+                                                {
+                                                    if (option.Selected)
+                                                    {
+
+                                                        <option id="currencyopt-@option.Value" value="@option.Value" selected>@option.Text</option>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <option id="currencyopt-@option.Value" value="@option.Value">@option.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="resultPart">
+                            <div class="col-sm-12 col-md-12 col-lg-3 d-none d-sm-none d-md-block d-lg-block transition" id="sidebar">
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#AppliedFilters" role="button" aria-expanded="true" aria-controls="AppliedFilters">
+                                            Filter & Sort
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="AppliedFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+                                            @{
+                                                string clearDisabled = "";
+                                                if (!Model.HasAnyFilter)
+                                                {
+                                                    clearDisabled = "disabled";
+                                                }
+                                            }
+                                            <button class="btn btn-danger btn-sm text-smaller btn-rounded-corners ClearAllFilters" @clearDisabled>Clear All</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#SearchFilters" role="button" aria-expanded="true" aria-controls="SearchFilters">
+                                            Search
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="SearchFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+
+                                            <div class="form-group mb-0">
+                                                @{
+                                                    string searchFilter = "";
+                                                    if (!string.IsNullOrWhiteSpace(Model.Filters.Keyword))
+                                                    {
+                                                        searchFilter = Model.Filters.Keyword;
+                                                    }
+                                                }
+                                                <input type="text" class="form-control  filters-marketplace filters-change-listener" data-filter="Keyword" id="SearchFilter" value="@searchFilter">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#CategoryFilters" role="button" aria-expanded="true" aria-controls="SearchFilters">
+                                            Category
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="CategoryFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+
+                                            <select id="searchCategory" name="searchCategory" class="form-control text-small filters-marketplace filters-change-listener" data-filter="Category">
+                                                @if (Model.Filters.Category.HasValue)
+                                                {
+
+                                                    <option id="" value="" disabled>Select...</option>
+                                                }
+                                                else
+                                                {
+                                                    <option id="" value="" disabled selected>Select...</option>
+                                                }
+                                                @if (Model.CategoriesOptions != null && Model.CategoriesOptions.Count > 0)
+                                                {
+                                                    foreach (var option in Model.CategoriesOptions)
+                                                    {
+                                                        if (option.Selected)
+                                                        {
+
+                                                            <option id="catopt-@option.Value" value="@option.Value" selected>@option.Text</option>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <option id="catopt-@option.Value" value="@option.Value">@option.Text</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#SubcategoryFilters" role="button" aria-expanded="true" aria-controls="SearchFilters">
+                                            Subcategory
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="SubcategoryFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+                                            @{
+                                                string disabledSelect = "";
+                                                if (Model.SubCategoriesOptions == null || Model.SubCategoriesOptions.Count < 0 || !Model.HasSubCategoriesOptions)
+                                                {
+                                                    disabledSelect = "disabled";
+                                                }
+                                            }
+                                            <select id="searchSubCategory" name="searchSubCategory" class="form-control text-small filters-marketplace filters-change-listener" data-filter="SubCategory" @disabledSelect>
+                                                @if (Model.Filters.SubCategory.HasValue)
+                                                {
+
+                                                    <option id="subcatopt-default" value="" disabled>Select...</option>
+                                                }
+                                                else
+                                                {
+                                                    <option id="subcatopt-default" value="" disabled selected>Select...</option>
+                                                }
+                                                @if (Model.SubCategoriesOptions != null && Model.SubCategoriesOptions.Count > 0)
+                                                {
+                                                    foreach (var option in Model.SubCategoriesOptions)
+                                                    {
+                                                        if (option.Selected)
+                                                        {
+
+                                                            <option id="subcatopt-@option.Value" value="@option.Value" selected>@option.Text</option>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <option id="subcatopt-@option.Value" value="@option.Value">@option.Text</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#OddsFilters" role="button" aria-expanded="true" aria-controls="SearchFilters">
+                                            Odds
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="OddsFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+                                            @{
+                                                string oddsValue = "";
+                                                if (Model.Filters.Odds.HasValue)
+                                                {
+                                                    oddsValue = Model.Filters.Odds.Value.ToString();
+                                                }
+                                            }
+                                            <div class="form-group mb-0">
+                                                <input type="text" class="form-control filters-marketplace filters-change-listener dollar-inputmask" data-filter="Odds" id="OddsFilter" value="@oddsValue">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="search-filter-section my-3">
+                                    <h5 class="search-filter-section-title p-2 MontserratBold mb-0">
+                                        <a class="text-dark" data-toggle="collapse" href="#PriceFilters" role="button" aria-expanded="true" aria-controls="SearchFilters">
+                                            Price
+                                        </a>
+                                    </h5>
+                                    <div class="collapse show " id="PriceFilters" aria-expanded="true">
+
+                                        <div class="search-filter-section-content p-2">
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <p class="text-left MontserratBold text-small mb-0">
+                                                        $ 0.00
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-6">
+
+                                                    <p class="text-right MontserratBold text-small mb-0">
+                                                        $ 99.00
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input type="range" class="custom-range money-range-picker filters-change-listener" min="0" max="99.00" step="0.01" id="MoneyRangeFilter" value="">
+                                                </div>
+                                                <div class="col-sm-5">
+
+                                                    @{
+                                                        string priceMinValue = "0.00";
+                                                        if (Model.Filters.PriceMin.HasValue)
+                                                        {
+                                                            priceMinValue = Model.Filters.PriceMin.Value.ToString();
+                                                        }
+                                                    }
+                                                    <div class="form-group mb-0">
+                                                        <input type="number" class="form-control text-center text-smaller money-discrete-validator  filters-marketplace filters-change-listener" data-filter="PriceMin" min="0" max="99.00" step="0.01" value="@priceMinValue" id="MoneyMinFilter">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2 text-center ">
+                                                    <p class="m-0 d-flex w-100 h-100 justify-content-start align-items-center text-yellow-dark">
+                                                        &#x268A;
+                                                    </p>
+                                                </div>
+                                                <div class="col-sm-5">
+
+                                                    @{
+                                                        string priceMaxValue = "99.00";
+                                                        if (Model.Filters.PriceMax.HasValue)
+                                                        {
+                                                            priceMaxValue = Model.Filters.PriceMax.Value.ToString();
+                                                        }
+                                                    }
+                                                    <div class="form-group mb-0">
+                                                        <input type="number" class="form-control text-center text-smaller money-discrete-validator filters-marketplace filters-change-listener" data-filter="PriceMax" min="0" max="99.00" step="0.01" value="@priceMaxValue" id="MoneyMaxFilter">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-9 py-3" id="resultContent">
+
+                                <div class="row">
+                                    <vc:listing-card-collection has-any-filter="@Model.HasAnyFilter" is-auth="@Model.IsAuth" listings="@Model.Listings" currency="@Model.Filters.SortByCurrency"  offset="@Convert.ToInt32(ViewData["TimezoneOffset"].ToString())"></vc:listing-card-collection>
+
+                                </div>
+
+                                @if (Convert.ToInt32(ViewData["PageNumber"].ToString()) > 1)
+                                {
+                                    <div>
+                                        <vc:marketplace-pagination action="@Url.Action("SearchResults", "Home")" current-page="@Convert.ToInt32(ViewData["Page"].ToString())" page-size="@Convert.ToInt32(ViewData["PageSize"].ToString())" total-pages="@Convert.ToInt32(ViewData["PageNumber"].ToString())"></vc:marketplace-pagination>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<input type="hidden" class="filters-marketplace" data-filter="page" id="PageFilter" value="@ViewData["Page"].ToString()">
+<input type="hidden" class="filters-marketplace" data-filter="pageSize" id="pageSizeFilter" value="@ViewData["PageSize"].ToString()">
+
+<input type="hidden" id="SearchResultsUrl" value="@Url.Action("SearchResults", "Home")" />
+<input type="hidden" id="ViewListingUrl" value="@Url.Action("ViewListing", "Home")" />
+
+<input type="hidden" id="AddItemCartUrl" value="@Url.Action("AddItemCart", "Home")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Home/SearchResults.js")" asp-append-version="true"></script>
+}

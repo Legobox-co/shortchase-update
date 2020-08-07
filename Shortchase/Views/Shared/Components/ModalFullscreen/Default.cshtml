@@ -1,0 +1,17 @@
+﻿@model Func<dynamic, object>
+<div class="modal" id="@ViewData["Id"]" tabindex="-1" @ViewData["Locked"] role="dialog">
+    <div class="modal-dialog modal-fullscreen" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h3 id="@ViewData["Id"]Title" class="modal-title text-dark-as-homepage">@ViewData["Title"]</h3>
+                <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="@ViewData["Id"]Body" class="py-3 px-3">
+                @Model(null)
+            </div>
+        </div>
+    </div>
+</div>

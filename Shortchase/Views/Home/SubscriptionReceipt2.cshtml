@@ -1,0 +1,127 @@
+﻿@model SubscriptionReceipt2Dto
+@{
+    Layout = "_PrintableLayout";
+}
+
+<section class="bg-grey-dark-3 text-smaller">
+    <div class="container">
+        <table class="w-100">
+            <tr>
+                <td width="75%">
+                    <img src="@Model.Logo" class="img-fluid" width="160px" />
+
+                </td>
+                <td>
+
+                    @if (Model.PrimaryAddress != null)
+                    {
+                        <p>
+                            Shortchase, Inc.<br />
+                            @Model.PrimaryAddress.StreetAddress<br />
+                            @Model.PrimaryAddress.City @Model.PrimaryAddress.Province, @Model.PrimaryAddress.ZipCode<br />
+                            @Model.PrimaryAddress.Country.Name
+                        </p>
+                    }
+                </td>
+            </tr>
+        </table>
+        <div style="border:1px solid #ccc; padding: 10px;">
+            <h5>YOUR DETAILS</h5>
+            <table class="w-100">
+                <tr class="pb-2">
+                    <td width="50%">
+                        <strong>BILL TO</strong><br />
+                        @Model.OrderUser.FirstName @Model.OrderUser.LastName<br />
+                        <br />
+                    </td>
+                    <td>
+                        <strong>EMAIL</strong><br />
+                        @Model.OrderUser.Email<br />
+                        <br />
+                    </td>
+                </tr>
+                <tr class="pb-2">
+                    <td width="50%">
+                        <strong>PHONE NUMBER</strong><br />
+                        @Model.OrderUser.PhoneNumber<br />
+                        <br />
+                    </td>
+                    <td width="50%">
+                        <strong>ORDER DATE</strong><br />
+                        @DateHelper.DateSimpleFormat(DateTime.UtcNow.FromUTCData(Model.TimezoneOffset), true)
+                    </td>
+                </tr>
+                <tr class="pb-2">
+                    <td>
+                        <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 py-2">
+                <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase">ARTICLE</th>
+                            <th class="text-uppercase">DESC.</th>
+                            <th class="text-uppercase">QTY.</th>
+                            <th class="text-uppercase">UNIT PRICE</th>
+                            <th class="text-uppercase">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="30%" class="p-0 px-2 py-1">
+                                @Model.SubscriptionName Subscription
+                            </td>
+                            <td width="25%" class="p-0 px-2 py-1">
+                                @Model.Description
+                            </td>
+                            <td width="15%" class="p-0 px-2 py-1">
+                                @Model.Qty
+                            </td>
+                            <td width="15%" class="p-0 px-2 py-1">
+                                $ @Model.SubscriptionPrice
+                            </td>
+                            <td width="15%" class="p-0 px-2 py-1">
+                                $ @Model.SubscriptionPrice
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <table class="w-100">
+                    <tr>
+                        <td width="55%">
+                        </td>
+                        <td>
+                            <table id="" class="table table-striped table-bordered w-100" cellspacing="0">
+
+                                <tr>
+                                    <th width="50%">Order Value</th>
+                                    <td>$ @Model.SubscriptionPrice</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-danger MontserratBlack">Order Total</th>
+                                    <td class="text-danger MontserratBlack">$ @Model.SubscriptionPrice</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+
+        </div>
+        <p>
+            *Please note that if Shortchase's services are provided to you outside of the country where our company’s headquarters is domiciled, only estimated value added tax is applied to your costs.
+        </p>
+        <p>
+            You will automatically be charged for any due amount.
+        </p>
+        <p class="text-center">Receipt generated at: @DateHelper.DateFormat(DateTime.UtcNow.FromUTCData(Model.TimezoneOffset))</p>
+    </div>
+</section>

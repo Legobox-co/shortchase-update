@@ -1,0 +1,147 @@
+@model ICollection<Shortchase.Entities.Country>
+
+<div class="modal" tabindex="-1" role="dialog" id="SignUpModal" style="background-color: rgba(255, 255, 255, 0.8);">
+    <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title shortchase-modal-title text-dark MontserratBold">
+                    Create an account
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body py-5">
+
+                <form class="text-center" id="SignUpModal_Form">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-1 col-lg-3"></div>
+                        <div class="col-sm-12 col-md-10 col-lg-6">
+                            <div class="form-group mb-2">
+                                <input type="email" class="form-control text-left" id="SignUpModal_Email" placeholder="Email" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="text" class="form-control text-left" id="SignUpModal_FirstName" placeholder="First Name" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="text" class="form-control text-left" id="SignUpModal_LastName" placeholder="Last Name" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-4">
+                                    <div class="d-flex h-100 justify-content-center justify-content-md-center justify-content-lg-start align-items-center text-muted">
+                                        Birth Date
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-8">
+
+                                    <div class="form-group  mb-2">
+                                        <input type="text" class="form-control  date-masked-input-2 text-center" id="SignUpModal_BirthDate" placeholder="MM/DD/YYYY" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="password" class="form-control text-left" id="SignUpModal_Password" placeholder="Password" required>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="password" class="form-control text-left" id="SignUpModal_RepeatPassword" placeholder="Repeat Password" required>
+                            </div>
+                            <p class="text-center">
+                                How do you want to verify your account?
+                            </p>
+                            <input type="hidden" value="email" id="SignUpModal_VerificationType" />
+                            <div class="text-center">
+                                <div class="container d-none d-sm-none d-md-none d-lg-block">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12 col-lg-6 text-right">
+
+                                           <input class="form-check-input verification-selector-email" type="radio" name="Verification" id="SignUpModal_ValidateEmail" value="option1" checked>
+                                            <label class="form-check-label verification-selector-email" for="SignUpModal_ValidateEmail">
+                                                Email
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-6 text-left">
+                                            <input class="form-check-input verification-selector-text" type="radio" name="Verification" id="SignUpModal_ValidateText" value="option1">
+                                            <label class="form-check-label verification-selector-text" for="SignUpModal_ValidateText">
+                                                Text
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container d-block d-sm-block d-md-block d-lg-none">
+                                    <div class="row">
+                                        <div class="col-6 text-right">
+                                            <input class="form-check-input verification-selector-email" type="radio" name="VerificationResponsive" id="SignUpModal_ValidateEmail2" value="option1" checked>
+                                            <label class="form-check-label verification-selector-email pl-2" for="SignUpModal_ValidateEmail2">
+                                                Email
+                                            </label>
+                                        </div>
+                                        <div class="col-6 text-left">
+                                            <input class="form-check-input verification-selector-text" type="radio" name="VerificationResponsive" id="SignUpModal_ValidateText2" value="option1">
+                                            <label class="form-check-label verification-selector-text pl-2" for="SignUpModal_ValidateText2">
+                                                Text
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="SignUpModal_PhoneInfo" style="display: none; max-width: 50%; margin: 0 auto;">
+                                <div>
+                                    <select class="countryPhoneSelector general-form-select border-bottom-grey-pruple" data-display="SignUpModal_countryCode" id="SignUpModal_PhoneCountry" name="SignUpModal_PhoneCountry">
+                                        @{
+                                            string defaultCode = "";
+                                            foreach (var item in Model)
+                                            {
+                                                if (item.IsDefault)
+                                                {
+                                                    defaultCode = item.Code;
+                                                    <option value="@item.Id" name="@item.Code" selected>@item.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id" name="@item.Code">@item.Name</option>
+                                                }
+
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="phoneInputWrapper">
+                                    <span class="codeWrapper border-bottom-grey-pruple">+ <span id="SignUpModal_countryCode">@defaultCode</span></span>
+                                    <input type="text" class="general-form-input border-bottom-grey-pruple" id="SignUpModal_Phone" placeholder="Phone Number" value="">
+                                </div>
+
+                            </div>
+
+                            <div class="py-3 mt-5">
+
+                                <input type="hidden" value="0" id="SignUpModal_Boisterous" />
+                                <input type="hidden" value="0" id="SignUpModal_ShortchasePro" />
+                                <button type="submit" class="btn btn-dark btn-lg MontserratRegular py-2 px-5" id="SubmitSignUpModal_Form">
+                                    Register
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-1 col-lg-3"></div>
+                    </div>
+                    
+
+                </form>
+                <p class="text-center pt-4">
+                    Already have a Shortchase account?
+
+                    <button class="btn btn-outline-dark btn-sm MontserratRegular LoginModalLink border-radius-1">
+                        Log In
+                    </button>
+                </p>
+            </div>
+            <div class="modal-footer shortchase-modal-footer ">
+                <p class="text-small text-center text-muted">
+                    By clicking Register, you're accepting<br /> Shortchase's
+                    <a asp-action="TermsAndConditions" asp-controller="Home" class="">Terms of Service </a> & <a asp-action="PrivacyPolicy" asp-controller="Home" class="">Privacy Policy </a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

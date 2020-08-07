@@ -1,0 +1,141 @@
+﻿@model SubscriptionPlanListDto
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-file-invoice-dollar"></i>*@
+                        <img src="@Url.Content("~/img/newicons/subscriptions.png")" class="img-fluid" width="40px" />&nbsp;
+                        Subscription Plans
+                    </h1>
+                </div>
+                @*<div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                        <button class="btn btn-info AddSubscriptionPlanModalBtn">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model.SubscriptionPlans == null || Model.SubscriptionPlans.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No subscription plans found on database.
+                    </p>
+                }
+                else
+                {
+                    <table id="SubscriptionPlansList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Type</th>
+                                <th class="text-uppercase">Plan</th>
+                                <th class="text-uppercase">Duration (in months)</th>
+                                <th class="text-uppercase">Value/Month</th>
+                                <th class="text-uppercase">Total value</th>
+                                <th class="text-uppercase">Status</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SubscriptionPlans)
+                            {
+                                string status = "Active";
+                                if (!item.IsActive)
+                                {
+                                    status = "Deactivated";
+                                }
+                                <tr>
+                                    <td id="Type-@item.Id" data-value="@item.Type">@item.Type</td>
+                                    <td id="Name-@item.Id" data-value="@item.Name">
+                                        @item.Name
+                                        <br />
+                                        Paypal Product ID: @item.PaypalProductId <br />
+                                        Paypal Plan ID: @item.PaypalSubscriptionPlanId <br />
+                                    </td>
+                                    <td id="DurationInMonths-@item.Id" data-value="@item.DurationInMonths">@item.DurationInMonths</td>
+                                    <td id="ValuePerMonth-@item.Id" data-value="@item.ValuePerMonth">@item.ValuePerMonth</td>
+                                    <td id="TotalValuePerDuration-@item.Id" data-value="@item.TotalValuePerDuration">@item.TotalValuePerDuration</td>
+                                    <td id="IsEnabled-@item.Id" data-value="@item.IsActive">@status</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button>
+                                        @if (!item.IsActive)
+                                        {
+                                            <button class="btn btn-sm btn-success ActivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Activate"><i class="fas fa-power-off"></i></button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-warning DeactivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Deactivate"><i class="fas fa-ban"></i></button>
+                                        }
+                                        @if (string.IsNullOrWhiteSpace(item.PaypalProductId))
+                                        {
+                                            string paypalProductName = "";
+                                            string paypalProductDescription = "";
+                                            if (item.Type == SubscriptionPlanType.ShortchasePro)
+                                            {
+                                                paypalProductName = "Shortchase Pro";
+                                            }
+                                            else
+                                            {
+                                                paypalProductName = "Shortchase Boisterous";
+                                            }
+                                            paypalProductDescription = paypalProductName + " Subscription Plan";
+                                            <button class="btn btn-sm btn-info CreatePaypalProductBtn" data-id="@item.Id" data-name="@paypalProductName" data-description="@paypalProductDescription" data-toggle="tooltip" data-placement="top" title="Create Paypal Product"><i class="fab fa-paypal"></i></button>
+                                        }
+                                        else
+                                        {
+
+                                            string paypalPlanName = "";
+                                            string paypalPlanDescription = "";
+                                            if (item.Type == SubscriptionPlanType.ShortchasePro)
+                                            {
+                                                paypalPlanName = "Shortchase Pro";
+                                            }
+                                            else
+                                            {
+                                                paypalPlanName = "Shortchase Boisterous " + item.Name;
+                                            }
+                                            paypalPlanDescription = paypalPlanName + " Subscription Plan";
+                                            if (string.IsNullOrWhiteSpace(item.PaypalSubscriptionPlanId))
+                                            {
+                                                <button class="btn btn-sm btn-info CreatePaypalSubscriptionPlanBtn" data-intervalcount="@item.DurationInMonths" data-price="@item.TotalValuePerDuration" data-product="@item.PaypalProductId" data-id="@item.Id" data-name="@paypalPlanName" data-description="@paypalPlanDescription" data-toggle="tooltip" data-placement="top" title="Create Paypal Subscription Plan"><i class="fab fa-paypal"></i></button>
+                                            }
+                                            
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Add Modal -->
+@*<partial name="Partials/SubscriptionPlan_AddModal" model="@Model" />*@
+<partial name="Partials/SubscriptionPlan_EditModal" model="@Model" />
+
+
+<input id="SwitchStatusSubscriptionPlanURL" hidden value="@Url.Action("SwitchStatusSubscriptionPlan", "Backend")" />
+<input id="CreatePaypalProductForSubscriptionPlanURL" hidden value="@Url.Action("CreatePaypalProductForSubscriptionPlan", "Backend")" />
+<input id="CreatePaypalSubscriptionPlanForSubscriptionPlanURL" hidden value="@Url.Action("CreatePaypalSubscriptionPlanForSubscriptionPlan", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/SubscriptionPlans.js")" asp-append-version="true"></script>
+}

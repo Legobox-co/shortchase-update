@@ -1,0 +1,23 @@
+﻿@model CurrencyListDto
+<!-- Edit Modal -->
+@{Func<dynamic, object> EditModalContent = @<div>
+        <form class="row" id="EditCurrencyModalForm">
+            <input type="hidden" id="EditCurrencyId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-8">
+                <vc:input id="EditName" label="Name" type="text" class="" required="true" placeholder="e.g. Brazilian Real" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+                <vc:input id="EditAcronym" label="Acronym" type="text" class="" required="true" placeholder="e.g. BRL" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Save</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="EditModalContent" id="EditCurrencyModal" locked="false" title="Edit Currency"></vc:modal>
+
+
+<input id="EditCurrencyModalURL" hidden value="@Url.Action("EditCurrency", "Backend")" />

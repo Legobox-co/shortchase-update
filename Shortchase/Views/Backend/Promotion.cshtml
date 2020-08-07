@@ -1,0 +1,92 @@
+﻿@model ICollection<PromotionListItemDto>
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-bookmark"></i>*@
+                        <img src="@Url.Content("~/img/newicons/promotions.png")" class="img-fluid" width="40px" />&nbsp;
+                        Promotion posts
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <a class="btn btn-dark-as-homepage" asp-action="PromotionAddPost" asp-controller="Backend">
+                        <i class="fas fa-plus"></i> Add
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                @if (Model == null || Model.Count() <= 0)
+                {
+                    <p class="mb-0 text-small font-weight-900">
+                        No promotion posts found on database.
+                    </p>
+                }
+                else
+                {
+                    <table id="PromotionList" class="table table-striped table-bordered w-100" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase">Title</th>
+                                <th class="text-uppercase">Slug</th>
+                                <th class="text-uppercase">Status</th>
+                                <th class="text-uppercase">Date Created</th>
+                                <th class="text-uppercase">Date Published</th>
+                                <th class="text-uppercase">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                string status = "Published";
+                                if (!item.IsPublished)
+                                {
+                                    if (item.DatePublished >= DateTime.UtcNow || item.DateCreated >= DateTime.UtcNow)
+                                    {
+                                        status = "Draft";
+                                    }
+                                }
+                                <tr>
+                                    <td>@item.Title</td>
+                                    <td>@item.Slug</td>
+                                    <td>@status</td>
+                                    <td>@DateHelper.DateFormat(item.DateCreated.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    <td>@DateHelper.DateFormat(item.DatePublished.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary backend-nav-item" id="EditPromo_@item.Id" data-toggle="tooltip" data-placement="top" title="Edit" asp-action="PromotionEditPost" asp-controller="Backend" asp-route-Id="@item.Id"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-sm btn-info backend-nav-item" id="PreviewPromo_@item.Id" data-toggle="tooltip" data-placement="top" title="Preview" target="_blank" asp-action="PromotionPreviewPromotion" asp-controller="Backend" asp-route-Slug="@item.Slug"><i class="fas fa-eye"></i></a>
+                                        @if (!item.IsPublished)
+                                        {
+                                            if (item.DatePublished >= DateTime.UtcNow || item.DateCreated >= DateTime.UtcNow)
+                                            {
+                                                <button class="btn btn-sm btn-success PublishNowBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Publish Now" target="_blank"><i class="fas fa-check"></i></button>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<input id="PublishPromotionPostNowURL" hidden value="@Url.Action("PublishPromotionPostNow", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/Promotion.js")" asp-append-version="true"></script>
+}

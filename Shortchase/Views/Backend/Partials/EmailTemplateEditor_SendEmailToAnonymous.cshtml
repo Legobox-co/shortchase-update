@@ -1,0 +1,30 @@
+﻿@model SecondaryEmailTemplateListDto
+<!-- SendToUser Modal -->
+@{Func<dynamic, object> SendToAnonymousModalContent = @<div>
+        <form class="row" id="SendToAnonymousModalForm">
+
+            <div class="col-sm-12 col-md-12 col-lg-12 text-smaller">
+                <strong>Subject: </strong> <span id="SendToAnonymousEmailSubject"></span>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-smaller">
+                <strong>Title: </strong> <span id="SendToAnonymousEmailTitle"></span>
+            </div>
+            <input type="hidden" id="SendToAnonymousEmailTemplateId" value="0" />
+            <div class="col-sm-12 col-md-12 col-lg-6 py-2">
+                <vc:input id="SendToAnonymousModalFormName" label="Full Name" type="text" class="" required="true" placeholder="e.g. John" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6 py-2">
+                <vc:input id="SendToAnonymousModalFormEmail" label="Email Address" type="email" class="" required="true" placeholder="e.g. john@doe.com" value="" disabled="false"></vc:input>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-link text-dark-as-homepage">Cancel</button>
+                <button type="submit" class="btn btn-dark-as-homepage">Send</button>
+            </div>
+        </form>
+
+
+    </div>;}
+<vc:modal content="SendToAnonymousModalContent" id="SendToAnonymousModal" locked="false" title="Send Email to Others"></vc:modal>
+
+
+<input id="SendAnonymousEmailTemplateToUserModalURL" hidden value="@Url.Action("SendEmailTemplateToUser", "Backend")" />
