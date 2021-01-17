@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Shortchase.Helpers;
 
 namespace Shortchase.Helpers
 {
@@ -15,7 +16,13 @@ namespace Shortchase.Helpers
         ///
         public static string ConvertImageToBase64(string filepath)
         {
-            return "data:image/" + System.IO.Path.GetExtension(filepath).Replace(".", "") + ";base64," + Convert.ToBase64String(System.IO.File.ReadAllBytes(filepath));
+            string fullPath;
+            if(Utility.IsLinux()){
+                fullPath = filepath.Replace("\\", "/");
+            }else{
+                fullPath = filepath;
+            }
+            return "data:image/" + System.IO.Path.GetExtension(fullPath).Replace(".", "") + ";base64," + Convert.ToBase64String(System.IO.File.ReadAllBytes(fullPath));
         }
 
     }
