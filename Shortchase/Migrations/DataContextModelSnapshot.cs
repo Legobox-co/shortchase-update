@@ -486,7 +486,7 @@ namespace Shortchase.Migrations
                             Is_default_email_account = true,
                             Password = "2254273Cc+",
                             Port = 587,
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 312, DateTimeKind.Local).AddTicks(2141),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 154, DateTimeKind.Local).AddTicks(7958),
                             User_name = "info@calibreconsulting.ca"
                         });
                 });
@@ -524,7 +524,7 @@ namespace Shortchase.Migrations
                             Id = 1,
                             Body = "{0}",
                             Name = "Account.RegistrationCode",
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 309, DateTimeKind.Local).AddTicks(8055),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 149, DateTimeKind.Local).AddTicks(7009),
                             Subject = "Registration Code"
                         },
                         new
@@ -532,7 +532,7 @@ namespace Shortchase.Migrations
                             Id = 2,
                             Body = "{0}",
                             Name = "Account.ForgotPassword",
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 310, DateTimeKind.Local).AddTicks(9445),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 151, DateTimeKind.Local).AddTicks(9108),
                             Subject = "Forgot Password"
                         });
                 });
@@ -1243,7 +1243,7 @@ namespace Shortchase.Migrations
                             Disabled = false,
                             GroupName = "SuperAdmin",
                             Name = "AccessAll",
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 312, DateTimeKind.Local).AddTicks(4642),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1297),
                             Value = 65535
                         },
                         new
@@ -1253,7 +1253,7 @@ namespace Shortchase.Migrations
                             Disabled = false,
                             GroupName = "Basic User",
                             Name = "User",
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 312, DateTimeKind.Local).AddTicks(4655),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1339),
                             Value = 1
                         },
                         new
@@ -1262,7 +1262,7 @@ namespace Shortchase.Migrations
                             Description = "User Has no Role",
                             Disabled = false,
                             Name = "NotSet",
-                            RowDate = new DateTime(2020, 8, 4, 12, 15, 5, 312, DateTimeKind.Local).AddTicks(4658),
+                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1347),
                             Value = 0
                         });
                 });
@@ -1295,13 +1295,13 @@ namespace Shortchase.Migrations
                     b.Property<string>("Team1")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Team1Photo")
+                    b.Property<string>("Team1PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Team2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Team2Photo")
+                    b.Property<string>("Team2PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

@@ -37,6 +37,7 @@
                             profilePicture = ImageHelper.ConvertImageToBase64(item.Postedby.ProfilePicture);
                         }
                         string name = item.Postedby.FirstName + " " + item.Postedby.LastName;
+
                         <vc:bet-listing-toggle-card item="@item" name="@name" picture="@profilePicture" iteration="@iterationCount"></vc:bet-listing-toggle-card>
 
 
