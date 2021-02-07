@@ -237,6 +237,34 @@ namespace Shortchase.Controllers
             }
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SubmitPOTDforValidation(bool Type)
+        {
+            Guid? userId = User.Id();
+            POTDListingPrediction request = new POTDListingPrediction
+            {
+                PredictedById = userId,
+                UserValidate = Type
+            };
+            try
+            {
+                if (!userId.HasValue || userId.Value == Guid.Empty) throw new Exception("No User Id prediction to validate");
+                var POTDs = await potdListingPredictionService.Insert(request).ConfigureAwait(true);
+                if (POTDs)
+                {
+                    return Json(new { status = true, messageTitle = "Success", message = "Prediction submitted successfully" });
+                }
+
+                else throw new Exception("Error submitting the POTD prediction. Try again later.");
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return null;
+            }
+        }
+
         #endregion
 
         #region

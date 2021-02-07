@@ -20,6 +20,11 @@ namespace Shortchase.Dtos
         public ICollection<SecondaryEmailTemplateUserListItemDto> Users { get; set; }
     }
 
+    public class EmailConfigAllDto
+    {
+        public ICollection<EmailConfig> EmailConfigs { get; set; };
+    }
+
     public class SecondaryEmailTemplateUserListItemDto
     {
         public Guid Id { get; set; }

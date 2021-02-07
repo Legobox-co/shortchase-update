@@ -67,6 +67,7 @@ namespace Shortchase.Controllers
         private readonly IUserPayoutService userPayoutService;
         private readonly IAPIValidationService apiValidationService;
         private readonly ISecondaryEmailTemplateService secondaryEmailTemplateService;
+        private readonly IEmailConfigService emailConfigService;
         private readonly IMediaFolderService mediaFolderService;
         private readonly IMediaFileService mediaFileService;
 
@@ -107,6 +108,7 @@ namespace Shortchase.Controllers
             ISystemConstantsService systemConstantsService,
             IOrderItemService orderItemService,
             IOrderService orderService,
+            IEmailConfigService emailConfigService,
             IMessageService messageService,
             IUserPayoutService userPayoutService,
             IAPIValidationService apiValidationService,
@@ -156,6 +158,7 @@ namespace Shortchase.Controllers
             this.secondaryEmailTemplateService = secondaryEmailTemplateService;
             this.mediaFolderService = mediaFolderService;
             this.mediaFileService = mediaFileService;
+            this.emailConfigService = emailConfigService;
         }
 
         public async Task<IActionResult> Index(int TimeOffset = 0)
@@ -5489,6 +5492,136 @@ namespace Shortchase.Controllers
                 return Json(new { status = false, messageTitle = "Error", message = e.Message });
             }
         }
+        #endregion
+
+
+        #region Email Configuration Editor
+        public async Task<IActionResult> EmailConfigEditor(int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                EmailConfigAllDto model = new EmailConfigAllDto
+                {
+                    EmailConfigs = await emailConfigService.GetAll().ConfigureAwait(true)
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+        public async Task<IActionResult> EmailConfigAdd(int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+        public async Task<IActionResult> EmailConfigEdit(int Id = 0, int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                if (Id == 0) throw new Exception("You need to provide a email configuration detail to edit.");
+                EmailConfig model = await emailConfigService.GetById(Id).ConfigureAwait(true);
+                if (model == null) throw new Exception("You need to provide a email configuration template to edit.");
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewEmailConfig(EmailConfig template)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(template.Password)) throw new Exception("You need to provide a password for email sender.");
+                if (string.IsNullOrWhiteSpace(template.Email)) throw new Exception("You need to provide a email");
+                if (string.IsNullOrWhiteSpace(template.Display_name)) throw new Exception("You need to provide a display name for the new email template.");
+                if (string.IsNullOrWhiteSpace(template.User_name)) throw new Exception("You need to provide a user name for the new email template.");
+                if (string.IsNullOrWhiteSpace(template.Host)) throw new Exception("You need to provide a valid host for template.");
+
+                EmailConfig newTemplate = new EmailConfig
+                {
+                    Port = template.Port,
+                    Password = template.Password,
+                    Email = template.Email,
+                    Host = template.Host,
+                    Display_name = template.Display_name,
+                    Enable_ssl = template.Enable_ssl,
+                    User_name= template.User_name,
+                    Is_default_email_account = template.Is_default_email_account,
+                    Active = template.Active
+                };
+
+
+                await emailConfigService.Insert(newTemplate).ConfigureAwait(true);
+
+                return Json(new { status = true, messageTitle = "Success", message = "New Email config settings created successfully!" });
+
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateNewEmailConfig(EmailConfig template)
+        {
+            try
+            {
+                if (template.Id == 0) throw new Exception("You need to provide email config id to update");
+
+                EmailConfig updateTemplate = await emailConfigService.GetById(template.Id).ConfigureAwait(true);
+                if (updateTemplate == null) throw new Exception("You need to provide a email config to update.");
+
+                if (!String.IsNullOrEmpty(template.Display_name)) { updateTemplate.Display_name = template.Display_name; };
+                if (!String.IsNullOrEmpty(template.User_name)) { updateTemplate.User_name = template.User_name; };
+                if (!String.IsNullOrEmpty(template.Email)) { updateTemplate.Email = template.Email; };
+                if (!String.IsNullOrEmpty(template.Password)) { updateTemplate.Password = template.Password; };
+                if (!String.IsNullOrEmpty(template.Host)) { updateTemplate.Host = template.Host; };
+                if(template.Port >0) { updateTemplate.Port = template.Port; };
+                if(template.Is_default_email_account.HasValue) { updateTemplate.Is_default_email_account = template.Is_default_email_account; }
+                if (template.Active.HasValue) { updateTemplate.Active = template.Active; }
+                if (template.Enable_ssl.HasValue) { updateTemplate.Enable_ssl = template.Enable_ssl; }
+
+                await emailConfigService.Update(updateTemplate).ConfigureAwait(true);
+
+                return Json(new { status = true, messageTitle = "Success", message = "Email config details updated successfully!" });
+
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+            }
+        }
+
+
         #endregion
 
         #region Email Template Editor
