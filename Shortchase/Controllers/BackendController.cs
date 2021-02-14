@@ -2305,7 +2305,7 @@ namespace Shortchase.Controllers
                 var user = model.ToUser();
 
                 // save
-                var result = await userService.CreateShortchaseAdministratorUserAsync(user, model.Password).ConfigureAwait(true);
+                var result = await userService.CreateShortchaseAdministratorUserAsync(user, model.Password, model.role).ConfigureAwait(true);
                 if (result)
                 {
                     return Json(new { status = true, messageTitle = "Success!", message = "Registration completed successfully." });
@@ -6317,7 +6317,7 @@ namespace Shortchase.Controllers
                     }
                     using (var reader = new StreamReader(path))
                     {
-                        using (var csv = new CsvHelper.CsvReader(reader))
+                        using (var csv = new CsvHelper.CsvReader((IParser)reader))
                         {
                             csv.Read();
                             csv.ReadHeader();

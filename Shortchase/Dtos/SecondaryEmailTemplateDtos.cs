@@ -22,7 +22,7 @@ namespace Shortchase.Dtos
 
     public class EmailConfigAllDto
     {
-        public ICollection<EmailConfig> EmailConfigs { get; set; };
+        public ICollection<EmailConfig> EmailConfigs { get; set; }
     }
 
     public class SecondaryEmailTemplateUserListItemDto

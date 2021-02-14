@@ -1076,7 +1076,7 @@ namespace Shortchase.Services
         }
 
 
-        public async Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password)
+        public async Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password, string role)
         {
             try
             {
@@ -1113,7 +1113,8 @@ namespace Shortchase.Services
                 var result = await userManager.CreateAsync(user, password).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
-                    var adminPermissionResult = await permissionService.AddToUser(user, Permission.Admin).ConfigureAwait(false);
+                    Permission permissionId = ReturnRoleId(role);
+                    var adminPermissionResult = await permissionService.AddToUser(user, permissionId).ConfigureAwait(false);
 
                     if (adminPermissionResult)
                     {
@@ -1136,9 +1137,24 @@ namespace Shortchase.Services
             }
         }
 
-
-
-        public async Task<bool> CreateShortchaseStandardUserAsync(User user, string password)
+        public Permission ReturnRoleId(string role)
+        {
+            switch (role)
+            {
+                case "Superadmin":
+                    return Permission.AccessAll;
+                case "Administrator":
+                    return Permission.Admin;
+                case "Technical Support":
+                    return Permission.TechSupport;
+                case "General":
+                    return Permission.General;
+                default:
+                    return Permission.Admin;
+            }
+        }
+        
+    public async Task<bool> CreateShortchaseStandardUserAsync(User user, string password)
         {
             try
             {

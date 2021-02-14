@@ -17,8 +17,14 @@ namespace Shortchase.Authorization
         [Display(GroupName = "Basic User", Name = "Bettor", Description = "Bettor User Role")]
         Bettor = 3,
 
-        [Display(GroupName = "Basic User", Name = "Admin", Description = "Admin User Role")]
+        [Display(GroupName = "Admin", Name = "Admin", Description = "Admin User Role")]
         Admin = 4,
+
+        [Display(GroupName = "Admin", Name = "Technical Support", Description = "Technical support access role")]
+        TechSupport = 5,
+
+        [Display(GroupName = "Admin", Name = "General", Description = "General Admin Role")]
+        General = 6,
 
         [Display(GroupName = "SuperAdmin", Name = "AccessAll", Description = "This allows the user to access every feature")]
         AccessAll = ushort.MaxValue,
