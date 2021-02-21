@@ -43,6 +43,7 @@ namespace Shortchase.Controllers
         private readonly IListingSubCategoryService listingSubCategoryService;
         private readonly IUserService userService;
         private readonly ISubscriptionPlanService subscriptionPlanService;
+        private readonly IPermissionService permissionService;
         private readonly IUserSubscriptionService userSubscriptionService;
         private readonly IBetListingService betListingService;
         private readonly IBetListingReportService betListingReportService;
@@ -101,6 +102,7 @@ namespace Shortchase.Controllers
             ITipService tipService,
             IBookmakerService bookmakerService,
             IPickService pickService,
+            IPermissionService permissionService,
             IRewardsClaimedMappingService rewardsClaimedMappingService,
             IRewardsMappingService rewardsMappingService,
             IEmailSenderService emailSenderService,
@@ -159,6 +161,7 @@ namespace Shortchase.Controllers
             this.mediaFolderService = mediaFolderService;
             this.mediaFileService = mediaFileService;
             this.emailConfigService = emailConfigService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> Index(int TimeOffset = 0)
@@ -2274,6 +2277,7 @@ namespace Shortchase.Controllers
                 {
                     Users = (await userService.GetAdminList().ConfigureAwait(true)).Select(i => new UserListItemDto { Email = i.Email, FirstName = i.FirstName, LastName = i.LastName, Id = i.Id, LastSeen = null, IsActive = i.IsActive, DateRegistered = i.RowDate, PhoneNumber = i.PhoneNumber, UserName = i.UserName, PhoneCountryId = i.PhoneCountryId }).ToList(),
                     CountriesOptions = countries.OrderBy(o => o.Name).ToList(),
+                    RolesOptions = await permissionService.GetAdminRoles().ConfigureAwait(true)
                 };
 
 

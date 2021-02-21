@@ -1141,14 +1141,12 @@ namespace Shortchase.Services
         {
             switch (role)
             {
-                case "Superadmin":
-                    return Permission.AccessAll;
-                case "Administrator":
+                case "Owner":
+                    return Permission.Owner;
+                case "Admin":
                     return Permission.Admin;
-                case "Technical Support":
-                    return Permission.TechSupport;
-                case "General":
-                    return Permission.General;
+                case "Member":
+                    return Permission.Member;
                 default:
                     return Permission.Admin;
             }

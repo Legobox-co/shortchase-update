@@ -38,7 +38,17 @@
                 <vc:input id="AddPhoneNumber" label="Phone Number" type="text" class="" required="true" placeholder="e.g. 5875742143" value="" disabled="false"></vc:input>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <vc:input id="AddRole" label="Role (For future versions development)" type="text" class="" required="false" placeholder="" value="" disabled="true"></vc:input>
+                <div class="w-100">
+                    <label for="AddRole" class="mb-0 text-smaller pl-1 font-weight-600 d-block">Role</label>
+                    <select class="selectpicker " id="AddRole" required data-live-search="true">
+
+                        @foreach (var item in Model.RolesOptions)
+                        {
+                            <option value="@item.Id" id="AddRoleOption-@item.Id" data-code="@item.Value" selected>@item.Name</option>
+                        }
+
+                    </select>
+                </div>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <vc:input id="AddPassword" label="Password" type="password" class="" required="true" placeholder="e.g. MyN3wP@SSW0RD" value="" disabled="false"></vc:input>

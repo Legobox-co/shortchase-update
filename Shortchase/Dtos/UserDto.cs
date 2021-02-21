@@ -212,6 +212,7 @@ namespace Shortchase.Dtos
     {
         public ICollection<UserListItemDto> Users { get; set; }
         public ICollection<Country> CountriesOptions { get; set; }
+        public ICollection<Permissions> RolesOptions { get; set; }
         public int DefaultCountryId { get; set; }
         public string DefaultCountryPhoneCode { get; set; }
     }
@@ -268,7 +269,7 @@ namespace Shortchase.Dtos
         public string Email { get; set; }
         public int Country { get; set; }
         [Required]
-        [RegularExpression("^(Superadmin)|(Administrator)|(Technical Support)|(General)$",ErrorMessage ="Please specify a role for User")]
+        [RegularExpression("^(Owner)|(Admin)|(Memver)$",ErrorMessage ="Please specify a role for User")]
         public string role { get; set; }
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }
@@ -298,6 +299,8 @@ namespace Shortchase.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        [RegularExpression("^(Owner)|(Admin)|(Memver)$", ErrorMessage = "Please specify a role for User")]
+        public string role { get; set; }
         public int Country { get; set; }
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }

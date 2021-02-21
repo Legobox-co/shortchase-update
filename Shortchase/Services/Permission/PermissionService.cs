@@ -105,6 +105,22 @@ namespace Shortchase.Services
             }
         }
 
+        public async Task<ICollection<Permissions>> GetAdminRoles()
+        {
+            try
+            {
+                string owner = "Owner";
+                string admin = "Admin";
+
+                return await db.Permissions.FromSqlRaw("select * from Permissions where groupname = @0 or groupname =@1", owner, admin).ToListAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
+
         public async Task<ICollection<Permissions>> GetAll()
         {
             try
