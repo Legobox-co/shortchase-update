@@ -3562,6 +3562,26 @@ namespace Shortchase.Controllers
 
 
         #region Home General Functions
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Messaging(Guid id,int TimeOffset = 0)
+        {
+            Guid? UserId = null;
+            ViewData["root"] = hostingEnvironment.ContentRootPath;
+            ViewData["TimezoneOffset"] = TimeOffset;
+            UserId = User.Id();
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                var user = (await userService.GetProfileById(id, UserId).ConfigureAwait(true));
+                return View(user);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return null;
+            }
+        }
 
         [Permitted(Permission.Capper, Permission.Bettor)]
         [HttpPost]
