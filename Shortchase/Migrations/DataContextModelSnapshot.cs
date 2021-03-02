@@ -15,7 +15,7 @@ namespace Shortchase.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.0")
+                .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -486,7 +486,7 @@ namespace Shortchase.Migrations
                             Is_default_email_account = true,
                             Password = "2254273Cc+",
                             Port = 587,
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 154, DateTimeKind.Local).AddTicks(7958),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 784, DateTimeKind.Local).AddTicks(9191),
                             User_name = "info@calibreconsulting.ca"
                         });
                 });
@@ -524,7 +524,7 @@ namespace Shortchase.Migrations
                             Id = 1,
                             Body = "{0}",
                             Name = "Account.RegistrationCode",
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 149, DateTimeKind.Local).AddTicks(7009),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 780, DateTimeKind.Local).AddTicks(5441),
                             Subject = "Registration Code"
                         },
                         new
@@ -532,7 +532,7 @@ namespace Shortchase.Migrations
                             Id = 2,
                             Body = "{0}",
                             Name = "Account.ForgotPassword",
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 151, DateTimeKind.Local).AddTicks(9108),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 782, DateTimeKind.Local).AddTicks(1718),
                             Subject = "Forgot Password"
                         });
                 });
@@ -1243,7 +1243,7 @@ namespace Shortchase.Migrations
                             Disabled = false,
                             GroupName = "SuperAdmin",
                             Name = "AccessAll",
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1297),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 785, DateTimeKind.Local).AddTicks(4157),
                             Value = 65535
                         },
                         new
@@ -1253,7 +1253,7 @@ namespace Shortchase.Migrations
                             Disabled = false,
                             GroupName = "Basic User",
                             Name = "User",
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1339),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 785, DateTimeKind.Local).AddTicks(4173),
                             Value = 1
                         },
                         new
@@ -1262,7 +1262,7 @@ namespace Shortchase.Migrations
                             Description = "User Has no Role",
                             Disabled = false,
                             Name = "NotSet",
-                            RowDate = new DateTime(2021, 2, 5, 10, 55, 19, 156, DateTimeKind.Local).AddTicks(1347),
+                            RowDate = new DateTime(2021, 2, 27, 9, 8, 51, 785, DateTimeKind.Local).AddTicks(4177),
                             Value = 0
                         });
                 });
@@ -1309,6 +1309,27 @@ namespace Shortchase.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Picks");
+                });
+
+            modelBuilder.Entity("Shortchase.Entities.PredictionComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommenterId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PredictionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PredictionComments");
                 });
 
             modelBuilder.Entity("Shortchase.Entities.PromotionPost", b =>

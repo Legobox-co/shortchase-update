@@ -6,15 +6,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;1028;1031;1052;1822;1303</NoWarn>
+    <DefineConstants></DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20191022184353_UpdateIdFromRewardsClaimTable.cs" />
-    <Compile Remove="Migrations\20191022184353_UpdateIdFromRewardsClaimTable.Designer.cs" />
-    <Compile Remove="Migrations\20191120190225_AddedMissingFields.cs" />
-    <Compile Remove="Migrations\20191120190225_AddedMissingFields.Designer.cs" />
-    <Compile Remove="Migrations\20191120190550_AddedListingReport.cs" />
-    <Compile Remove="Migrations\20191120190550_AddedListingReport.Designer.cs" />
+    <Content Remove="Views\Backend\Partials\ManageAdministrators_ListView.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,7 +49,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Razor" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
@@ -73,7 +69,124 @@
   <ItemGroup>
     <Folder Include="Media\Blog\" />
     <Folder Include="Media\User\" />
-    <Folder Include="wwwroot\img\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Backend\AccessLogs.cshtml" />
+    <None Include="Views\Backend\Addresses.cshtml" />
+    <None Include="Views\Backend\AppConfig.cshtml" />
+    <None Include="Views\Backend\BetListingReports.cshtml" />
+    <None Include="Views\Backend\BetListings.cshtml" />
+    <None Include="Views\Backend\Blog.cshtml" />
+    <None Include="Views\Backend\BlogAddPost.cshtml" />
+    <None Include="Views\Backend\BlogEditPost.cshtml" />
+    <None Include="Views\Backend\BlogPreviewBlog.cshtml" />
+    <None Include="Views\Backend\Bookmakers.cshtml" />
+    <None Include="Views\Backend\CookieConsent.cshtml" />
+    <None Include="Views\Backend\Currencies.cshtml" />
+    <None Include="Views\Backend\Discounts.cshtml" />
+    <None Include="Views\Backend\EmailTemplateAdd.cshtml" />
+    <None Include="Views\Backend\EmailTemplateEdit.cshtml" />
+    <None Include="Views\Backend\EmailTemplateEditor.cshtml" />
+    <None Include="Views\Backend\FAQ.cshtml" />
+    <None Include="Views\Backend\GetMediaPickerData.cshtml" />
+    <None Include="Views\Backend\GetMediaPickerData2.cshtml" />
+    <None Include="Views\Backend\Index.cshtml" />
+    <None Include="Views\Backend\ListingCategories.cshtml" />
+    <None Include="Views\Backend\ListingSubCategories.cshtml" />
+    <None Include="Views\Backend\ManageAdministrators.cshtml" />
+    <None Include="Views\Backend\ManageBoisterousUsers.cshtml" />
+    <None Include="Views\Backend\ManageBoisterousUserSubscriptions.cshtml" />
+    <None Include="Views\Backend\ManageProUsers.cshtml" />
+    <None Include="Views\Backend\ManageProUserSubscriptions.cshtml" />
+    <None Include="Views\Backend\ManageUsers.cshtml" />
+    <None Include="Views\Backend\ManageUserSubscriptions.cshtml" />
+    <None Include="Views\Backend\Markets.cshtml" />
+    <None Include="Views\Backend\MediaManager.cshtml" />
+    <None Include="Views\Backend\MediaManagerCropMedia.cshtml" />
+    <None Include="Views\Backend\Messages.cshtml" />
+    <None Include="Views\Backend\MessagesFromUser.cshtml" />
+    <None Include="Views\Backend\News.cshtml" />
+    <None Include="Views\Backend\NewsAddPost.cshtml" />
+    <None Include="Views\Backend\NewsEditPost.cshtml" />
+    <None Include="Views\Backend\NewsPreviewNews.cshtml" />
+    <None Include="Views\Backend\OrdersPayout.cshtml" />
+    <None Include="Views\Backend\OrdersPayoutDetails.cshtml" />
+    <None Include="Views\Backend\ParseMassPayoutTemplate.cshtml" />
+    <None Include="Views\Backend\Partials\Address_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Address_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\BetListingReports_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\BetListingReports_ViewModal.cshtml" />
+    <None Include="Views\Backend\Partials\BetListing_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\BetListing_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\BetListing_ValidateManuallyModal.cshtml" />
+    <None Include="Views\Backend\Partials\Bookmaker_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Bookmaker_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\Currency_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Currency_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\Discounts_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\EmailTemplateEditor_SendEmailToAnonymous.cshtml" />
+    <None Include="Views\Backend\Partials\EmailTemplateEditor_SendEmailToUser.cshtml" />
+    <None Include="Views\Backend\Partials\FAQ_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\FAQ_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\FAQ_ViewAnswer.cshtml" />
+    <None Include="Views\Backend\Partials\ListingCategory_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\ListingCategory_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\ListingSubCategory_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\ListingSubCategory_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\ManageAdministrators_ListView.cshtml" />
+    <None Include="Views\Backend\Partials\ManageAdministrators_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\ManageAdministrators_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\ManageUserSubscription_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\ManageUsers_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\ManageUsers_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\Market_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Market_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\MediaManager_AddMediaFileModal.cshtml" />
+    <None Include="Views\Backend\Partials\MediaManager_AddMediaFolderModal.cshtml" />
+    <None Include="Views\Backend\Partials\MediaManager_EditMediaFileModal.cshtml" />
+    <None Include="Views\Backend\Partials\MediaManager_EditMediaFolderModal.cshtml" />
+    <None Include="Views\Backend\Partials\PaypalSettings_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\PaypalSettings_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\Pick_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Pick_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDListing_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDListing_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDListing_InformResultModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDListing_ViewPredictionsModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDLiveReporting_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\POTDLiveReporting_ViewInteractionsModal.cshtml" />
+    <None Include="Views\Backend\Partials\SendMoneyToUsers_IndividualModal.cshtml" />
+    <None Include="Views\Backend\Partials\SocialMedia_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\SocialMedia_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\SubscriptionPlan_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\SubscriptionPlan_EditModal.cshtml" />
+    <None Include="Views\Backend\Partials\Tip_AddModal.cshtml" />
+    <None Include="Views\Backend\Partials\Tip_EditModal.cshtml" />
+    <None Include="Views\Backend\PaypalSettings.cshtml" />
+    <None Include="Views\Backend\Picks.cshtml" />
+    <None Include="Views\Backend\POTD.cshtml" />
+    <None Include="Views\Backend\POTDLiveReporting.cshtml" />
+    <None Include="Views\Backend\POTDReportingLoadInteractionData.cshtml" />
+    <None Include="Views\Backend\POTDViewAllPredictions.cshtml" />
+    <None Include="Views\Backend\POTDViewPredictions.cshtml" />
+    <None Include="Views\Backend\PrivacyPolicy.cshtml" />
+    <None Include="Views\Backend\Promotion.cshtml" />
+    <None Include="Views\Backend\PromotionAddPost.cshtml" />
+    <None Include="Views\Backend\PromotionEditPost.cshtml" />
+    <None Include="Views\Backend\PromotionPreviewPromotion.cshtml" />
+    <None Include="Views\Backend\SalesOverview.cshtml" />
+    <None Include="Views\Backend\SalesOverviewDetails.cshtml" />
+    <None Include="Views\Backend\SendMoneyToUsers.cshtml" />
+    <None Include="Views\Backend\SendMoneyToUsersInMass.cshtml" />
+    <None Include="Views\Backend\SendMoneyToUsersPayoutHistory.cshtml" />
+    <None Include="Views\Backend\ServiceFeeAndTaxes.cshtml" />
+    <None Include="Views\Backend\SessionManager.cshtml" />
+    <None Include="Views\Backend\SocialMedia.cshtml" />
+    <None Include="Views\Backend\SubscriptionPlans.cshtml" />
+    <None Include="Views\Backend\TermsOfService.cshtml" />
+    <None Include="Views\Backend\TestAPIValidation.cshtml" />
+    <None Include="Views\Backend\Tips.cshtml" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

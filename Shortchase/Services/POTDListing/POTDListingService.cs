@@ -55,16 +55,17 @@ namespace Shortchase.Services
         {
             try
             {
-                return await _context.POTDListings
+                var result = await _context.POTDListings
                     .Include(i => i.Category)
                     .Include(i => i.SubCategory)
                     .Include(i => i.Postedby)
                     .Include(i => i.Pick)
                     .Include(i => i.Market)
                     .Include(i => i.Tip)
-                    .Where(i => !i.Deleted && DateTime.UtcNow <= i.Pick.FinishTime)
+                    .Where(i => !i.Deleted && DateTime.UtcNow >= i.Pick.FinishTime)
                     .OrderBy(o => o.Pick.StartTime)
                     .ToListAsync().ConfigureAwait(false);
+                return result;
             }
             catch (Exception e)
             {
@@ -73,7 +74,43 @@ namespace Shortchase.Services
             }
         }
 
+        public async Task<ICollection<POTDListingPrediction>> GetAllPredictionAvailable()
+        {
+            try
+            {
+                var result = await _context.POTDListingPredictions
+                    .Where(i => !i.Deleted)
+                    .ToListAsync().ConfigureAwait(false);
+                return result;
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
+        public async Task<string> GetUserById(Guid id)
+        {
+            try
+            {
+                var result = await _context.Users.FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);
+                if (result != null)
+                {
+                    return result.FirstName +" "+ result.LastName;
 
+                }
+                else
+                {
+                    return "";
+
+                }
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
         public async Task<ICollection<POTDListing>> GetAllPredictedByUserId(Guid Id)
         {
             try

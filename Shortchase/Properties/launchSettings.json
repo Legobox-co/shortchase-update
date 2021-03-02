@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:50318",
+      "applicationUrl": "http://localhost:40618",
       "sslPort": 44328
     }
   },
@@ -18,7 +18,8 @@
       "nativeDebugging": true
     },
     "Shortchase": {
-      "commandName": "Project",
+      "commandName": "IISExpress",
+      "workingDirectory": "C:\\Users\\PelumiAbike\\source\\repos\\Nego\\original-app\\Shortchase",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -307,7 +307,7 @@
             <hr class="my-3">
             <!-- Heading -->
             @{
-                string section5Check = Html.IsSelected("Backend", "Addresses,FAQ,Blog,BlogAddPost,BlogEditPost,News,NewsAddPost,NewsEditPost,Promotion,PromotionAddPost,PromotionEditPost,PrivacyPolicy,SocialMedia,TermsOfService,CookieConsent,AppConfig,SessionManager,EmailTemplateEditor,EmailTemplateAdd,EmailTemplateEdit");
+                string section5Check = Html.IsSelected("Backend", "Addresses,FAQ,Blog,BlogAddPost,BlogEditPost,News,NewsAddPost,NewsEditPost,Promotion,PromotionAddPost,PromotionEditPost,PrivacyPolicy,SocialMedia,TermsOfService,CookieConsent,AppConfig,TimeZone,SessionManager,EmailTemplateEditor,EmailTemplateAdd,EmailTemplateEdit");
                 string section5Display = "display:none;";
                 string section5Status = "closed";
                 string section5TitleColor = "text-muted";
@@ -324,6 +324,11 @@
                 <li class="nav-item">
                     <a class="nav-link @Html.IsSelected("Backend", "AppConfig")" asp-action="AppConfig" asp-controller="Backend">
                         <img src="@Url.Content("~/img/newicons/app-manager.png")" class="img-fluid" width="20px" />&nbsp; App Manager @*<i class="fas fa-cog"></i> App Manager*@
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @Html.IsSelected("Backend", "TimeZone")" asp-action="TimeZone" asp-controller="Backend">
+                        <img src="@Url.Content("~/img/newicons/session-manager.png")" class="img-fluid" width="20px" />&nbsp; Time Zone @*<i class="fas fa-cog"></i> App Manager*@
                     </a>
                 </li>
                 <li class="nav-item">

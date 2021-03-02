@@ -100,5 +100,7 @@ namespace Shortchase.Helpers
         public DbSet<MediaFolder> MediaFolders { get; set; }
         public DbSet<MediaFile> MediaFiles { get; set; }
         public DbSet<UserContact> UserContacts { get; set; }
+        public DbSet<PredictionComment> PredictionComments { get; set; }
+
     }
 }
