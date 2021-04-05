@@ -15,7 +15,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "sqlDebugging": true,
-      "nativeDebugging": true
+      "nativeDebugging": true,
+      "applicationUrl": "http://localhost:5001"
     },
     "Shortchase": {
       "commandName": "Project",

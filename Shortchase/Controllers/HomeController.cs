@@ -21,7 +21,7 @@ using ServiceStack;
 using FixerIoCore;
 using Microsoft.AspNetCore.Http;
 //1. Import the PayPal SDK client that was created in `Set up Server-Side SDK`.
-using BraintreeHttp;
+//using BraintreeHttp;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 using Google.Contacts;
@@ -244,7 +244,7 @@ namespace Shortchase.Controllers
             Guid? userId = User.Id();
             POTDListingPrediction request = new POTDListingPrediction
             {
-                PredictedById = userId,
+                PredictedById = (Guid)userId,
                 UserValidate = Type
             };
             try
@@ -2737,7 +2737,7 @@ namespace Shortchase.Controllers
                         PaypalSettings paypalSettings = await paypalSettingsService.GetDefault().ConfigureAwait(true);
                         string ClientId = paypalSettings.ClientID;
                         string Secret = paypalSettings.Secret;
-                        var paypalResponse = await PayPalClient.client(ClientId, Secret).Execute(paypalRequest);
+                        var paypalResponse = await PayPalClient.client(ClientId, Secret).Execute(paypalRequest).ConfigureAwait(false);
                         //4. Save the transaction in your database. Implement logic to save transaction to your database for future reference.
                         var paypalResult = paypalResponse.Result<PayPalCheckoutSdk.Orders.Order>();
 
