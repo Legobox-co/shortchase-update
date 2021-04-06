@@ -109,10 +109,10 @@ namespace Shortchase.Services
         {
             try
             {
-                string owner = "Owner";
-                string admin = "Admin";
+                //string owner = "Admin";
+                //string admin = "SuperAdmin";
 
-                return await db.Permissions.FromSqlRaw("select * from Permissions where groupname = @0 or groupname =@1", owner, admin).ToListAsync().ConfigureAwait(false);
+                return await db.Permissions.FromSqlRaw("select * from Permissions where GroupName = 'Admin' or GroupName = 'SuperAdmin'").ToListAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {

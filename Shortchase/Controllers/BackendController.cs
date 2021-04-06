@@ -2277,7 +2277,7 @@ namespace Shortchase.Controllers
                 {
                     Users = (await userService.GetAdminList().ConfigureAwait(true)).Select(i => new UserListItemDto { Email = i.Email, FirstName = i.FirstName, LastName = i.LastName, Id = i.Id, LastSeen = null, IsActive = i.IsActive, DateRegistered = i.RowDate, PhoneNumber = i.PhoneNumber, UserName = i.UserName, PhoneCountryId = i.PhoneCountryId }).ToList(),
                     CountriesOptions = countries.OrderBy(o => o.Name).ToList(),
-                    RolesOptions = await permissionService.GetAdminRoles().ConfigureAwait(true)
+                    RolesOptions = (await permissionService.GetAdminRoles().ConfigureAwait(true)).ToList()
                 };
 
 
@@ -2295,7 +2295,7 @@ namespace Shortchase.Controllers
             }
             catch (Exception e)
             {
-                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);               
                 return RedirectToAction("Index", "Error", request);
             }
         }

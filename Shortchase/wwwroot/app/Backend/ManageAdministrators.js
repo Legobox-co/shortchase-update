@@ -70,6 +70,7 @@
             PhoneNumber: $('#AddPhoneNumber').val(),
             Password: $('#AddPassword').val(),
             RepeatPassword: $('#AddRepeatPassword').val(),
+            role: $('#AddRole').val()
         };
 
         if (obj.Password === obj.RepeatPassword) {
@@ -168,6 +169,7 @@
             PhoneNumber: $('#EditPhoneNumber').val(),
             Password: $('#EditPassword').val(),
             RepeatPassword: $('#EditRepeatPassword').val(),
+            role: $('#EditRole').val()
         };
 
         if (IsEmptyString(obj.Password) && IsEmptyString(obj.RepeatPassword)) obj.ChangePassword = false;

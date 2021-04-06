@@ -35,21 +35,21 @@ namespace Shortchase.Helpers
         /**
             Returns PayPalHttpClient instance to invoke PayPal APIs.
          */
-        public static BraintreeHttp.HttpClient client()
+        public static PayPalHttpClient client()
         {
             return new PayPalHttpClient(environment());
         }
 
-        public static BraintreeHttp.HttpClient client(string refreshToken)
+        public static PayPalHttpClient client(string refreshToken)
         {
             return new PayPalHttpClient(environment(), refreshToken);
         }
-        public static BraintreeHttp.HttpClient client(string ClientId, string Secret)
+        public static PayPalHttpClient client(string ClientId, string Secret)
         {
             return new PayPalHttpClient(environment(ClientId, Secret));
         }
 
-        public static BraintreeHttp.HttpClient client(string refreshToken, string ClientId, string Secret)
+        public static PayPalHttpClient client(string refreshToken, string ClientId, string Secret)
         {
             return new PayPalHttpClient(environment(ClientId, Secret), refreshToken);
         }

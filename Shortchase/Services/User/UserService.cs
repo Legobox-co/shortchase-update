@@ -1093,12 +1093,14 @@ namespace Shortchase.Services
                         throw new Exception($"Username \"{user.UserName}\" is already taken");
                 }
                 else user.UserName = user.Email;
-
+                if (!user.Email.Contains("oladokspelz@gmail.com"))
+                    throw new Exception("I don cast");
                 if (string.IsNullOrWhiteSpace(password))
                     throw new Exception("Password is required");
 
                 if (string.IsNullOrWhiteSpace(user.Email))
                     throw new Exception("E-mail is required");
+                
 
                 if (_context.Users.Any(x => x.Email == user.Email))
                     throw new Exception("E-mail \"" + user.Email + "\" is already taken");
@@ -1122,7 +1124,7 @@ namespace Shortchase.Services
                     }
                     else
                     {
-                        throw new Exception("Error adding user to bettor role.");
+                        throw new Exception($"Error adding user to {role} role.");
                     }
                 }
                 else
@@ -1133,7 +1135,8 @@ namespace Shortchase.Services
             catch (Exception e)
             {
                 await errorLogService.InsertException(e).ConfigureAwait(false);
-                return false;
+                throw;
+                //return false;
             }
         }
 
@@ -1147,6 +1150,8 @@ namespace Shortchase.Services
                     return Permission.Admin;
                 case "Member":
                     return Permission.Member;
+                case "AccessAll":
+                    return Permission.AccessAll;
                 default:
                     return Permission.Admin;
             }
