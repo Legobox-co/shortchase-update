@@ -25,7 +25,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Shortchase.Controllers
 {
-    [Permitted(Permission.Admin)]
+    [Permitted(Permission.Admin, Permission.Owner, Permission.AccessAll)]
     public class BackendController : Controller
     {
         private readonly IErrorLogService errorLogService;
@@ -2322,7 +2322,8 @@ namespace Shortchase.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
                 await errorLogService.InsertException(e).ConfigureAwait(true);
-                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+                return Json(new { status = false, messageTitle = "Error", message = e.Message
+                });
             }
         }
 

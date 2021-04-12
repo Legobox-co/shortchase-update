@@ -75,7 +75,8 @@
 
         if (obj.Password === obj.RepeatPassword) {
 
-            let url = $('#AddAdministratorModalURL').val();
+            //let url = $('#AddAdministratorModalURL').val();
+            let url = '/Backend/AddAdministrator?FirstName=' + obj.FirstName + '&LastName=' + obj.LastName + '&Email=' + obj.Email + '&Password=' + obj.Password + '&RepeatPassword=' + obj.RepeatPassword + '&role=' + obj.role + '&Country=' + obj.Country+ '';
             let reloadAfterAjax = true;
             AJAXpost(url, obj, reloadAfterAjax);
 

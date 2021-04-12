@@ -17,6 +17,7 @@ using Shortchase.Helpers;
 using Shortchase.Authorization;
 using System.Security.Principal;
 using Shortchase.Helpers.Extensions;
+using Newtonsoft.Json;
 
 namespace Shortchase.Services
 {
@@ -1093,8 +1094,7 @@ namespace Shortchase.Services
                         throw new Exception($"Username \"{user.UserName}\" is already taken");
                 }
                 else user.UserName = user.Email;
-                if (!user.Email.Contains("oladokspelz@gmail.com"))
-                    throw new Exception("I don cast");
+
                 if (string.IsNullOrWhiteSpace(password))
                     throw new Exception("Password is required");
 
@@ -1129,14 +1129,13 @@ namespace Shortchase.Services
                 }
                 else
                 {
-                    throw new Exception("Error creating user");
+                    throw new Exception("Error creating User");
                 }
             }
             catch (Exception e)
             {
                 await errorLogService.InsertException(e).ConfigureAwait(false);
                 throw;
-                //return false;
             }
         }
 
