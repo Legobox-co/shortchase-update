@@ -726,6 +726,29 @@ namespace Shortchase.Controllers
         }
         #endregion
 
+        public async Task<IActionResult> TimeZone(int TimeOffset = 0)
+        {
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            ViewData["root"] = hostingEnvironment.ContentRootPath;
+            try
+            {
+                UserId = User.Id();
+                AppConfigs model = new AppConfigs
+                {
+                    AppLogo = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppLogo).ConfigureAwait(true)),
+                    AppName = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppName).ConfigureAwait(true)),
+                    AppTagline = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppTagline).ConfigureAwait(true))
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+
         #region Cookie Consent
         public async Task<IActionResult> CookieConsent(int TimeOffset = 0)
         {

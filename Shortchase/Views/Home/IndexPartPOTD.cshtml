@@ -1,7 +1,8 @@
 ﻿@model ICollection<POTDListing>
-
 @if (Model != null && Model.Count > 0)
 {
+    var pred = ViewData["Prediction"] as List<PotdPredictionVM>;
+
     int countIteration = 1;
 
     <input type="hidden" id="ShouldIterateOverPOTD" value="1" />
@@ -12,32 +13,126 @@
                 <div class="row min-height-500">
                     <div class="col-sm-12 col-md-6 col-lg-6 order-12 d-none d-sm-none d-md-block d-lg-block d-xl-block">
                         <div class="d-flex justify-content-center align-items-center h-100">
-                            <div class="potdInnerRightSite w-100">
-                                <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
-                                <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
-                                <div class="innerRightSideWrapper">
-                                    <div class="innerRightSideOverlay">
-                                        <p class="text-left MontserratBold">
-                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
-                                        </p>
+                            <div class="d-flex flex-column  h-100">
+                                <div class="bg-pale-gold d-flex p-3 justify-content-between post-a-prediction-header align-items-center" style="background-color: #ffd571">
+                                    <div class="ml-2 w-40">
+                                        <h1 class="text-right MontserratBold">Pick of the Day</h1>
+
+                                        @*<span class="MontserratBold text-big"><img src="../wwwroot/img/users/predict.png"></span>*@
+                                    </div>
+
+                                    <div class="position-relative ml-3" style="flex: 1; max-width: 250px;">
+                                        <i class="position-absolute ml-2 predictions-search-icon fa fa-search" style="color: rgba(115,112,106, 0.8)"></i>
+                                        <input type="text" id="MyindexPageFeedlineInput" style="padding-left: 30px;" class="myfeedlinesearch form-control bg-faded-gold font-italic" placeholder="search">
                                     </div>
                                 </div>
+                                <div class="bg-faded-gold innerRightSideWrapper" style="height: 490px;">
+                                    <input type="hidden" id="LoggedInUserId" value="479128db-7a88-4679-5bc0-08d88117b841">
+                                    <div class="w-100 d-flex flex-column px-2 h-100 searchPredictionContentsHolder" style="overflow-y: auto; background-color:#FEEFC6">
+                                        @foreach (var item in pred)
+                                        {
+                                        <div class="card mx-2 my-2 border-0" style="box-shadow: 0px 3px 6px #00000029;background-color:#FEEFC6; color:black">
+                                            <div class="card-body bg-faded-gold">
+                                                <div class="d-flex flex-column">
+                                                    <div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div>
+                                                                <img class="img-rounded circle " width="30" height="30" src="@Url.Content("~/img/avatar.png")">
+                                                            </div>
+
+                                                            <div class="d-flex flex-column ml-2">
+                                                                <div class="d-flex align-items-center">
+                                                                    <span class="MontserratBold text-info">@item.Name</span>
+                                                                </div>
+                                                                <div><small> @item.DatePredicted.ToLongDateString()</small></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h4 id="mypredictionheading" class="mt-2">@item.Prediction </h4>
+                                                    <div class="d-flex align-items-center pick-name" style="flex-wrap: wrap;">
+                                                        <img src="@Url.Content("~/img/tiny-mini-icons/Soccer.png")" mr-5="">
+                                                        <span class="MontserratBold  text-dark ml-2"> @item.Picks.Team1 vs @item.Picks.Team2 </span>
+                                                        <small class="metropolis-light" style="min-width: 100px; font-size:50%; margin-left:1em" > @item.Rowdate.Date</small>
+                                                    </div>
+                                                    <hr class="w-100">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="d-flex mr-3 align-items-center mylikeimage" style="cursor:pointer">
+                                                                <span id="mylikeimage feedlinehover">
+                                                                    <input type="hidden" id="PredictionId2" value="872cd88c-0648-495f-a962-08d78800f7f6">
+                                                                    <input type="hidden" id="PredictionOwnerId2" value="e61cab7f-26cd-438b-d88c-08d785754e41">
+                                                                    <img class="mr-2" src="@Url.Content("~/img/newicons/facebooklikeplain.png")">
+
+                                                                    <small>Like</small>
+                                                                </span>
+                                                            </div>
+                                                            <div class="d-flex align-items-center feedlinehover myshareimage" style="cursor:pointer">
+
+                                                                <a>
+                                                                    <img class="mr-1" src="@Url.Content("~/img/newicons/rightplain.png")">
+                                                                    <small>Share</small>
+                                                                </a>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="d-flex align-items-center pl-2" style="border-left: 1px solid #000000;">
+                                                            <div class="d-flex mr-3 align-items-center feedlinehover likeCounter ">
+                                                                <img class="mr-2" src="@Url.Content("~/img/newicons/facebookblue.png")">
+                                                                <small>1</small>
+                                                            </div>
+                                                            <div class="d-flex align-items-center">
+
+                                                                <div class="fb-like d-inline align-items-center" data-href="https://shortchase.com/" data-width="" data-layout="button_count" data-action="like" data-size="small" data-share="">
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row m-1">
+                                                <input id="predictionId" value="@item.Id" hidden/>
+                                                <input placeholder="Comment" id="comment" class="col-10 form-text" />
+                                                <button class="col-2 btn btn-outline-info" id="addCommentButton">add</button>
+                                            </div>
+                                        </div>
+                                        }
+
+                                        
+                                    </div>
+
+                                </div>
                             </div>
+
+                            @*<div class="potdInnerRightSite w-100">
+                                    <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
+                                    <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
+                                    <div class="innerRightSideWrapper">
+                                        <div class="innerRightSideOverlay">
+                                            <p class="text-left MontserratBold">
+                                                Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>*@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 order-1 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                         <div class="d-flex justify-content-center align-items-center h-100">
-                            <div class="potdInnerRightSite w-100">
-                                <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
-                                <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
-                                <div class="innerRightSideWrapper">
-                                    <div class="innerRightSideOverlay">
-                                        <p class="text-left MontserratBold">
-                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
-                                        </p>
+
+                            @*<div class="potdInnerRightSite w-100">
+                                    <h1 class="text-right MontserratBold d-none d-sm-none d-md-block d-lg-block d-xl-block">Pick of the Day</h1>
+                                    <h1 class="text-right MontserratBold d-block d-sm-block d-md-none d-lg-none d-xl-none "><small>Pick of the Day</small></h1>
+                                    <div class="innerRightSideWrapper">
+                                        <div class="innerRightSideOverlay">
+                                            <p class="text-left MontserratBold">
+                                                Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>*@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 order-2">
@@ -56,8 +151,8 @@
                                             if (countIteration == 1)
                                             {
                                                 style = "";
-                                            }
-                                            string bgimageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.BackgroundImage);
+                                                       }
+                                            string bgimageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.Category.DisplayImage);
                                             string categoryImageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.Category.MarketplaceImage);
                                             <div class="potd-item-wrapper col-12" id="potd-item-@countIteration" data-bg="@bgimageURL" style="@style">
                                                 <div class="row ">
@@ -76,11 +171,11 @@
                                                         else
                                                         {
                                                             <a href="#" class="no-transform-link @errorClass"><img src="@categoryImageURL" class="img-fluid" style="max-width: 130px;" /> </a>
-                                                            }
-                                                        <hr style="width: 38px; margin-left:-5px;  background: #FFFFFF; border: 1px solid #31303852; border-radius: 175px; opacity: 1;"/>
-                                                        <p style="display:inline;"class="text-dark">@item.Category.Name</p> <div style=" border-left: 1px solid green; height: 500px; display:inline;"></div>
+                                                        }
+                                                        <hr style="width: 38px; margin-left:-5px;  background: #FFFFFF; border: 1px solid #31303852; border-radius: 175px; opacity: 1;" />
+                                                        <p style="display:inline;" class="text-dark">@item.Category.Name</p> <div style=" border-left: 1px solid green; height: 500px; display:inline;"></div>
                                                     </div>
-                                                 
+
                                                     <div class="col-sm-12 col-md-12 col-lg-7 ">
                                                         <div class="d-flex h-100 justify-content-center align-items-center">
                                                             @if (userCanProceed)
@@ -93,6 +188,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="row MontserratBold py-2 my-2">
                                                     <div class="col-sm-12 col-md-12 col-lg-12">
                                                         <div class="d-flex h-100 justify-content-start align-items-center">
@@ -155,19 +251,20 @@ else
     <div class="potd-bg" id="potd-bg-changer">
         <div class="potd-overlay py-5">
             <div class="container ">
-                <div class="row min-height-500">
+                <div class="row  min-height-500">
                     <div class="col-sm-12 col-md-6 col-lg-6 order-12">
                         <div class="d-flex justify-content-center align-items-center h-100">
-                            <div class="potdInnerRightSite w-100">
-                                <h1 class="text-right MontserratBold">Pick of the Day</h1>
-                                <div class="innerRightSideWrapper">
-                                    <div class="innerRightSideOverlay">
-                                        <p class="text-left MontserratBold">
-                                            Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
-                                        </p>
+
+                            @*<div class="potdInnerRightSite w-100">
+                                    <h1 class="text-right MontserratBold">Pick of the Day</h1>
+                                    <div class="innerRightSideWrapper">
+                                        <div class="innerRightSideOverlay">
+                                            <p class="text-left MontserratBold">
+                                                Predict now <br>and earn points <br>to qualify for <br>discounts. It's free.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>*@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 order-1">
@@ -189,9 +286,6 @@ else
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                 </div>
                             </div>
@@ -205,3 +299,31 @@ else
 
 }
 
+@section Script{ 
+<script>
+    $('#addCommentButton').click(function () {
+        console.log("click");
+        var Comment = $('#comment').val();
+        var PredictionId = $('#predictionId').val();
+        var Id = $('#Id').val();
+
+        var x = {
+            Id: Id,
+            Comment: Comment,
+            PredictionId: PredictionId
+        };
+        console.log(x);
+
+        $.ajax({
+            url: '/Home/CommentOnPrediction',
+            type: "POST",
+            datatype: "json",
+            data: x,
+            success: function (data) {
+                console.log(data);
+                window.location = data.redirectUrl;
+            }
+        });
+    });
+</script>
+}

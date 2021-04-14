@@ -35,21 +35,24 @@
                     <div class="col-sm-12 col-md-6 col-lg-6">
                         <vc:input id="AppTagline" label="App Tagline" type="text" class="" required="true" placeholder="" value="@Model.AppTagline.Value" disabled="false"></vc:input>
                     </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <vc:input id="MaximumPage" label="Maximum Page Size" type="text" class="" required="true" placeholder="" value="" disabled="false"></vc:input>
+                    </div>
                     <div class="col-sm-12 col-md-12 col-lg-6">
 
                         @*<div class="custom-file d-block">
-                                <input type="file" class="custom-file-input" hidden id="AppLogo">
-                                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="AppLogo">
-                                    <span id="AppLogoLabel" class="MontserratBold">Select Backend App Logo</span>
-                                </label>
-                            </div>*@
+                <input type="file" class="custom-file-input" hidden id="AppLogo">
+                <label class="custom-file-label no-label-file-input btn no-borders text-smaller clickable d-block" for="AppLogo">
+                    <span id="AppLogoLabel" class="MontserratBold">Select Backend App Logo</span>
+                </label>
+            </div>*@
                         @*<input type="hidden" class="mediaselectorinput" id="AppLogo" value="" data-labelwrapper="AppLogoLabelWrapper" data-label="AppLogoLabel">
-                            <button class="btn btn-white btn-block OpenSelectMediaModal" data-submits="AppLogo" >
-                                <i class="fas fa-image"></i> Select App Logo
-                            </button>
-                            <p class="m-0 py-2" id="AppLogoLabelWrapper" style="display:none;">
-                                <span id="" class="MontserratBold text-smaller">Selected:</span> <span id="AppLogoLabel" class=" text-smaller"></span>
-                            </p>*@
+            <button class="btn btn-white btn-block OpenSelectMediaModal" data-submits="AppLogo" >
+                <i class="fas fa-image"></i> Select App Logo
+            </button>
+            <p class="m-0 py-2" id="AppLogoLabelWrapper" style="display:none;">
+                <span id="" class="MontserratBold text-smaller">Selected:</span> <span id="AppLogoLabel" class=" text-smaller"></span>
+            </p>*@
 
                         <vc:media-selector-button id="AppLogo" width="" height="" field-label="Select App Logo"></vc:media-selector-button>
                     </div>

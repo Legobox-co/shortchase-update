@@ -46,7 +46,18 @@ namespace Shortchase.Services
                 throw;
             }
         }
-
+        public async Task<ICollection<PredictionComment>> GetAllComment()
+        {
+            try
+            {
+                return await _context.PredictionComments.ToListAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
         public async Task<POTDListingPrediction> GetById(Guid id)
         {
             try
@@ -128,7 +139,27 @@ namespace Shortchase.Services
                 throw;
             }
         }
-
+        public async Task<bool> InsertComment(PredictionComment item)
+        {
+            try
+            {
+                bool result = false;
+                if (item != null)
+                {
+                    
+                        //item.RowDate = DateTime.UtcNow;
+                        _context.PredictionComments.Add(item);
+                        await _context.SaveChangesAsync().ConfigureAwait(false);
+                        result = true;
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
 
         public async Task<bool> Update(POTDListingPrediction item)
         {

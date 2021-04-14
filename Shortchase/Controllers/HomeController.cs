@@ -216,6 +216,18 @@ namespace Shortchase.Controllers
                 return null;
             }
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CommentOnPrediction(PredictionComment comment)
+        {
+            comment.CommenterId = User.Id();
+            var result = await potdListingPredictionService.InsertComment(comment).ConfigureAwait(true);
+            if (result)
+            {
+                return Json(new { isSuccess = result, redirectUrl = "/Home/Index/" });
+            }
+            return Json(new { isSuccess = result, redirectUrl = "/Home/Index/" });
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -227,7 +239,26 @@ namespace Shortchase.Controllers
             RequestFeedback request = new RequestFeedback();
             try
             {
+                var data = new List<PotdPredictionVM>();
                 var POTDs = await potdListingService.GetAllAvailable().ConfigureAwait(true);
+                var POTDListing = await potdListingPredictionService.GetAll().ConfigureAwait(true);
+                foreach (var item in POTDListing)
+                {
+                    var pick = new Pick();
+                    var p = POTDs.FirstOrDefault(x => x.Id == item.POTDId);
+                    if (p == null)
+                    {
+                        pick = new Pick();
+                    }
+                    else
+                    {
+                        pick = p.Pick;
+                    }
+                    var user =await potdListingService.GetUserById(item.PredictedById);
+                    data.Add(new PotdPredictionVM {Id=item.Id, Name = user, DatePredicted = item.DatePredicted, Prediction =item.Prediction, Rowdate= item.RowDate, POTDID= item.POTDId, Picks= pick });
+                }
+                ViewData["Prediction"] = data.ToList(); 
+
                 return PartialView(POTDs);
             }
             catch (Exception e)
