@@ -17,6 +17,7 @@ using Shortchase.Helpers;
 using Shortchase.Authorization;
 using System.Security.Principal;
 using Shortchase.Helpers.Extensions;
+using Newtonsoft.Json;
 
 namespace Shortchase.Services
 {
@@ -1099,6 +1100,7 @@ namespace Shortchase.Services
 
                 if (string.IsNullOrWhiteSpace(user.Email))
                     throw new Exception("E-mail is required");
+                
 
                 if (_context.Users.Any(x => x.Email == user.Email))
                     throw new Exception("E-mail \"" + user.Email + "\" is already taken");
@@ -1122,18 +1124,18 @@ namespace Shortchase.Services
                     }
                     else
                     {
-                        throw new Exception("Error adding user to bettor role.");
+                        throw new Exception($"Error adding user to {role} role.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Error creating user");
+                    throw new Exception("Error creating User");
                 }
             }
             catch (Exception e)
             {
                 await errorLogService.InsertException(e).ConfigureAwait(false);
-                return false;
+                throw;
             }
         }
 
@@ -1147,6 +1149,8 @@ namespace Shortchase.Services
                     return Permission.Admin;
                 case "Member":
                     return Permission.Member;
+                case "AccessAll":
+                    return Permission.AccessAll;
                 default:
                     return Permission.Admin;
             }

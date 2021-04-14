@@ -268,8 +268,6 @@ namespace Shortchase.Dtos
         public string LastName { get; set; }
         public string Email { get; set; }
         public int Country { get; set; }
-        [Required]
-        [RegularExpression("^(Owner)|(Admin)|(Memver)$",ErrorMessage ="Please specify a role for User")]
         public string role { get; set; }
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }
@@ -299,7 +297,6 @@ namespace Shortchase.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        [RegularExpression("^(Owner)|(Admin)|(Memver)$", ErrorMessage = "Please specify a role for User")]
         public string role { get; set; }
         public int Country { get; set; }
         public string PhoneCode { get; set; }

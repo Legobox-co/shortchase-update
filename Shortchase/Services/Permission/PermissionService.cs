@@ -39,14 +39,15 @@ namespace Shortchase.Services
             try
             {
                 if (user == null) throw new Exception("User cannot be null");
+
                 return await AddToUser(user.Id, permission).ConfigureAwait(false);
             }
             catch (Exception e)
             {
                 if (!(await errorLogService.InsertException(e).ConfigureAwait(false))) throw;
-                return false;
+                throw;
             }
-        }
+}
 
         public async Task<bool> AddToUser(Guid UserId, Permission permission)
         {
@@ -71,6 +72,7 @@ namespace Shortchase.Services
 
                 UserPermissions UserPermissions = new UserPermissions
                 {
+                    
                     Permissions = Permission,
                     PermissionsId = Permission.Id,
                     RowDate = DateTime.Now,
@@ -81,13 +83,13 @@ namespace Shortchase.Services
                 await db.UserPermissions.AddAsync(UserPermissions).ConfigureAwait(false);
                 await db.SaveChangesAsync().ConfigureAwait(false);
                 return true;
-            }
+        }
             catch (Exception e)
             {
                 if (!(await errorLogService.InsertException(e).ConfigureAwait(false))) throw;
                 return false;
             }
-        }
+}
 
         public async Task Disable(Permissions Permission)
         {
@@ -109,10 +111,10 @@ namespace Shortchase.Services
         {
             try
             {
-                string owner = "Owner";
-                string admin = "Admin";
+                //string owner = "Admin";
+                //string admin = "SuperAdmin";
 
-                return await db.Permissions.FromSqlRaw("select * from Permissions where groupname = @0 or groupname =@1", owner, admin).ToListAsync().ConfigureAwait(false);
+                return await db.Permissions.FromSqlRaw("select * from Permissions where GroupName = 'Admin' or GroupName = 'SuperAdmin'").ToListAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {

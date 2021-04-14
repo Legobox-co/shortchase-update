@@ -145,7 +145,7 @@ namespace Shortchase.Services
                     emailAccount.Host = emailconfig.Host;
                     emailAccount.Port = emailconfig.Port;
                     emailAccount.Username = emailconfig.User_name;
-                    emailAccount.EnableSsl = (bool)emailconfig.Enable_ssl;
+                    emailAccount.EnableSsl = emailconfig.Enable_ssl.Value;
                 }
 
                 return emailAccount;
@@ -172,7 +172,7 @@ namespace Shortchase.Services
                     Host = emailconfig.Host,
                     Port = emailconfig.Port,
                     Username = emailconfig.User_name,
-                    EnableSsl = (bool)emailconfig.Enable_ssl,
+                    EnableSsl = emailconfig.Enable_ssl.Value,
                     Id = emailconfig.Id
                 };
             }

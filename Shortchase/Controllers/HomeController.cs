@@ -275,7 +275,7 @@ namespace Shortchase.Controllers
             Guid? userId = User.Id();
             POTDListingPrediction request = new POTDListingPrediction
             {
-                PredictedById = (Guid)userId,
+                PredictedById = userId.Value,
                 UserValidate = Type
             };
             try

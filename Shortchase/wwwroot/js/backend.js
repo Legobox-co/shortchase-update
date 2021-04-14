@@ -293,15 +293,15 @@ function StartDataTables(tableId, orderObj = []) {
 function AJAXpost(url, dataObj, reload = false, redirectUrl = null, customCallback = null) {
     try {
         FullPageLoaderShow();
-        console.log(url, dataObj);
+        //console.log(url, JSON.stringify(dataObj));
         $.ajax({
             url: url,
             type: 'POST',
+            contentType: 'application/json',
             dataType: 'JSON',
             cache: false,
-            contentType: false,
-            processData: false, 
-            data: dataObj,
+            processData: false,
+            //data: JSON.stringify(dataObj),
             success: function (data) {
                 FullPageLoaderHide();
                 if (customCallback === null) {
