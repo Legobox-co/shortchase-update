@@ -933,7 +933,7 @@ namespace Shortchase.Controllers
             ViewData["root"] = hostingEnvironment.ContentRootPath;
             filters.page = filters.page == 0 ? 1 : filters.page;
             ViewData["Page"] = filters.page;
-            filters.pageSize = filters.pageSize == 0 ? 16 : filters.pageSize;
+            filters.pageSize = filters.pageSize == 0 ? 20 : filters.pageSize;
             ViewData["PageSize"] = filters.pageSize;
             Guid? UserId = null;
             RequestFeedback request = new RequestFeedback();
