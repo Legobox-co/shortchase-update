@@ -275,8 +275,8 @@ namespace Shortchase.Controllers
             Guid? userId = User.Id();
             POTDListingPrediction request = new POTDListingPrediction
             {
-                PredictedById = userId.Value,
-                UserValidate = Type
+                PredictedById = userId.Value//,
+                //UserValidate = Type
             };
             try
             {
@@ -911,7 +911,7 @@ namespace Shortchase.Controllers
                                 }
                             }
 
-                            return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                            return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                         }
                         else throw new Exception("Error creating new listing. Try again later.");
                     }
@@ -1516,7 +1516,7 @@ namespace Shortchase.Controllers
                     string message = user.FirstName + " unfollowed you.";
                     var resultNotification = await notificationService.Insert(UserToUnFollowId, message).ConfigureAwait(true);
                     if (!resultNotification) throw new Exception("Could not save new notification");
-                    return Json(new { status = true, messageTitle = "Success", message = "Stoped following successfully!" });
+                    return Json(new { status = true, messageTitle = "Success", message = "Stopped following successfully!" });
                 }
                 else throw new Exception("Error unfollowing user. Try again later.");
 
@@ -1791,7 +1791,7 @@ namespace Shortchase.Controllers
                         {
                             POTD = currentPOTD,
                             NextPOTD = next,
-                            UserPrediction = await potdListingPredictionService.GetUserPredictionForPOTD(UserId.Value, Id).ConfigureAwait(true),
+                            UserPrediction =(UserId==null) ? new POTDListingPrediction() : await potdListingPredictionService.GetUserPredictionForPOTD(UserId.Value, Id).ConfigureAwait(true),
                             LiveReportings = await potdListingLiveReportService.GetByPOTDId(Id).ConfigureAwait(true)
                         };
                         return View(model);

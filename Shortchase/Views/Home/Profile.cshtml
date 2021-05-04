@@ -27,40 +27,42 @@
                         <h4 class="MontserratMedium">
                             @Model.Name
                         </h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                @for (int i = 1; i <= 5; ++i)
+                                {
 
-                        @for (int i = 1; i <= 5; ++i)
-                        {
-
-                            if (Model.Rating >= i)
-                            {
-                                @*<i class="fas fa-star text-yellow-light"></i>*@
-                                <img src="@Url.Content("~/img/newicons/fullstar.png")" width="13px" />
-                            }
-                            else
-                            {
-                                @*<i class="fas fa-star text-grey-light-2"></i>*@
-                                <img src="@Url.Content("~/img/newicons/greystar.png")" width="13px" />
-                            }
-                        }
+                                    if (Model.Rating >= i)
+                                    {@*<i class="fas fa-star text-yellow-light"></i>*@
+                                        <img src="@Url.Content("~/img/newicons/fullstar.png")" width="13" style="margin-right:-8px;" />
+                                    }
+                                    else
+                                    { @*<i class="fas fa-star text-grey-light-2"></i>*@
+                                        <img src="@Url.Content("~/img/newicons/greystar.png")" width="13" />
+                                    }
+                                }
+                            </div>
 
                         @if (!User.Identity.HasAnyPermissions(Permission.Admin) && Model.IsFollowing.HasValue)
                         {
                             if (Model.IsFollowing.Value)
                             {
-                                <br />
-                                <button class="btn btn-warning text-smaller UnfollowUserBtn" data-to="@Model.Id">
-                                    Following
-                                </button>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning text-smaller UnfollowUserBtn" data-to="@Model.Id">
+                                        Following
+                                    </button>
+                                </div>
                             }
                             else
                             {
-                                <br />
-                                <button class="btn btn-warning text-smaller FollowUserBtn" data-to="@Model.Id">
-                                    Follow
-                                </button>
+                                <div class="col-md-4">
+                                    <button class="btn btn-warning text-smaller FollowUserBtn" data-to="@Model.Id">
+                                        Follow
+                                    </button>
+                                </div>
                             }
                         }
-
+                        </div>
                     </div>
                    
 

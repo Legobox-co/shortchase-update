@@ -214,8 +214,11 @@
                                                 </div>
                                                 <div class="row MontserratBold py-2 my-2">
                                                     <div class="col-sm-12 col-md-12 col-lg-12">
-                                                        <a class="btn  potd-item-button timezoneoffset" style="background-color:#FFBE0C" asp-action="PredictPOTD" asp-controller="Home" asp-route-Id="@item.Id">
-                                                            Post a Prediction
+                                                        @*<a class="btn  potd-item-button timezoneoffset" style="background-color:#FFBE0C" asp-action="PredictPOTD" asp-controller="Home" asp-route-Id="@item.Id">
+            Post a Prediction
+        </a>*@
+                                                        <a class="btn  potd-item-button timezoneoffset" style="background-color:#FFBE0C"  asp-action="ViewPOTD" asp-controller="Home" asp-route-Id="@item.Id">
+                                                            Live Reporting
                                                         </a>
 
                                                     </div>

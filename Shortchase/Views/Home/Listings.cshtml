@@ -5,6 +5,7 @@
 
 <section class="bg-grey-dark-3 py-3">
     <div class="container">
+        <br /><br /><br /><br /><br />
         <div class="row">
             <div class="col-sm-12 col-md-12 text-center">
                 <h2 class="section-title">
@@ -37,7 +38,7 @@
                             profilePicture = ImageHelper.ConvertImageToBase64(item.Postedby.ProfilePicture);
                         }
                         string name = item.Postedby.FirstName + " " + item.Postedby.LastName;
-
+                <br /><br />
                         <vc:bet-listing-toggle-card item="@item" name="@name" picture="@profilePicture" iteration="@iterationCount"></vc:bet-listing-toggle-card>
 
 

@@ -73,6 +73,14 @@
                                     subcategory = item.SubCategory.Name;
                                     subcategoryId = item.SubCategory.Id;
                                 }
+                                if (item.Pick.Team1PhotoPath == null)
+                                {
+                                    item.Pick.Team1PhotoPath = "d29c0059-da71-4538-8119-cec6da278b37_WEST BROM.jpg";
+                                }
+                                if (item.Pick.Team2PhotoPath == null)
+                                {
+                                    item.Pick.Team2PhotoPath = "1acdcf62-01b1-486c-a7ed-b1880de24545_burney.jpg";
+                                }
 
                                 string team1 = Url.Content("~/images" + item.Pick.Team1PhotoPath);
                                 string team2 = Url.Content("~/images" + item.Pick.Team2PhotoPath);
@@ -80,7 +88,8 @@
                                 //string Team2Photo = ViewData["root"].ToString() + item.Pick.Team2Photo;
 
 
-                                string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.BackgroundImage);
+                                //string imageURL = ImageHelper.ConvertImageToBase64(ViewData["root"].ToString() + item.BackgroundImage);
+                                string imageURL =  item.BackgroundImage.Replace("\\wwwroot\\","~\\");
                                 string status = "";
                                 bool canEditOrDelete = true;
                                 if (item.Pick.StartTime < DateTime.UtcNow && DateTime.UtcNow < item.Pick.FinishTime)
@@ -113,36 +122,32 @@
                                     result = item.Result;
                                 }
 
-                            <tr>  
-                                <td></td>
-                                <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
-                                <td id="Title-@item.Id" data-value="@item.Title">@item.Title</td>
-                                <td id="PickId-@item.Id" data-value="@item.PickId">
-                                    @if (item.Pick.Team1PhotoPath == null)
-                                    {
-                                        @item.Pick.Team1
-                                    }
-                                    else
-                                    {
-                                    <img src="@team1 ?? Null" width="50" height="50" />
-                                    }
-                                     vs 
-                                    @if (item.Pick.Team2PhotoPath == null)
-                                    {
-                                        @item.Pick.Team2
-                                    }
-                                    else
-                                    {
-                                    <img src="@team2 ?? Null" width="50" height="50" /> @item.Pick.Team2
-                                    }
-                                </td>
-                                <td id="MarketId-@item.Id" data-value="@item.MarketId">@item.Market.Name</td>
-                                <td id="TipId-@item.Id" data-value="@item.TipId">@item.Tip.Description</td>
-                                <td id="StartTime-@item.Id" data-value="@dateStart">@DateHelper.DateFormat(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
-                                <td id="FinishTime-@item.Id" data-value="@dateFinish">@DateHelper.DateFormat(item.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                        <tr>
+                            <td></td>
+                            <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
+                            <td id="Title-@item.Id" data-value="@item.Title">@item.Title</td>
+                            <td id="PickId-@item.Id" data-value="@item.PickId">
+                                @if (item.Pick.Team1PhotoPath == null)
+                                {
+                        @item.Pick.Team1 }
+                                            else
+                                            {
+                        <img src="@team1 ?? Null" width="50" height="50" />}
+                                vs
+                                @if (item.Pick.Team2PhotoPath == null)
+                                {
+                        @item.Pick.Team2 }
+                                            else
+                                            {
+                        <img src="@team2 ?? Null" width="50" height="50" /> @item.Pick.Team2}
+                            </td>
+                            <td id="MarketId-@item.Id" data-value="@item.MarketId">@item.Market.Name</td>
+                            <td id="TipId-@item.Id" data-value="@item.TipId">@item.Tip.Description</td>
+                            <td id="StartTime-@item.Id" data-value="@dateStart">@DateHelper.DateFormat(item.Pick.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
+                            <td id="FinishTime-@item.Id" data-value="@dateFinish">@DateHelper.DateFormat(item.Pick.FinishTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</td>
 
-                                <td id="Venue-@item.Id" data-value="@item.Venue">@item.Venue</td>
-                                @*<td id="Result-@item.Id" data-value="@item.Result">
+                            <td id="Venue-@item.Id" data-value="@item.Venue">@item.Venue</td>
+                            @*<td id="Result-@item.Id" data-value="@item.Result">
             @result
             @if (item.DateResultInformed.HasValue)
             {
@@ -156,27 +161,24 @@
                 <button class="btn btn-sm btn-primary InformResultBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Inform result"><i class="fas fa-check"></i> Inform result</button>
             }
         </td>*@
-                                <td id="BackgroundImage-@item.Id" data-value="@imageURL"><img class="img-fluid" src="@imageURL" style="max-width: 100px;" /></td>
-                                <td id="CategoryId-@item.Id" data-value="@item.CategoryId">@item.Category.Name</td>
-                                <td id="SubCategoryId-@item.Id" data-value="@subcategoryId">@subcategory</td>
-                                <td id="Status-@item.Id" data-value="@status">@status</td>
-                                <td>
-                                    <a class="btn btn-sm btn-info timezoneoffset" asp-action="POTDViewAllPredictions" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="View Predictions">View Predictions</a>
-                                    <a class="btn btn-sm btn-warning timezoneoffset" asp-action="POTDLiveReporting" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Live Reporting">Live Reporting</a>
-                                    @if (canEditOrDelete)
-                                    {
-                                        <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit">Edit</button>
-                                        <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete">Delete</button>
-                                    }
-                                    @if (!string.IsNullOrWhiteSpace(item.Category.APIURL))
-                                    {
-                                        <button class="btn btn-sm btn-info ValidateAllPredictionsBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Validate via API">Validate via API</button>
-                                    }
+                            <td id="BackgroundImage-@item.Id" data-value="@imageURL"><img class="img-fluid" src="@imageURL" style="max-width: 100px;" /></td>
+                            <td id="CategoryId-@item.Id" data-value="@item.CategoryId">@item.Category.Name</td>
+                            <td id="SubCategoryId-@item.Id" data-value="@subcategoryId">@subcategory</td>
+                            <td id="Status-@item.Id" data-value="@status">@status</td>
+                            <td>
+                                <a class="btn btn-sm btn-info timezoneoffset" asp-action="POTDViewAllPredictions" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="View Predictions">View Predictions</a>
+                                <a class="btn btn-sm btn-warning timezoneoffset" asp-action="POTDLiveReporting" asp-controller="Backend" asp-route-Id="@item.Id" data-toggle="tooltip" data-placement="top" title="Live Reporting">Live Reporting</a>
+                                @if (canEditOrDelete)
+                                {
+                        <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Edit">Edit</button>
+                                                <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete">Delete</button>}
+                                @if (!string.IsNullOrWhiteSpace(item.Category.APIURL))
+                                {
+                        <button class="btn btn-sm btn-info ValidateAllPredictionsBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Validate via API">Validate via API</button>}
 
 
-                                </td>
-                            </tr>
-                            }
+                            </td>
+                        </tr>}
                         </tbody>
                     </table>
                 }

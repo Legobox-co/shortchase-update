@@ -3681,7 +3681,7 @@ namespace Shortchase.Controllers
                     var result = await betListingService.Insert(newBetListing).ConfigureAwait(true);
                     if (result)
                     {
-                        return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                        return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                     }
                     else throw new Exception("Error creating new listing. Try again later.");
                 }
@@ -4194,7 +4194,7 @@ namespace Shortchase.Controllers
                     var result = await potdListingService.Insert(newListing).ConfigureAwait(true);
                     if (result)
                     {
-                        return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                        return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                     }
                     else throw new Exception("Error creating new listing. Try again later.");
                 }
@@ -4219,7 +4219,7 @@ namespace Shortchase.Controllers
                     var result = await potdListingService.Delete(Id.Value).ConfigureAwait(true);
                     if (result)
                     {
-                        string message = "POTD listing deleted successfully!";
+                        string message = "Pick deleted successfully!";
                         return Json(new { status = true, messageTitle = "Success", message = message });
                     }
                     else throw new Exception("Error deleting the POTD. Try again later.");
@@ -6929,5 +6929,39 @@ namespace Shortchase.Controllers
 
 
         #endregion
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            //if (file == null || file.Length == 0)
+            //    return Content("file not selected");
+
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot","img","blog");
+
+            //using (var stream = new FileStream(path, FileMode.Create))
+            //{
+            //    await file.CopyToAsync(stream);
+            //}
+
+            var fileName = User.Identity.Id()+".jpg";//System.IO.Path.GetFileName(file.FileName);
+
+            // If file with same name exists delete it
+            if (System.IO.File.Exists(fileName))
+            {
+                System.IO.File.Delete(fileName);
+            }
+            var fileNameWithPath = string.Concat(path, "\\", fileName);
+
+            // Create new local file and copy contents of uploaded file
+            using (var localFile = System.IO.File.OpenWrite(fileName))
+            //using (var uploadedFile = file.OpenReadStream())
+            using (var uploadedFile = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                file.CopyTo(uploadedFile);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
