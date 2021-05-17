@@ -44,7 +44,7 @@
                             {
                                 <tr>
                                     <td>@item.UserName</td>
-                                    <td>@item.UnreadMessagesCount</td>
+                                    <td> <span class="badge badge-danger">@item.UnreadMessagesCount</span></td>
                                     <td>
                                         <a class="btn btn-sm btn-primary" asp-action="MessagesFromUser" asp-controller="Backend" asp-route-Id="@item.UserId" data-toggle="tooltip" data-placement="top" title="Reply">
                                             @*<i class="fas fa-comment-dots"></i>*@

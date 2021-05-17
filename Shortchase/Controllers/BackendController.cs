@@ -5321,7 +5321,9 @@ namespace Shortchase.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string MessageContent, Guid Id, int TimezoneOffset = 0)
+        //[HttpGet]
+        //public async Task<IActionResult> SendMessage(string MessageContent, Guid Id, int TimezoneOffset = 0)
+        public async Task<IActionResult> SendMessage([FromBody]Message model)
         {
             Guid? UserId = null;
             RequestFeedback request = new RequestFeedback();
@@ -5329,14 +5331,14 @@ namespace Shortchase.Controllers
             {
                 UserId = User.Id();
                 if (!UserId.HasValue) throw new Exception("No user to send message.");
-                if (string.IsNullOrWhiteSpace(MessageContent)) throw new Exception("No message content to send message.");
+                if (string.IsNullOrWhiteSpace(model.Content)) throw new Exception("No message content to send message.");
 
                 Message newMessage = new Message
                 {
                     FromId = UserId.Value,
-                    ToId = Id,
+                    ToId = model.ToId,
                     DateRead = null,
-                    Content = MessageContent
+                    Content = model.Content
                 };
 
                 var result = await messageService.Insert(newMessage).ConfigureAwait(true);

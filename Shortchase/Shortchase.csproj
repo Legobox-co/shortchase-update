@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp5.0</TargetFramework>
+    <UserSecretsId>d439bb62-b042-4832-953d-4e968c61ae0c</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -76,6 +77,7 @@
   <ItemGroup>
     <Folder Include="Media\Blog\" />
     <Folder Include="Media\User\" />
+    <Folder Include="wwwroot\Media\User\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,13 +23,19 @@
 
 function BackendSendMessageFormSubmit() {
 
+    //let obj = {
+    //    MessageContent: $('#MessagerMessageToSend').val(),
+    //    TimezoneOffset: new Date().getTimezoneOffset(),
+    //    Id: $('#ToId').val()
+    //};
+
     let obj = {
-        MessageContent: $('#MessagerMessageToSend').val(),
+        Content: $('#MessagerMessageToSend').val(),
         TimezoneOffset: new Date().getTimezoneOffset(),
-        Id: $('#ToId').val()
+        ToId: $('#ToId').val()
     };
 
-    if (IsEmptyString(obj.MessageContent)) {
+    if (IsEmptyString(obj.Content)) {
         return Swal.fire({ title: 'No content provided!', text: 'You need to write something before you send a message!', type: 'error' });
     }
     else {
