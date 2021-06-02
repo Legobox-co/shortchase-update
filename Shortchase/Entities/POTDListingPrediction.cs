@@ -9,6 +9,7 @@ namespace Shortchase.Entities
     {
         public string Prediction { get; set; }
         public bool Deleted { get; set; }
+        //public bool UserValidate { get; set; }
         public DateTime DatePredicted { get; set; }
         public DateTime? DateVerified { get; set; }
         public bool? VerifiedAsCorrect { get; set; }

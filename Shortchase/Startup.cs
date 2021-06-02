@@ -188,8 +188,8 @@ namespace Shortchase
             app.UseHangfireServer();
 
 
-            RecurringJob.AddOrUpdate<ISchedulerTasksService>(scheduler => scheduler.ValidateByAPIJob(), "30 23 * * *");
-            RecurringJob.AddOrUpdate<ISchedulerTasksService>(scheduler => scheduler.RenewSubscriptions(), "* 1,7,13,19 * * *");
+            //RecurringJob.AddOrUpdate<ISchedulerTasksService>(scheduler => scheduler.ValidateByAPIJob(), "30 23 * * *");
+            //RecurringJob.AddOrUpdate<ISchedulerTasksService>(scheduler => scheduler.RenewSubscriptions(), "* 1,7,13,19 * * *");
 
             app.UseEndpoints(endpoints =>
             {

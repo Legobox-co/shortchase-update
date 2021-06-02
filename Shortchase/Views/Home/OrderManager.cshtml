@@ -7,6 +7,7 @@
 
 <section>
     <div class="container">
+        <br /><br /><br /><br /><br />
         <div class="row">
             <div class="col-sm-12 col-md-12 text-center">
                 <h2 class="section-title">
@@ -104,7 +105,7 @@
                                                             string imageUrl = Url.Content("~/img/avatar.png");
                                                             if (!string.IsNullOrWhiteSpace(item.UserProfilePicture))
                                                             {
-                                                                imageUrl = ImageHelper.ConvertImageToBase64(item.UserProfilePicture);
+                                                                imageUrl = Url.Content("~/img/avatar.png");
                                                             }
                                                             <div class="row">
                                                                 <div class="col-12 d-none d-sm-none d-md-flex d-lg-flex d-xl-flex">
@@ -165,7 +166,7 @@
                                                                             </p>
                                                                         </div>
                                                                         <div class="col-sm-12 col-md-12 col-lg-3">
-                                                                            <p class="m-0 text-small d-flex align-items-center h-100 justify-content-end">
+                                                                            <p class="m-0 text-small pl-4 d-flex align-items-center h-100 justify-content-center">
                                                                                 <span class="outlined-text-grey">$ @item.Price.ToString("0.00")</span>
                                                                             </p>
                                                                         </div>
@@ -198,7 +199,7 @@
                                                                 
                                                                 <div class="col-sm-12 col-md-12 col-lg-12">
 
-                                                                    <p class="m-0 py-1 text-small d-flex align-items-center h-100 justify-content-start border-bottom-line">
+                                                                    <p class="m-0 py-1 text-small d-flex align-items-center pr-5 mr-5 h-100 justify-content-center border-bottom-line">
                                                                         @item.Pick, (Odds) @Convert.ToDecimal(item.Odds).ToString("0.00")<br />
                                                                         @DateHelper.DateSimpleFormat(item.StartTime.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())), true)
                                                                     </p>

@@ -1,0 +1,55 @@
+﻿@model AppConfigs
+@{
+    Layout = "_DashboardLayout";
+}
+
+<div class="header bg-gradient-primary py-3 ">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <h1 class="text-white text-left mb-0">
+                        @*<i class="fas fa-cog"></i>*@
+                        <img src="@Url.Content("~/img/newicons/app-manager.png")" class="img-fluid" width="40px" />&nbsp;
+                        Time Zone
+                    </h1>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-right">
+                    <button class="btn btn-dark-as-homepage UpdateAppConfigBtn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pt-3">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body py-3 px-3">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <vc:input id="AppName" label="Locale" type="text" class="" required="true" placeholder="" value="@Model.AppName.Value" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <vc:input id="AppTagline" label="Time Zone" type="text" class="" required="true" placeholder="" value="@Model.AppTagline.Value" disabled="false"></vc:input>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+
+                      </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<input id="UpdateAppConfigURL" hidden value="@Url.Action("UpdateAppConfig", "Backend")" />
+
+@section Scripts{
+    <script src="@Url.Content("~/app/Backend/AppConfig.js")" asp-append-version="true"></script>
+}

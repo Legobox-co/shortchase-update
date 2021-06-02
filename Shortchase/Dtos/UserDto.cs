@@ -212,6 +212,7 @@ namespace Shortchase.Dtos
     {
         public ICollection<UserListItemDto> Users { get; set; }
         public ICollection<Country> CountriesOptions { get; set; }
+        public ICollection<Permissions> RolesOptions { get; set; }
         public int DefaultCountryId { get; set; }
         public string DefaultCountryPhoneCode { get; set; }
     }
@@ -267,6 +268,7 @@ namespace Shortchase.Dtos
         public string LastName { get; set; }
         public string Email { get; set; }
         public int Country { get; set; }
+        public string role { get; set; }
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
@@ -295,6 +297,7 @@ namespace Shortchase.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string role { get; set; }
         public int Country { get; set; }
         public string PhoneCode { get; set; }
         public string PhoneNumber { get; set; }

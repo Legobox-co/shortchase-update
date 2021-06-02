@@ -21,5 +21,9 @@ namespace Shortchase.Services
         Task<bool> Validate(Guid id, bool Value);
         Task<bool> Validate(ICollection<POTDListingPrediction> predictions);
         Task<ICollection<POTDListingPrediction>> GetAllWaitingValidation();
+        Task<bool> InsertComment(PredictionComment item);
+        
+        Task<ICollection<PredictionComment>> GetAllComment();
+
     }
 }

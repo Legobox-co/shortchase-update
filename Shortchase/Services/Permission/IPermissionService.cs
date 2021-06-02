@@ -30,6 +30,7 @@ namespace Shortchase.Services
         Task<ICollection<Permissions>> GetByUser(User user);
 
         Task<bool> AddToUser(User user, Permission permission);
+        Task<ICollection<Permissions>> GetAdminRoles();
 
         Task<bool> AddToUser(Guid UserId, Permission permission);
 

@@ -65,7 +65,7 @@ namespace Shortchase.Services
         Task<int> GetBettorCapperCount();
         Task<int> GetBoisterousBettorCount();
         Task<int> GetShortchaseProCapperCount();
-        Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password);
+        Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password, string role);
         Task<bool> CreateShortchaseStandardUserAsync(User user, string password);
 
         Task<UserProfilePageDto> GetProfileById(Guid id, Guid? CurrentUserId);

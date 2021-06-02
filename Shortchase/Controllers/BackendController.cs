@@ -25,7 +25,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Shortchase.Controllers
 {
-    [Permitted(Permission.Admin)]
+    [Permitted(Permission.Admin, Permission.Owner, Permission.AccessAll)]
     public class BackendController : Controller
     {
         private readonly IErrorLogService errorLogService;
@@ -43,6 +43,7 @@ namespace Shortchase.Controllers
         private readonly IListingSubCategoryService listingSubCategoryService;
         private readonly IUserService userService;
         private readonly ISubscriptionPlanService subscriptionPlanService;
+        private readonly IPermissionService permissionService;
         private readonly IUserSubscriptionService userSubscriptionService;
         private readonly IBetListingService betListingService;
         private readonly IBetListingReportService betListingReportService;
@@ -67,6 +68,7 @@ namespace Shortchase.Controllers
         private readonly IUserPayoutService userPayoutService;
         private readonly IAPIValidationService apiValidationService;
         private readonly ISecondaryEmailTemplateService secondaryEmailTemplateService;
+        private readonly IEmailConfigService emailConfigService;
         private readonly IMediaFolderService mediaFolderService;
         private readonly IMediaFileService mediaFileService;
 
@@ -100,6 +102,7 @@ namespace Shortchase.Controllers
             ITipService tipService,
             IBookmakerService bookmakerService,
             IPickService pickService,
+            IPermissionService permissionService,
             IRewardsClaimedMappingService rewardsClaimedMappingService,
             IRewardsMappingService rewardsMappingService,
             IEmailSenderService emailSenderService,
@@ -107,6 +110,7 @@ namespace Shortchase.Controllers
             ISystemConstantsService systemConstantsService,
             IOrderItemService orderItemService,
             IOrderService orderService,
+            IEmailConfigService emailConfigService,
             IMessageService messageService,
             IUserPayoutService userPayoutService,
             IAPIValidationService apiValidationService,
@@ -156,6 +160,8 @@ namespace Shortchase.Controllers
             this.secondaryEmailTemplateService = secondaryEmailTemplateService;
             this.mediaFolderService = mediaFolderService;
             this.mediaFileService = mediaFileService;
+            this.emailConfigService = emailConfigService;
+            this.permissionService = permissionService;
         }
 
         public async Task<IActionResult> Index(int TimeOffset = 0)
@@ -719,6 +725,29 @@ namespace Shortchase.Controllers
             }
         }
         #endregion
+
+        public async Task<IActionResult> TimeZone(int TimeOffset = 0)
+        {
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            ViewData["root"] = hostingEnvironment.ContentRootPath;
+            try
+            {
+                UserId = User.Id();
+                AppConfigs model = new AppConfigs
+                {
+                    AppLogo = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppLogo).ConfigureAwait(true)),
+                    AppName = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppName).ConfigureAwait(true)),
+                    AppTagline = (await semiStaticTextService.GetByName(SemiStaticTextNames.AppTagline).ConfigureAwait(true))
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
 
         #region Cookie Consent
         public async Task<IActionResult> CookieConsent(int TimeOffset = 0)
@@ -2271,6 +2300,7 @@ namespace Shortchase.Controllers
                 {
                     Users = (await userService.GetAdminList().ConfigureAwait(true)).Select(i => new UserListItemDto { Email = i.Email, FirstName = i.FirstName, LastName = i.LastName, Id = i.Id, LastSeen = null, IsActive = i.IsActive, DateRegistered = i.RowDate, PhoneNumber = i.PhoneNumber, UserName = i.UserName, PhoneCountryId = i.PhoneCountryId }).ToList(),
                     CountriesOptions = countries.OrderBy(o => o.Name).ToList(),
+                    RolesOptions = (await permissionService.GetAdminRoles().ConfigureAwait(true)).ToList()
                 };
 
 
@@ -2288,7 +2318,7 @@ namespace Shortchase.Controllers
             }
             catch (Exception e)
             {
-                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);               
                 return RedirectToAction("Index", "Error", request);
             }
         }
@@ -2302,7 +2332,7 @@ namespace Shortchase.Controllers
                 var user = model.ToUser();
 
                 // save
-                var result = await userService.CreateShortchaseAdministratorUserAsync(user, model.Password).ConfigureAwait(true);
+                var result = await userService.CreateShortchaseAdministratorUserAsync(user, model.Password, model.role).ConfigureAwait(true);
                 if (result)
                 {
                     return Json(new { status = true, messageTitle = "Success!", message = "Registration completed successfully." });
@@ -2315,7 +2345,8 @@ namespace Shortchase.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
                 await errorLogService.InsertException(e).ConfigureAwait(true);
-                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+                return Json(new { status = false, messageTitle = "Error", message = e.Message
+                });
             }
         }
 
@@ -3650,7 +3681,7 @@ namespace Shortchase.Controllers
                     var result = await betListingService.Insert(newBetListing).ConfigureAwait(true);
                     if (result)
                     {
-                        return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                        return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                     }
                     else throw new Exception("Error creating new listing. Try again later.");
                 }
@@ -4163,7 +4194,7 @@ namespace Shortchase.Controllers
                     var result = await potdListingService.Insert(newListing).ConfigureAwait(true);
                     if (result)
                     {
-                        return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                        return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                     }
                     else throw new Exception("Error creating new listing. Try again later.");
                 }
@@ -4188,7 +4219,7 @@ namespace Shortchase.Controllers
                     var result = await potdListingService.Delete(Id.Value).ConfigureAwait(true);
                     if (result)
                     {
-                        string message = "POTD listing deleted successfully!";
+                        string message = "Pick deleted successfully!";
                         return Json(new { status = true, messageTitle = "Success", message = message });
                     }
                     else throw new Exception("Error deleting the POTD. Try again later.");
@@ -5290,7 +5321,9 @@ namespace Shortchase.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage(string MessageContent, Guid Id, int TimezoneOffset = 0)
+        //[HttpGet]
+        //public async Task<IActionResult> SendMessage(string MessageContent, Guid Id, int TimezoneOffset = 0)
+        public async Task<IActionResult> SendMessage([FromBody]Message model)
         {
             Guid? UserId = null;
             RequestFeedback request = new RequestFeedback();
@@ -5298,14 +5331,14 @@ namespace Shortchase.Controllers
             {
                 UserId = User.Id();
                 if (!UserId.HasValue) throw new Exception("No user to send message.");
-                if (string.IsNullOrWhiteSpace(MessageContent)) throw new Exception("No message content to send message.");
+                if (string.IsNullOrWhiteSpace(model.Content)) throw new Exception("No message content to send message.");
 
                 Message newMessage = new Message
                 {
                     FromId = UserId.Value,
-                    ToId = Id,
+                    ToId = model.ToId,
                     DateRead = null,
-                    Content = MessageContent
+                    Content = model.Content
                 };
 
                 var result = await messageService.Insert(newMessage).ConfigureAwait(true);
@@ -5489,6 +5522,136 @@ namespace Shortchase.Controllers
                 return Json(new { status = false, messageTitle = "Error", message = e.Message });
             }
         }
+        #endregion
+
+
+        #region Email Configuration Editor
+        public async Task<IActionResult> EmailConfigEditor(int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                EmailConfigAllDto model = new EmailConfigAllDto
+                {
+                    EmailConfigs = await emailConfigService.GetAll().ConfigureAwait(true)
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+        public async Task<IActionResult> EmailConfigAdd(int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                return View();
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+        public async Task<IActionResult> EmailConfigEdit(int Id = 0, int TimeOffset = 0)
+        {
+            ViewData["TimezoneOffset"] = TimeOffset;
+            Guid? UserId = null;
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                if (Id == 0) throw new Exception("You need to provide a email configuration detail to edit.");
+                EmailConfig model = await emailConfigService.GetById(Id).ConfigureAwait(true);
+                if (model == null) throw new Exception("You need to provide a email configuration template to edit.");
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e, UserId).ConfigureAwait(true);
+                return RedirectToAction("Index", "Error", request);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewEmailConfig(EmailConfig template)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(template.Password)) throw new Exception("You need to provide a password for email sender.");
+                if (string.IsNullOrWhiteSpace(template.Email)) throw new Exception("You need to provide a email");
+                if (string.IsNullOrWhiteSpace(template.Display_name)) throw new Exception("You need to provide a display name for the new email template.");
+                if (string.IsNullOrWhiteSpace(template.User_name)) throw new Exception("You need to provide a user name for the new email template.");
+                if (string.IsNullOrWhiteSpace(template.Host)) throw new Exception("You need to provide a valid host for template.");
+
+                EmailConfig newTemplate = new EmailConfig
+                {
+                    Port = template.Port,
+                    Password = template.Password,
+                    Email = template.Email,
+                    Host = template.Host,
+                    Display_name = template.Display_name,
+                    Enable_ssl = template.Enable_ssl,
+                    User_name= template.User_name,
+                    Is_default_email_account = template.Is_default_email_account,
+                    Active = template.Active
+                };
+
+
+                await emailConfigService.Insert(newTemplate).ConfigureAwait(true);
+
+                return Json(new { status = true, messageTitle = "Success", message = "New Email config settings created successfully!" });
+
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateNewEmailConfig(EmailConfig template)
+        {
+            try
+            {
+                if (template.Id == 0) throw new Exception("You need to provide email config id to update");
+
+                EmailConfig updateTemplate = await emailConfigService.GetById(template.Id).ConfigureAwait(true);
+                if (updateTemplate == null) throw new Exception("You need to provide a email config to update.");
+
+                if (!String.IsNullOrEmpty(template.Display_name)) { updateTemplate.Display_name = template.Display_name; };
+                if (!String.IsNullOrEmpty(template.User_name)) { updateTemplate.User_name = template.User_name; };
+                if (!String.IsNullOrEmpty(template.Email)) { updateTemplate.Email = template.Email; };
+                if (!String.IsNullOrEmpty(template.Password)) { updateTemplate.Password = template.Password; };
+                if (!String.IsNullOrEmpty(template.Host)) { updateTemplate.Host = template.Host; };
+                if(template.Port >0) { updateTemplate.Port = template.Port; };
+                if(template.Is_default_email_account.HasValue) { updateTemplate.Is_default_email_account = template.Is_default_email_account; }
+                if (template.Active.HasValue) { updateTemplate.Active = template.Active; }
+                if (template.Enable_ssl.HasValue) { updateTemplate.Enable_ssl = template.Enable_ssl; }
+
+                await emailConfigService.Update(updateTemplate).ConfigureAwait(true);
+
+                return Json(new { status = true, messageTitle = "Success", message = "Email config details updated successfully!" });
+
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return Json(new { status = false, messageTitle = "Error", message = e.Message });
+            }
+        }
+
+
         #endregion
 
         #region Email Template Editor
@@ -6184,7 +6347,7 @@ namespace Shortchase.Controllers
                     }
                     using (var reader = new StreamReader(path))
                     {
-                        using (var csv = new CsvHelper.CsvReader(reader))
+                        using (var csv = new CsvHelper.CsvReader((IParser)reader))
                         {
                             csv.Read();
                             csv.ReadHeader();
@@ -6768,5 +6931,39 @@ namespace Shortchase.Controllers
 
 
         #endregion
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            //if (file == null || file.Length == 0)
+            //    return Content("file not selected");
+
+            var path = Path.Combine(
+                        Directory.GetCurrentDirectory(), "wwwroot","img","blog");
+
+            //using (var stream = new FileStream(path, FileMode.Create))
+            //{
+            //    await file.CopyToAsync(stream);
+            //}
+
+            var fileName = User.Identity.Id()+".jpg";//System.IO.Path.GetFileName(file.FileName);
+
+            // If file with same name exists delete it
+            if (System.IO.File.Exists(fileName))
+            {
+                System.IO.File.Delete(fileName);
+            }
+            var fileNameWithPath = string.Concat(path, "\\", fileName);
+
+            // Create new local file and copy contents of uploaded file
+            using (var localFile = System.IO.File.OpenWrite(fileName))
+            //using (var uploadedFile = file.OpenReadStream())
+            using (var uploadedFile = new FileStream(fileNameWithPath, FileMode.Create))
+            {
+                file.CopyTo(uploadedFile);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

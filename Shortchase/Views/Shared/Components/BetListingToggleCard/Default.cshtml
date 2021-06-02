@@ -179,16 +179,16 @@
                                         }
 
                                         <text>
-                                            <span>Analysis: @Model.BetListing.Analysis</span>
+                                            <span>Analysis @Model.BetListing.Analysis</span>
                                             <span>
-                                                Prediction: @Model.BetListing.Tip.Description
+                                                Prediction @Model.BetListing.Tip.Description
                                                 <span class="@resultBgWrapper text-white  border-radius-ultra-low"><i class="@resultIcon"></i></span>
                                             </span>
                                         </text>
                                     }
                                 }
                                 <span>
-                                    Where to play: @Model.BetListing.Bookmaker.Description
+                                    Where to play @Model.BetListing.Bookmaker.Description
                                 </span>
                             </p>
                         </div>
@@ -209,8 +209,17 @@
                                     <text> views</text>
                                 }
                             </span>
+                            <span class="text-right">
+                                <button>Buy Now</button>
+                            </span>
                         </p>
+                        <div>
+                            <a class="social-share facebook" Selected-item='My active prediction:+ @(Model.BetListing.Tip.Description)'><img src="https://img.icons8.com/cute-clipart/30/000000/facebook-new.png" /></a>
+                            <a class="social-share twitter" Selected-item='My active prediction:+ @(Model.BetListing.Tip.Description)'><img src="https://img.icons8.com/cute-clipart/30/000000/twitter.png" /></a>
+                            <a target="_blank" Selected-item='My active prediction:+ @(Model.BetListing.Tip.Description)' href="whatsapp://send?text=This is WhatsApp sharing example using link" class="social-share whatsapp" data-action="share/whatsapp/share"><img src="https://img.icons8.com/cute-clipart/30/000000/whatsapp.png" /></a>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -218,3 +227,50 @@
     </div>
 
 </div>
+@section Scripts{
+    <script>
+
+        setShareLinks();
+
+        function socialWindow(url) {
+            var left = (screen.width - 570) / 2;
+            var top = (screen.height - 570) / 2;
+            var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+            // Setting 'params' to an empty string will launch
+            // content in a new tab or window rather than a pop-up.
+            // params = "";
+            window.open(url, "NewWindow", params);
+        }
+
+        $(document).delegate('#addPolicy',
+            'click',
+            function (e) {
+
+                $(this).attr('Selected-item');
+
+            });
+
+        function setShareLinks() {
+            var pageUrl = encodeURIComponent(document.URL);
+            //var tweet = encodeURIComponent($("meta[property='og:description']").attr("content"));
+
+            jQuery(".social-share.facebook").on("click", function () {
+                url = "https://www.facebook.com/sharer.php?u=" + pageUrl;
+                socialWindow(url);
+            });
+
+            jQuery(".social-share.twitter").on("click", function () {
+                var tweet = $(this).attr('Selected-item');
+                url = "https://twitter.com/intent/tweet?url=" + pageUrl + "&text=" + tweet;
+                socialWindow(url);
+            });
+
+            jQuery(".social-share.whatsapp").on("click", function () {
+                var tweet = $(this).attr('Selected-item');
+
+                url = "https://api.whatsapp.com/send?text=" + tweet + " " + pageUrl;
+                socialWindow(url);
+            })
+        }
+    </script>
+}

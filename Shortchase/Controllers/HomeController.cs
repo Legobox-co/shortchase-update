@@ -21,7 +21,7 @@ using ServiceStack;
 using FixerIoCore;
 using Microsoft.AspNetCore.Http;
 //1. Import the PayPal SDK client that was created in `Set up Server-Side SDK`.
-using BraintreeHttp;
+//using BraintreeHttp;
 using PayPalCheckoutSdk.Core;
 using PayPalCheckoutSdk.Orders;
 using Google.Contacts;
@@ -216,6 +216,18 @@ namespace Shortchase.Controllers
                 return null;
             }
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> CommentOnPrediction(PredictionComment comment)
+        {
+            comment.CommenterId = User.Id();
+            var result = await potdListingPredictionService.InsertComment(comment).ConfigureAwait(true);
+            if (result)
+            {
+                return Json(new { isSuccess = result, redirectUrl = "/Home/Index/" });
+            }
+            return Json(new { isSuccess = result, redirectUrl = "/Home/Index/" });
+        }
 
         [HttpPost]
         [AllowAnonymous]
@@ -227,8 +239,55 @@ namespace Shortchase.Controllers
             RequestFeedback request = new RequestFeedback();
             try
             {
+                var data = new List<PotdPredictionVM>();
                 var POTDs = await potdListingService.GetAllAvailable().ConfigureAwait(true);
+                var POTDListing = await potdListingPredictionService.GetAll().ConfigureAwait(true);
+                foreach (var item in POTDListing)
+                {
+                    var pick = new Pick();
+                    var p = POTDs.FirstOrDefault(x => x.Id == item.POTDId);
+                    if (p == null)
+                    {
+                        pick = new Pick();
+                    }
+                    else
+                    {
+                        pick = p.Pick;
+                    }
+                    var user =await potdListingService.GetUserById(item.PredictedById);
+                    data.Add(new PotdPredictionVM {Id=item.Id, Name = user, DatePredicted = item.DatePredicted, Prediction =item.Prediction, Rowdate= item.RowDate, POTDID= item.POTDId, Picks= pick });
+                }
+                ViewData["Prediction"] = data.ToList(); 
+
                 return PartialView(POTDs);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return null;
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SubmitPOTDforValidation(bool Type)
+        {
+            Guid? userId = User.Id();
+            POTDListingPrediction request = new POTDListingPrediction
+            {
+                PredictedById = userId.Value//,
+                //UserValidate = Type
+            };
+            try
+            {
+                if (!userId.HasValue || userId.Value == Guid.Empty) throw new Exception("No User Id prediction to validate");
+                var POTDs = await potdListingPredictionService.Insert(request).ConfigureAwait(true);
+                if (POTDs)
+                {
+                    return Json(new { status = true, messageTitle = "Success", message = "Prediction submitted successfully" });
+                }
+
+                else throw new Exception("Error submitting the POTD prediction. Try again later.");
             }
             catch (Exception e)
             {
@@ -852,7 +911,7 @@ namespace Shortchase.Controllers
                                 }
                             }
 
-                            return Json(new { status = true, messageTitle = "Success", message = "New listing saved successfully!" });
+                            return Json(new { status = true, messageTitle = "Success", message = "Pick saved successfully!" });
                         }
                         else throw new Exception("Error creating new listing. Try again later.");
                     }
@@ -905,7 +964,7 @@ namespace Shortchase.Controllers
             ViewData["root"] = hostingEnvironment.ContentRootPath;
             filters.page = filters.page == 0 ? 1 : filters.page;
             ViewData["Page"] = filters.page;
-            filters.pageSize = filters.pageSize == 0 ? 16 : filters.pageSize;
+            filters.pageSize = filters.pageSize == 0 ? 20 : filters.pageSize;
             ViewData["PageSize"] = filters.pageSize;
             Guid? UserId = null;
             RequestFeedback request = new RequestFeedback();
@@ -1457,7 +1516,7 @@ namespace Shortchase.Controllers
                     string message = user.FirstName + " unfollowed you.";
                     var resultNotification = await notificationService.Insert(UserToUnFollowId, message).ConfigureAwait(true);
                     if (!resultNotification) throw new Exception("Could not save new notification");
-                    return Json(new { status = true, messageTitle = "Success", message = "Stoped following successfully!" });
+                    return Json(new { status = true, messageTitle = "Success", message = "Stopped following successfully!" });
                 }
                 else throw new Exception("Error unfollowing user. Try again later.");
 
@@ -1732,7 +1791,7 @@ namespace Shortchase.Controllers
                         {
                             POTD = currentPOTD,
                             NextPOTD = next,
-                            UserPrediction = await potdListingPredictionService.GetUserPredictionForPOTD(UserId.Value, Id).ConfigureAwait(true),
+                            UserPrediction =(UserId==null) ? new POTDListingPrediction() : await potdListingPredictionService.GetUserPredictionForPOTD(UserId.Value, Id).ConfigureAwait(true),
                             LiveReportings = await potdListingLiveReportService.GetByPOTDId(Id).ConfigureAwait(true)
                         };
                         return View(model);
@@ -2709,7 +2768,7 @@ namespace Shortchase.Controllers
                         PaypalSettings paypalSettings = await paypalSettingsService.GetDefault().ConfigureAwait(true);
                         string ClientId = paypalSettings.ClientID;
                         string Secret = paypalSettings.Secret;
-                        var paypalResponse = await PayPalClient.client(ClientId, Secret).Execute(paypalRequest);
+                        var paypalResponse = await PayPalClient.client(ClientId, Secret).Execute(paypalRequest).ConfigureAwait(false);
                         //4. Save the transaction in your database. Implement logic to save transaction to your database for future reference.
                         var paypalResult = paypalResponse.Result<PayPalCheckoutSdk.Orders.Order>();
 
@@ -3534,6 +3593,26 @@ namespace Shortchase.Controllers
 
 
         #region Home General Functions
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Messaging(Guid id,int TimeOffset = 0)
+        {
+            Guid? UserId = null;
+            ViewData["root"] = hostingEnvironment.ContentRootPath;
+            ViewData["TimezoneOffset"] = TimeOffset;
+            UserId = User.Id();
+            RequestFeedback request = new RequestFeedback();
+            try
+            {
+                var user = (await userService.GetProfileById(id, UserId).ConfigureAwait(true));
+                return View(user);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(true);
+                return null;
+            }
+        }
 
         [Permitted(Permission.Capper, Permission.Bettor)]
         [HttpPost]

@@ -86,7 +86,7 @@
             <ul class="navbar-nav" style="@section2Display" id="menu-section-2">
                 <li class="nav-item">
                     <a class="nav-link timezoneoffset @Html.IsSelected("Backend", "BetListings")" asp-action="BetListings" asp-controller="Backend">
-                        <img src="@Url.Content("~/img/newicons/bet-listings.png")" class="img-fluid" width="20px" />&nbsp; Bet Listings @*<i class="fas fa-list-ul"></i> Bet Listings*@
+                        <img src="@Url.Content("~/img/newicons/bet-listings.png")" class="img-fluid" width="20px" />&nbsp; Listings @*<i class="fas fa-list-ul"></i> Bet Listings*@
                     </a>
                 </li>
                 <li class="nav-item">
@@ -307,7 +307,7 @@
             <hr class="my-3">
             <!-- Heading -->
             @{
-                string section5Check = Html.IsSelected("Backend", "Addresses,FAQ,Blog,BlogAddPost,BlogEditPost,News,NewsAddPost,NewsEditPost,Promotion,PromotionAddPost,PromotionEditPost,PrivacyPolicy,SocialMedia,TermsOfService,CookieConsent,AppConfig,SessionManager,EmailTemplateEditor,EmailTemplateAdd,EmailTemplateEdit");
+                string section5Check = Html.IsSelected("Backend", "Addresses,FAQ,Blog,BlogAddPost,BlogEditPost,News,NewsAddPost,NewsEditPost,Promotion,PromotionAddPost,PromotionEditPost,PrivacyPolicy,SocialMedia,TermsOfService,CookieConsent,AppConfig,TimeZone,SessionManager,EmailTemplateEditor,EmailTemplateAdd,EmailTemplateEdit");
                 string section5Display = "display:none;";
                 string section5Status = "closed";
                 string section5TitleColor = "text-muted";
@@ -326,6 +326,11 @@
                         <img src="@Url.Content("~/img/newicons/app-manager.png")" class="img-fluid" width="20px" />&nbsp; App Manager @*<i class="fas fa-cog"></i> App Manager*@
                     </a>
                 </li>
+                <!--<li class="nav-item">
+                    <a class="nav-link @Html.IsSelected("Backend", "TimeZone")" asp-action="TimeZone" asp-controller="Backend">
+                        <img src="@Url.Content("~/img/newicons/session-manager.png")" class="img-fluid" width="20px" />&nbsp; Time Zone--> @*<i class="fas fa-cog"></i> App Manager*@
+                    <!--</a>
+                </li>-->
                 <li class="nav-item">
                     <a class="nav-link @Html.IsSelected("Backend", "Addresses")" asp-action="Addresses" asp-controller="Backend">
                         <img src="@Url.Content("~/img/newicons/addresses.png")" class="img-fluid" width="20px" />&nbsp; Addresses @*<i class="fas fa-map-marker-alt"></i> Addresses*@
@@ -336,11 +341,11 @@
                         <img src="@Url.Content("~/img/newicons/blog.png")" class="img-fluid" width="20px" />&nbsp; Blog Posts @*<i class="fas fa-newspaper"></i> Blog Posts*@
                     </a>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link @Html.IsSelected("Backend", "CookieConsent")" asp-action="CookieConsent" asp-controller="Backend">
-                        <img src="@Url.Content("~/img/newicons/cookies-consent.png")" class="img-fluid" width="20px" />&nbsp; Cookies Consent @*<i class="fas fa-cogs"></i> Cookies Consent*@
-                    </a>
-                </li>
+                        <img src="@Url.Content("~/img/newicons/cookies-consent.png")" class="img-fluid" width="20px" />&nbsp; Cookies Consent--> @*<i class="fas fa-cogs"></i> Cookies Consent*@
+                    <!--</a>
+                </li>-->
                 <li class="nav-item">
                     <a class="nav-link timezoneoffset @Html.IsSelected("Backend", "EmailTemplateEditor,EmailTemplateAdd,EmailTemplateEdit")" asp-action="EmailTemplateEditor" asp-controller="Backend">
                         <img src="@Url.Content("~/img/newicons/email-portal.png")" class="img-fluid" width="20px" />&nbsp; Email Portal @*<i class="far fa-envelope"></i> Email Portal*@
@@ -371,11 +376,11 @@
                         <img src="@Url.Content("~/img/newicons/social-media.png")" class="img-fluid" width="20px" />&nbsp; Social Media @*<i class="fas fa-link"></i> Social Media*@
                     </a>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link timezoneoffset @Html.IsSelected("Backend", "SessionManager")" asp-action="SessionManager" asp-controller="Backend">
-                        <img src="@Url.Content("~/img/newicons/session-manager.png")" class="img-fluid" width="20px" />&nbsp; Session Manager @*<i class="fas fa-cogs"></i> Session Manager*@
-                    </a>
-                </li>
+                        <img src="@Url.Content("~/img/newicons/session-manager.png")" class="img-fluid" width="20px" />&nbsp; Session Manager--> @*<i class="fas fa-cogs"></i> Session Manager*@
+                    <!--</a>
+                </li>-->
                 <li class="nav-item">
                     <a class="nav-link @Html.IsSelected("Backend", "TermsOfService")" asp-action="TermsOfService" asp-controller="Backend">
                         <img src="@Url.Content("~/img/newicons/terms-of-service.png")" class="img-fluid" width="20px" />&nbsp; Terms of Service @*<i class="fas fa-align-justify"></i> Terms of Service*@

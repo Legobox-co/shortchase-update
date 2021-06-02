@@ -1,6 +1,7 @@
 ﻿@model BackendUserListDto
 @{
     Layout = "_DashboardLayout";
+  
 }
 
 <div class="header bg-gradient-primary py-3 ">
@@ -38,21 +39,59 @@
                 {
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-12 text-right">
+                            <button class="btn btn-info btn-sm" type="button" id="modalbutton" data-bs-toggle="modal" data-bs-target="#exampleModal">Table List</button>
+                            <button class="btn btn-dark-as-homepage btn-sm" id="SelectAllRowsBtn" data-power="select" data-totalselected="0" data-totalelements="@Model.Users.Count">Select List</button>
                             <button class="btn btn-dark-as-homepage btn-sm" id="SelectAllRowsBtn" data-power="select" data-totalselected="0" data-totalelements="@Model.Users.Count">Select All</button>
                             <button class="btn btn-success btn-sm batchaction" data-actiontype="switchstatus" data-status="true" data-action="@Url.Action("SwitchUsersStatusBatch", "Backend")"><i class="fas fa-power-off"></i> Activate All</button>
                             <button class="btn btn-warning btn-sm batchaction" data-actiontype="switchstatus" data-status="false" data-action="@Url.Action("SwitchUsersStatusBatch", "Backend")"><i class="fas fa-ban"></i> Deactivate All</button>
                             <button class="btn btn-danger btn-sm batchaction" data-actiontype="delete" data-action="@Url.Action("DeleteUsersBatch", "Backend")"><i class="fas fa-trash"></i> Delete All</button>
                         </div>
                     </div>
+                    
+
+                    <!-- Modal -->
+                    <div class="modal fade"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Table List</h5>
+                                  
+
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="checkbox" id="firstname"/>
+                                    <label for="firstname">First Name</label>
+                                    <br />
+                                    <input type="checkbox" id="lastname" />
+                                    <label for="lastname">Last Name</label>
+                                    <br />
+                                    <input type="checkbox" id="email" />
+                                    <label for="email">Email</label>
+                                    <br />
+                                    <input type="checkbox" id="phonenumber" />
+                                    <label for="phonenumber">Phone Number</label>
+                                    <br />
+                                    <input type="checkbox" id="lastseen" />
+                                    <label for="lastseen">Last Seen</label>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" id="saveChanges" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <table id="AdministratorsList" class="table table-striped table-bordered w-100" cellspacing="0">
                         <thead>
                             <tr>
                                 <th class="text-uppercase"></th>
-                                <th class="text-uppercase">First Name</th>
-                                <th class="text-uppercase">Last Name</th>
-                                <th class="text-uppercase">Email</th>
-                                <th class="text-uppercase">Phone</th>
-                                <th class="text-uppercase">Last Seen</th>
+
+                                <th class="text-uppercase firstname">First Name</th>
+                                <th class="text-uppercase lastname">Last Name</th>
+                                <th class="text-uppercase email">Email</th>
+                                <th class="text-uppercase phonenumber">Phone</th>
+                                <th class="text-uppercase lastseen">Last Seen</th>
                                 <th class="text-uppercase">Action</th>
                             </tr>
                         </thead>
@@ -64,44 +103,44 @@
                                 {
                                     orderOptionalDate = item.LastSeen.Value;
                                 }
-                            <tr>
-                                @if (item.UserName.ToLower() != "admin")
-                                {
-
-                                    <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
-                                }
-                                else
-                                {
-                                    <td id="" class=""></td>
-                                }
-                                <td id="FirstName-@item.Id.ToString()" data-value="@item.FirstName">@item.FirstName</td>
-                                <td id="LastName-@item.Id.ToString()" data-value="@item.LastName">@item.LastName</td>
-                                <td id="Email-@item.Id.ToString()" data-value="@item.Email">@item.Email</td>
-                                <td id="PhoneNumber-@item.Id.ToString()" data-value="@item.PhoneNumber">@item.PhoneNumber</td>
-                                <td id="" data-order="@orderOptionalDate">
-                                    @if (item.LastSeen.HasValue)
-                                    {
-                                        <text>@DateHelper.DateFormat(item.LastSeen.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</text>
-                                    }
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id.ToString()" data-country-id="@item.PhoneCountryId" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button>
+                                <tr>
                                     @if (item.UserName.ToLower() != "admin")
                                     {
-                                        if (!item.IsActive)
-                                        {
-                                            <button class="btn btn-sm btn-success ActivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Activate"><i class="fas fa-power-off"></i></button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn btn-sm btn-warning DeactivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Deactivate"><i class="fas fa-power-off"></i></button>
-                                        }
-                                        <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
 
+                                        <td id="SelectWrapper-@item.Id" class="rowSelectors text-center" data-controller="SelectAllRowsBtn" data-selected="false" data-itemid="@item.Id"></td>
                                     }
+                                    else
+                                    {
+                                        <td id="" class=""></td>
+                                    }
+                                    <td class="firstname" id="FirstName-@item.Id.ToString()" data-value="@item.FirstName">@item.FirstName</td>
+                                    <td class="lastname" id="LastName-@item.Id.ToString()" data-value="@item.LastName">@item.LastName</td>
+                                    <td class="email" id="Email-@item.Id.ToString()" data-value="@item.Email">@item.Email</td>
+                                    <td class="phonenumber" id="PhoneNumber-@item.Id.ToString()" data-value="@item.PhoneNumber">@item.PhoneNumber</td>
+                                    <td class="lastseen" id="" data-order="@orderOptionalDate">
+                                        @if (item.LastSeen.HasValue)
+                                        {
+                                            <text>@DateHelper.DateFormat(item.LastSeen.Value.FromUTCData(Convert.ToInt32(ViewData["TimezoneOffset"].ToString())))</text>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary EditItemBtn" data-id="@item.Id.ToString()" data-country-id="@item.PhoneCountryId" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fas fa-edit"></i></button>
+                                        @if (item.UserName.ToLower() != "admin")
+                                        {
+                                            if (!item.IsActive)
+                                            {
+                                                <button class="btn btn-sm btn-success ActivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Activate"><i class="fas fa-power-off"></i></button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-sm btn-warning DeactivateItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Deactivate"><i class="fas fa-power-off"></i></button>
+                                            }
+                                            <button class="btn btn-sm btn-danger DeleteItemBtn" data-id="@item.Id" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash"></i></button>
 
-                                </td>
-                            </tr>
+                                        }
+
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -115,6 +154,7 @@
 
 <!-- Add Modal -->
 <partial name="Partials/ManageAdministrators_AddModal" model="@Model" />
+
 <partial name="Partials/ManageAdministrators_EditModal" model="@Model" />
 
 
@@ -123,4 +163,138 @@
 
 @section Scripts{
     <script src="@Url.Content("~/app/Backend/ManageAdministrators.js")" asp-append-version="true"></script>
+    <script>
+        var modalButton = document.getElementById('modalbutton');
+        var modal = document.getElementById('exampleModal');
+        var close = document.getElementById('closeModal')
+        modalButton.addEventListener('click', function () {
+            modal.classList.add("show");
+            modal.style.display="block";
+            modal.style.paddingRight="15px";
+
+        });
+
+        close.addEventListener('click', function () {
+            modal.classList.remove("show");
+            modal.style.display = "none";
+
+        });
+        $("#firstname").click(function () {
+            if ($("#firstname").prop("checked")) {
+                var che = $("#firstname").prop("checked");
+                console.log("First name checkbox is clicked " + che);
+            localStorage.setItem("firstname", che);
+            } else
+            {
+                var che = $("#firstname").prop("checked");
+                console.log("First name checkbox is clicked " + che);
+            localStorage.setItem("firstname", che);
+            }
+        })
+        $("#lastname").click(function () {
+            if ($("#lastname").prop("checked")) {
+                var che = $("#lastname").prop("checked");
+
+                localStorage.setItem("lastname", che);
+            } else {
+                var che = $("#lastname").prop("checked");
+
+                localStorage.setItem("lastname", che);
+            } 
+        })
+        $("#email").click(function () {
+            if ($(this).prop("checked")) {
+                var che = $("#email").prop("checked");
+
+                localStorage.setItem("email", che);
+            } else {
+                var che = $("#email").prop("checked");
+
+                localStorage.setItem("email", che);
+            }
+        })
+        $("#phonenumber").click(function () {
+            if ($("#phonenumber").prop("checked")) {
+                var che = $("#phonenumber").prop("checked");
+
+                localStorage.setItem("phonenumber", che);
+            } else {
+                var che = $("#phonenumber").prop("checked");
+
+                localStorage.setItem("phonenumber", che);
+            }
+        })
+        $("#lastseen").click(function () {
+            if ($("#lastseen").prop("checked")) {
+                var che = $("#lastseen").prop("checked");
+
+                localStorage.setItem("lastseen", che);
+            } else {
+                var che = $("#lastseen").prop("checked");
+
+                localStorage.setItem("lastseen", che);
+            }
+        })
+        $("#saveChanges").click(function () {
+            if (localStorage.getItem("firstname") === "true") {
+                $('.firstname').show()
+            } else {
+                $('.firstname').hide()
+            }
+            if (localStorage.getItem("lastname") === "true") {
+                $('.lastname').show()
+            } else {
+                $('.lastname').hide()
+            }
+            if (localStorage.getItem("email") === "true") {
+                $('.email').show()
+            } else {
+                $('.email').hide()
+            }
+            if (localStorage.getItem("phonenumber") === "true") {
+                $('.phonenumber').show()
+            } else {
+                $('.phonenumber').hide()
+            }
+            if (localStorage.getItem("lastseen") === "true") {
+                $('.lastseen').show()
+            } else {
+                $('.lastseen').hide()
+            }
+            modal.classList.remove("show");
+            modal.style.display = "none";
+        });
+        $(document).ready(function () {
+            $("#firstname").prop("checked", localStorage.getItem("firstname") === "true");
+            $("#lastname").prop("checked", localStorage.getItem("lastname") === "true");
+            $("#email").prop("checked", localStorage.getItem("email") === "true");
+            $("#phonenumber").prop("checked", localStorage.getItem("phonenumber") === "true");
+            $("#lastseen").prop("checked", localStorage.getItem("lastseen") === "true");
+            if (localStorage.getItem("firstname") === "true") {
+                $('.firstname').show()
+            } else {
+                $('.firstname').hide()
+            }
+            if (localStorage.getItem("lastname") === "true") {
+                $('.lastname').show()
+            } else {
+                $('.lastname').hide()
+            }
+            if (localStorage.getItem("email") === "true") {
+                $('.email').show()
+            } else {
+                $('.email').hide()
+            }
+            if (localStorage.getItem("phonenumber") === "true") {
+                $('.phonenumber').show()
+            } else {
+                $('.phonenumber').hide()
+            }
+            if (localStorage.getItem("lastseen") === "true") {
+                $('.lastseen').show()
+            } else {
+                $('.lastseen').hide()
+            }
+        })
+    </script>
 }

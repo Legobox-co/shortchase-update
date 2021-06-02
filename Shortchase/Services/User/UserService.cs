@@ -17,6 +17,7 @@ using Shortchase.Helpers;
 using Shortchase.Authorization;
 using System.Security.Principal;
 using Shortchase.Helpers.Extensions;
+using Newtonsoft.Json;
 
 namespace Shortchase.Services
 {
@@ -1076,7 +1077,7 @@ namespace Shortchase.Services
         }
 
 
-        public async Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password)
+        public async Task<bool> CreateShortchaseAdministratorUserAsync(User user, string password, string role)
         {
             try
             {
@@ -1099,6 +1100,7 @@ namespace Shortchase.Services
 
                 if (string.IsNullOrWhiteSpace(user.Email))
                     throw new Exception("E-mail is required");
+                
 
                 if (_context.Users.Any(x => x.Email == user.Email))
                     throw new Exception("E-mail \"" + user.Email + "\" is already taken");
@@ -1113,7 +1115,8 @@ namespace Shortchase.Services
                 var result = await userManager.CreateAsync(user, password).ConfigureAwait(false);
                 if (result.Succeeded)
                 {
-                    var adminPermissionResult = await permissionService.AddToUser(user, Permission.Admin).ConfigureAwait(false);
+                    Permission permissionId = ReturnRoleId(role);
+                    var adminPermissionResult = await permissionService.AddToUser(user, permissionId).ConfigureAwait(false);
 
                     if (adminPermissionResult)
                     {
@@ -1121,24 +1124,39 @@ namespace Shortchase.Services
                     }
                     else
                     {
-                        throw new Exception("Error adding user to bettor role.");
+                        throw new Exception($"Error adding user to {role} role.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Error creating user");
+                    throw new Exception("Error creating User");
                 }
             }
             catch (Exception e)
             {
                 await errorLogService.InsertException(e).ConfigureAwait(false);
-                return false;
+                throw;
             }
         }
 
-
-
-        public async Task<bool> CreateShortchaseStandardUserAsync(User user, string password)
+        public Permission ReturnRoleId(string role)
+        {
+            switch (role)
+            {
+                case "Owner":
+                    return Permission.Owner;
+                case "Admin":
+                    return Permission.Admin;
+                case "Member":
+                    return Permission.Member;
+                case "AccessAll":
+                    return Permission.AccessAll;
+                default:
+                    return Permission.Admin;
+            }
+        }
+        
+    public async Task<bool> CreateShortchaseStandardUserAsync(User user, string password)
         {
             try
             {

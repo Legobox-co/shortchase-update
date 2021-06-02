@@ -39,14 +39,15 @@ namespace Shortchase.Services
             try
             {
                 if (user == null) throw new Exception("User cannot be null");
+
                 return await AddToUser(user.Id, permission).ConfigureAwait(false);
             }
             catch (Exception e)
             {
                 if (!(await errorLogService.InsertException(e).ConfigureAwait(false))) throw;
-                return false;
+                throw;
             }
-        }
+}
 
         public async Task<bool> AddToUser(Guid UserId, Permission permission)
         {
@@ -71,6 +72,7 @@ namespace Shortchase.Services
 
                 UserPermissions UserPermissions = new UserPermissions
                 {
+                    
                     Permissions = Permission,
                     PermissionsId = Permission.Id,
                     RowDate = DateTime.Now,
@@ -81,13 +83,13 @@ namespace Shortchase.Services
                 await db.UserPermissions.AddAsync(UserPermissions).ConfigureAwait(false);
                 await db.SaveChangesAsync().ConfigureAwait(false);
                 return true;
-            }
+        }
             catch (Exception e)
             {
                 if (!(await errorLogService.InsertException(e).ConfigureAwait(false))) throw;
                 return false;
             }
-        }
+}
 
         public async Task Disable(Permissions Permission)
         {
@@ -97,6 +99,22 @@ namespace Shortchase.Services
                 Permission.Disabled = true;
                 db.Entry(Permission).State = EntityState.Modified;
                 await db.SaveChangesAsync().ConfigureAwait(true);
+            }
+            catch (Exception e)
+            {
+                await errorLogService.InsertException(e).ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        public async Task<ICollection<Permissions>> GetAdminRoles()
+        {
+            try
+            {
+                //string owner = "Admin";
+                //string admin = "SuperAdmin";
+
+                return await db.Permissions.FromSqlRaw("select * from Permissions where GroupName = 'Admin' or GroupName = 'SuperAdmin'").ToListAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {
